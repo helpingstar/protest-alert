@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             content {
@@ -20,5 +21,10 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "ProtestAlert"
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
- 
+include(":feature:schedule")
+include(":feature:settings")
+include(":core:data")
+include(":core:designsystem")
