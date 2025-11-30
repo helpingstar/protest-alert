@@ -18,6 +18,7 @@ kotlinxSerializationJson = "1.8.0"
 androidxNavigation = "2.8.5"
 androidxHiltNavigationCompose = "1.2.0"
 androidxComposeMaterial3Adaptive = "1.1.0-rc01"
+androidxCoreSplashscreen = "1.0.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -42,7 +43,7 @@ androidx-compose-material3-adaptive-layout = { group = "androidx.compose.materia
 androidx-compose-material3-adaptive-navigation = { group = "androidx.compose.material3.adaptive", name = "adaptive-navigation", version.ref = "androidxComposeMaterial3Adaptive" }
 androidx-compose-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-
+androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidxCoreSplashscreen" }
 android-gradleApiPlugin = { group = "com.android.tools.build", name = "gradle-api", version.ref = "androidGradlePlugin" }
 android-tools-common = { group = "com.android.tools", name = "common", version.ref = "androidTools" }
 compose-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }

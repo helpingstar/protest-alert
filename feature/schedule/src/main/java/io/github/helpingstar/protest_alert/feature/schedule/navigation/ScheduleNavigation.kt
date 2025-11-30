@@ -13,7 +13,7 @@ fun NavController.navigateToSchedule(navOptions: NavOptions) {
     navigate(route = ScheduleRoute, navOptions)
 }
 
-fun NavGraphBuilder.shceduleScreen() {
+fun NavGraphBuilder.scheduleScreen() {
     composable<ScheduleRoute> {
         ScheduleRoute()
     }

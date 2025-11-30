@@ -4,10 +4,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import io.github.helpingstar.protest_alert.core.data.util.NetworkMonitor
 import io.github.helpingstar.protest_alert.feature.schedule.navigation.navigateToSchedule
@@ -18,6 +22,25 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+
+@Composable
+fun rememberPaAppState(
+    networkMonitor: NetworkMonitor,
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    navController: NavHostController = rememberNavController(),
+): PaAppState {
+    return remember(
+        navController,
+        coroutineScope,
+        networkMonitor
+    ) {
+        PaAppState(
+            navController = navController,
+            coroutineScope = coroutineScope,
+            networkMonitor = networkMonitor
+        )
+    }
+}
 
 @Stable
 class PaAppState(
