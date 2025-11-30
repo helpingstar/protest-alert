@@ -1,15 +1,13 @@
 package io.github.helpingstar.protest_alert.navigation
 
 import androidx.annotation.StringRes
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.CalendarMonth
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 import io.github.helpingstar.protest_alert.core.designsystem.icon.PaIcons
 import io.github.helpingstar.protest_alert.feature.schedule.navigation.ScheduleRoute
+import io.github.helpingstar.protest_alert.feature.settings.navigation.SettingsRoute
+import kotlin.reflect.KClass
 import io.github.helpingstar.protest_alert.feature.schedule.R as scheduleR
 import io.github.helpingstar.protest_alert.feature.settings.R as settingsR
-import kotlin.reflect.KClass
 
 enum class TopLevelDestination(
     val selectedIcon: ImageVector,
@@ -31,6 +29,6 @@ enum class TopLevelDestination(
         unselectedIcon = PaIcons.SettingsBorder,
         iconTextId = settingsR.string.feature_setting_title,
         titleTextId = settingsR.string.feature_setting_title,
-        route = ScheduleRoute::class
+        route = SettingsRoute::class
     )
 }

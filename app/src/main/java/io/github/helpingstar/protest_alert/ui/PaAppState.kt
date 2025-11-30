@@ -6,7 +6,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -15,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import io.github.helpingstar.protest_alert.core.data.util.NetworkMonitor
 import io.github.helpingstar.protest_alert.feature.schedule.navigation.navigateToSchedule
+import io.github.helpingstar.protest_alert.feature.settings.navigation.navigateToSetting
 import io.github.helpingstar.protest_alert.navigation.TopLevelDestination
 import io.github.helpingstar.protest_alert.navigation.TopLevelDestination.SCHEDULE
 import io.github.helpingstar.protest_alert.navigation.TopLevelDestination.SETTINGS
@@ -22,6 +22,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+
+private const val TAG = "PaAppState"
 
 @Composable
 fun rememberPaAppState(
@@ -88,10 +90,9 @@ class PaAppState(
             launchSingleTop = true
             restoreState = true
         }
-
         when (topLevelDestination) {
             SCHEDULE -> navController.navigateToSchedule(topLevelNavOptions)
-            SETTINGS ->navController.navigateToSchedule(topLevelNavOptions)
+            SETTINGS -> navController.navigateToSetting(topLevelNavOptions)
         }
     }
 }

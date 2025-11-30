@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">ProtestAlert</string>
+    <string name="app_name">시위 알리미</string>
     <string name="not_connected">인터넷에 연결되어 있지 않습니다.</string>
 </resources>

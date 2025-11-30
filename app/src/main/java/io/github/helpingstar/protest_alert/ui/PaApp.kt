@@ -31,7 +31,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination
@@ -43,6 +42,8 @@ import io.github.helpingstar.protest_alert.core.designsystem.component.PaNavigat
 import io.github.helpingstar.protest_alert.core.designsystem.component.PaTopAppbar
 import io.github.helpingstar.protest_alert.navigation.PaNavHost
 import kotlin.reflect.KClass
+
+private const val TAG = "PaApp"
 
 @Composable
 fun PaApp(
@@ -64,6 +65,12 @@ fun PaApp(
                 )
             }
         }
+
+        PaApp(
+            appState = appState,
+            snackbarHostState = snackbarHostState,
+            windowAdaptiveInfo = windowAdaptiveInfo
+        )
     }
 }
 
@@ -83,7 +90,9 @@ internal fun PaApp(
                 val selected = currentDestination.isRouteInHierarchy(destination.baseRoute)
                 item(
                     selected = selected,
-                    onClick = { appState.navigateToTopLevelDestination(destination) },
+                    onClick = {
+                        appState.navigateToTopLevelDestination(destination)
+                    },
                     icon = {
                         Icon(
                             imageVector = destination.unselectedIcon,
@@ -118,8 +127,7 @@ internal fun PaApp(
                     )
                 )
             },
-        ) {
-            padding ->
+        ) { padding ->
             Column(
                 Modifier
                     .fillMaxSize()
