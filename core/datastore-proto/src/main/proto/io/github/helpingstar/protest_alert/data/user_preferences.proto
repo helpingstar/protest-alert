@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+option java_package = "io.github.helpingstar.protest_alert.core.datastore";
+option java_multiple_files = true;
+
+message UserPreferences {
+  map<string, bool> followed_region_ids = 1;
+}

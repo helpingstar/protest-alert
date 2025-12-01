@@ -1,4 +1,4 @@
-package io.github.helpingstar.protest_alert.core.data
+package io.github.helpingstar.protest_alert.core.data.di
 
 import dagger.Binds
 import dagger.Module

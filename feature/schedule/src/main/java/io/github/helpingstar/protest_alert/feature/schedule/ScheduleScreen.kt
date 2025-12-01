@@ -42,6 +42,13 @@ private val TextSecondaryColor = Color(0xFF565D6D)
 private val TagBackgroundColor = Color(0x1A3899FA)
 private val TagTextColor = Color(0xFF3899FA)
 
+//sealed interface ProtestUiState {
+//    data object Loading: ProtestUiState
+//    data class Success(
+//        val protest: List<>
+//    )
+//}
+
 @Composable
 internal fun ScheduleRoute(
     modifier: Modifier = Modifier,

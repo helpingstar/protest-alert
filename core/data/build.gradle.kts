@@ -36,9 +36,10 @@ android {
 
 dependencies {
     implementation(projects.core.common)
+    implementation(projects.core.datastore)
+    implementation(projects.core.model)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.android)
-    implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
