@@ -37,6 +37,8 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.datastoreProto)
+    implementation(projects.core.model)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     ksp(libs.hilt.compiler)
