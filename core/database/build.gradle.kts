@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.room)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -47,6 +48,8 @@ room {
 
 dependencies {
     implementation(projects.core.model)
+    ksp(libs.hilt.compiler)
+    implementation(libs.hilt.android)
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
