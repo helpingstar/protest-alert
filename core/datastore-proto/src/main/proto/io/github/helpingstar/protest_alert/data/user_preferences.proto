@@ -4,5 +4,6 @@ option java_package = "io.github.helpingstar.protest_alert.core.datastore";
 option java_multiple_files = true;
 
 message UserPreferences {
-  map<string, bool> followed_region_ids = 1;
+  int32 protestResourceChangeListVersion = 1;
+  map<string, bool> followed_region_ids = 2;
 }

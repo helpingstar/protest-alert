@@ -13,7 +13,7 @@ import kotlin.time.Instant
 @Entity(
     tableName = "protest_resources"
 )
-data class ProtestResourceEntity constructor(
+data class ProtestResourceEntity(
     @PrimaryKey
     val id: Long,
     val date: LocalDate,
