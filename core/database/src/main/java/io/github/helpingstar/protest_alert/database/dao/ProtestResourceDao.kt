@@ -3,7 +3,6 @@ package io.github.helpingstar.protest_alert.database.dao
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
-import io.github.helpingstar.protest_alert.core.model.data.ProtestResource
 import io.github.helpingstar.protest_alert.database.model.ProtestResourceEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -15,7 +14,7 @@ interface ProtestResourceDao {
     """,
     )
     fun getProtestResources(
-    ): Flow<List<ProtestResource>>
+    ): Flow<List<ProtestResourceEntity>>
 
     @Upsert
     suspend fun upsertProtestResources(protestResourceEntities: List<ProtestResourceEntity>)

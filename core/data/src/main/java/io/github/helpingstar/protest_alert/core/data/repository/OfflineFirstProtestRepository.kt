@@ -9,7 +9,9 @@ import io.github.helpingstar.protest_alert.core.model.data.ProtestResource
 import io.github.helpingstar.protest_alert.core.network.PaNetworkDataSource
 import io.github.helpingstar.protest_alert.core.network.model.NetworkProtestResource
 import io.github.helpingstar.protest_alert.database.dao.ProtestResourceDao
+import io.github.helpingstar.protest_alert.database.model.asExternalModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 private const val SYNC_BATCH_SIZE = 10
@@ -22,6 +24,7 @@ internal class OfflineFirstProtestRepository @Inject constructor(
 ) : ProtestRepository {
     override fun getNewsResources(query: ProtestResourceQuery): Flow<List<ProtestResource>> =
         protestResourceDao.getProtestResources()
+            .map { it.map { it.asExternalModel() } }
 
     override suspend fun syncWith(synchronizer: Synchronizer): Boolean {
         var isFirstSync = false

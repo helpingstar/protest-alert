@@ -43,8 +43,14 @@ android {
 }
 
 dependencies {
+    implementation(projects.feature.schedule)
+    implementation(projects.feature.settings)
+    
     implementation(projects.core.data)
     implementation(projects.core.designsystem)
+    implementation(projects.sync.work)
+
+
     implementation(libs.androidx.compose.material3.adaptive)
     implementation(libs.androidx.compose.material3.adaptive.layout)
     implementation(libs.androidx.compose.material3.adaptive.navigation)
