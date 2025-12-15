@@ -3,15 +3,31 @@ package io.github.helpingstar.protest_alert.core.network.supabase
 import io.github.helpingstar.protest_alert.core.network.PaNetworkDataSource
 import io.github.helpingstar.protest_alert.core.network.model.NetworkChangeList
 import io.github.helpingstar.protest_alert.core.network.model.NetworkProtestResource
+import io.github.helpingstar.protest_alert.core.network.model.NetworkRegion
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.from
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 @Singleton
+@OptIn(ExperimentalTime::class)
 class SupabasePaNetwork @Inject constructor(
     private val supabaseClient: SupabaseClient,
 ) : PaNetworkDataSource {
+
+    override suspend fun getRegions(ids: List<Long>?): List<NetworkRegion> =
+        supabaseClient.from("regions")
+            .select {
+                if (ids != null) {
+                    filter {
+                        isIn("id", ids)
+                    }
+                }
+            }
+            .decodeList<NetworkRegion>()
+
     override suspend fun getProtestResources(ids: List<Long>?): List<NetworkProtestResource> =
         supabaseClient.from("protests")
             .select {
@@ -23,12 +39,30 @@ class SupabasePaNetwork @Inject constructor(
             }
             .decodeList<NetworkProtestResource>()
 
-    override suspend fun getProtestResourceChangeList(after: Int?): List<NetworkChangeList> =
-        supabaseClient.from("changelists")
+    override suspend fun getRegionChangeList(after: Instant?): List<NetworkChangeList> =
+        supabaseClient.from("regions")
             .select {
                 if (after != null) {
                     filter {
-                        gt("change_list_version", after)
+                        gt("created_at", after.toString())
+                    }
+                }
+            }
+            .decodeList<NetworkRegion>()
+            .map { region ->
+                NetworkChangeList(
+                    id = region.id,
+                    lastUpdatedAt = region.createdAt,
+                    isDelete = false
+                )
+            }
+
+    override suspend fun getProtestResourceChangeList(after: Instant?): List<NetworkChangeList> =
+        supabaseClient.from("protests")
+            .select {
+                if (after != null) {
+                    filter {
+                        gt("updated_at", after.toString())
                     }
                 }
             }

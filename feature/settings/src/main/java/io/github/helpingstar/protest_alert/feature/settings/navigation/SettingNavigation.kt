@@ -7,10 +7,16 @@ import androidx.navigation.compose.composable
 import io.github.helpingstar.protest_alert.feature.settings.SettingsRoute
 import kotlinx.serialization.Serializable
 
-@Serializable data object SettingsRoute
+@Serializable
+data class SettingsRoute(
+    val initialRegionId: String? = null,
+)
 
-fun NavController.navigateToSetting(navOptions: NavOptions) {
-    navigate(route = SettingsRoute, navOptions)
+fun NavController.navigateToSetting(
+    initialRegionId: String? = null,
+    navOptions: NavOptions? = null,
+) {
+    navigate(route = SettingsRoute(initialRegionId), navOptions)
 }
 
 fun NavGraphBuilder.settingsScreen() {

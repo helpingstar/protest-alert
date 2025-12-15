@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
+    implementation(projects.core.model)
 
     implementation(platform(libs.supabase.bom))
     implementation(libs.supabase.postgrest)

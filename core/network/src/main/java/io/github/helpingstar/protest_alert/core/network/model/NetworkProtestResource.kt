@@ -18,5 +18,6 @@ data class NetworkProtestResource constructor(
     val participants: Int? = null,
     @SerialName("additional_info") val additionalInfo: JsonObject? = null,
     @SerialName("created_at") val createdAt: Instant,
-    val region: String
+    val region: String,
+    @SerialName("updated_at") val updatedAt: Instant
 )

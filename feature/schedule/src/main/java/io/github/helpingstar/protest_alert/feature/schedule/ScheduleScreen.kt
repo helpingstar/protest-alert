@@ -328,7 +328,8 @@ private fun ScheduleScreenSuccessPreview() {
             participants = 7000,
             additionalInfo = null,
             createdAt = Instant.fromEpochSeconds(1721900000),
-            region = "서울"
+            region = "서울",
+            updatedAt = Instant.fromEpochSeconds(1721900000)
         ),
         ProtestResource(
             id = 2,
@@ -339,7 +340,8 @@ private fun ScheduleScreenSuccessPreview() {
             participants = 1500,
             additionalInfo = null,
             createdAt = Instant.fromEpochSeconds(1721900000),
-            region = "서울"
+            region = "서울",
+            updatedAt = Instant.fromEpochSeconds(1721900000)
         ),
         ProtestResource(
             id = 3,
@@ -350,7 +352,8 @@ private fun ScheduleScreenSuccessPreview() {
             participants = 800,
             additionalInfo = null,
             createdAt = Instant.fromEpochSeconds(1721800000),
-            region = "경기남부"
+            region = "경기남부",
+            updatedAt = Instant.fromEpochSeconds(1721900000)
         )
     )
     ScheduleScreen(

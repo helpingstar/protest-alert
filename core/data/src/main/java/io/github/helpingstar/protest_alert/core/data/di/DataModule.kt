@@ -5,8 +5,10 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.github.helpingstar.protest_alert.core.data.repository.OfflineFirstProtestRepository
+import io.github.helpingstar.protest_alert.core.data.repository.OfflineFirstRegionsRepository
 import io.github.helpingstar.protest_alert.core.data.repository.OfflineFirstUserDataRepository
 import io.github.helpingstar.protest_alert.core.data.repository.ProtestRepository
+import io.github.helpingstar.protest_alert.core.data.repository.RegionsRepository
 import io.github.helpingstar.protest_alert.core.data.repository.UserDataRepository
 import io.github.helpingstar.protest_alert.core.data.util.ConnectivityManagerNetworkMonitor
 import io.github.helpingstar.protest_alert.core.data.util.NetworkMonitor
@@ -14,6 +16,10 @@ import io.github.helpingstar.protest_alert.core.data.util.NetworkMonitor
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class DataModule {
+    @Binds
+    internal abstract fun bindsRegionRepository(
+        regionRepository: OfflineFirstRegionsRepository,
+    ): RegionsRepository
 
     @Binds
     internal abstract fun bindsProtestResourceRepository(

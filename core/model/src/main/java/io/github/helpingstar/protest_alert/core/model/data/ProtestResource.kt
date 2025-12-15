@@ -16,4 +16,5 @@ data class ProtestResource(
     val additionalInfo: JsonObject?,
     val createdAt: Instant,
     val region: String,
+    val updatedAt: Instant
 )

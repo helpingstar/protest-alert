@@ -11,7 +11,8 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import io.github.helpingstar.protest_alert.core.data.Synchronizer
 import io.github.helpingstar.protest_alert.core.data.repository.ProtestRepository
-import io.github.helpingstar.protest_alert.core.datastore.ChangeListVersions
+import io.github.helpingstar.protest_alert.core.data.repository.RegionsRepository
+import io.github.helpingstar.protest_alert.core.datastore.LastUpdatedAt
 import io.github.helpingstar.protest_alert.core.datastore.PaPreferencesDataSource
 import io.github.helpingstar.protest_alert.core.network.Dispatcher
 import io.github.helpingstar.protest_alert.core.network.NiaDispatchers.IO
@@ -28,6 +29,7 @@ internal class SyncWorker @AssistedInject constructor(
     @Assisted private val appContext: Context,
     @Assisted workerParams: WorkerParameters,
     private val paPreferences: PaPreferencesDataSource,
+    private val regionRepository: RegionsRepository,
     private val protestRepository: ProtestRepository,
     @Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher,
     private val syncSubscriber: SyncSubscriber,
@@ -40,6 +42,7 @@ internal class SyncWorker @AssistedInject constructor(
         syncSubscriber.subscribe()
 
         val syncedSuccessfully = awaitAll(
+            async { regionRepository.sync() },
             async { protestRepository.sync() }
         ).all { it }
 
@@ -50,11 +53,11 @@ internal class SyncWorker @AssistedInject constructor(
         }
     }
 
-    override suspend fun getChangeListVersions(): ChangeListVersions =
+    override suspend fun getLastUpdatedAt(): LastUpdatedAt =
         paPreferences.getChangeListVersions()
 
     override suspend fun updateChangeListVersions(
-        update: ChangeListVersions.() -> ChangeListVersions,
+        update: LastUpdatedAt.() -> LastUpdatedAt,
     ) = paPreferences.updateChangeListVersion(update)
 
     companion object {

@@ -1,14 +1,18 @@
 package io.github.helpingstar.protest_alert.core.data
 
 import android.util.Log
-import io.github.helpingstar.protest_alert.core.datastore.ChangeListVersions
+import io.github.helpingstar.protest_alert.core.datastore.LastUpdatedAt
 import io.github.helpingstar.protest_alert.core.network.model.NetworkChangeList
 import kotlin.coroutines.cancellation.CancellationException
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
+
+private const val TAG = "SyncUtilities"
 
 interface Synchronizer {
-    suspend fun getChangeListVersions(): ChangeListVersions
+    suspend fun getLastUpdatedAt(): LastUpdatedAt
 
-    suspend fun updateChangeListVersions(update: ChangeListVersions.() -> ChangeListVersions)
+    suspend fun updateChangeListVersions(update: LastUpdatedAt.() -> LastUpdatedAt)
 
     suspend fun Syncable.sync() = this@sync.syncWith(this@Synchronizer)
 }
@@ -30,16 +34,18 @@ private suspend fun <T> suspendRunCatching(block: suspend () -> T): Result<T> = 
     Result.failure(exception)
 }
 
+@OptIn(ExperimentalTime::class)
 suspend fun Synchronizer.changeListSync(
-    versionReader: (ChangeListVersions) -> Int,
-    changeListFetcher: suspend (Int) -> List<NetworkChangeList>,
-    versionUpdater: ChangeListVersions.(Int) -> ChangeListVersions,
+    versionReader: (LastUpdatedAt) -> Instant,
+    changeListFetcher: suspend (Instant) -> List<NetworkChangeList>,
+    versionUpdater: LastUpdatedAt.(Instant) -> LastUpdatedAt,
     modelDeleter: suspend (List<Long>) -> Unit,
     modelUpdater: suspend (List<Long>) -> Unit,
 ) = suspendRunCatching {
     // Fetch the change list since last sync (akin to a git fetch)
-    val currentVersion = versionReader(getChangeListVersions())
+    val currentVersion = versionReader(getLastUpdatedAt())
     val changeList = changeListFetcher(currentVersion)
+    Log.d(TAG, changeList.toString())
     if (changeList.isEmpty()) return@suspendRunCatching true
 
     val (deleted, updated) = changeList.partition(NetworkChangeList::isDelete)
@@ -51,7 +57,7 @@ suspend fun Synchronizer.changeListSync(
     modelUpdater(updated.map(NetworkChangeList::id))
 
     // Update the last synced version (akin to updating local git HEAD)
-    val latestVersion = changeList.last().changeListVersion
+    val latestVersion = changeList.last().lastUpdatedAt
     updateChangeListVersions {
         versionUpdater(latestVersion)
     }

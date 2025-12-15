@@ -7,9 +7,12 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 import javax.inject.Inject
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 private const val TAG = "NiaPreferences"
 
+@OptIn(ExperimentalTime::class)
 class PaPreferencesDataSource @Inject constructor(
     private val userPreferences: DataStore<UserPreferences>
 ) {
@@ -20,14 +23,14 @@ class PaPreferencesDataSource @Inject constructor(
             )
         }
 
-    suspend fun setRegionIdFollowed(topicId: String, followed: Boolean) {
+    suspend fun setRegionIdFollowed(regionId: Long, followed: Boolean) {
         try {
             userPreferences.updateData {
                 it.copy {
                     if (followed) {
-                        followedRegionIds.put(topicId, true)
+                        followedRegionIds.put(regionId, true)
                     } else {
-                        followedRegionIds.remove(topicId)
+                        followedRegionIds.remove(regionId)
                     }
                 }
             }
@@ -38,24 +41,31 @@ class PaPreferencesDataSource @Inject constructor(
 
     suspend fun getChangeListVersions() = userPreferences.data
         .map {
-            ChangeListVersions(
-                protestResourceVersion = it.protestResourceChangeListVersion
+            LastUpdatedAt(
+                regionLastUpdatedAt = Instant.parse(
+                    it.regionLastUpdatedAt.ifEmpty { "1970-01-01T00:00:00Z" }
+                ),
+                protestResourceLastUpdatedAt = Instant.parse(
+                    it.protestResourceLastUpdatedAt.ifEmpty { "1970-01-01T00:00:00Z" }
+                )
             )
         }
-        .firstOrNull() ?: ChangeListVersions()
+        .firstOrNull() ?: LastUpdatedAt()
 
-    suspend fun updateChangeListVersion(update: ChangeListVersions.() -> ChangeListVersions) {
+    suspend fun updateChangeListVersion(update: LastUpdatedAt.() -> LastUpdatedAt) {
         try {
             userPreferences.updateData { currentPreferences ->
-                val updatedChangeListVersions = update(
-                    ChangeListVersions(
-                        protestResourceVersion = currentPreferences.protestResourceChangeListVersion
+                val updatedLastUpdatedAt = update(
+                    LastUpdatedAt(
+                        regionLastUpdatedAt = Instant.parse(currentPreferences.regionLastUpdatedAt),
+                        protestResourceLastUpdatedAt = Instant.parse(currentPreferences.protestResourceLastUpdatedAt),
                     )
                 )
 
                 currentPreferences.copy {
-                    protestResourceChangeListVersion =
-                        updatedChangeListVersions.protestResourceVersion
+                    regionLastUpdatedAt = updatedLastUpdatedAt.regionLastUpdatedAt.toString()
+                    protestResourceLastUpdatedAt =
+                        updatedLastUpdatedAt.protestResourceLastUpdatedAt.toString()
                 }
             }
         } catch (ioException: IOException) {

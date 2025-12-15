@@ -92,7 +92,7 @@ class PaAppState(
         }
         when (topLevelDestination) {
             SCHEDULE -> navController.navigateToSchedule(topLevelNavOptions)
-            SETTINGS -> navController.navigateToSetting(topLevelNavOptions)
+            SETTINGS -> navController.navigateToSetting(null, topLevelNavOptions)
         }
     }
 }

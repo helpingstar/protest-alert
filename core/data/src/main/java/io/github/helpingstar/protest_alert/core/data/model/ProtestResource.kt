@@ -14,5 +14,6 @@ fun NetworkProtestResource.asEntity() = ProtestResourceEntity(
     participants = participants,
     additionalInfo = additionalInfo,
     createdAt = createdAt,
-    region = region
+    region = region,
+    updatedAt = updatedAt
 )

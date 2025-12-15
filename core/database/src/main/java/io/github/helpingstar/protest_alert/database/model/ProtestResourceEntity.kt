@@ -27,7 +27,8 @@ data class ProtestResourceEntity(
     val additionalInfo: JsonObject? = null,
     @ColumnInfo("created_at")
     val createdAt: Instant,
-    val region: String
+    val region: String,
+    val updatedAt: Instant
 )
 
 @OptIn(ExperimentalTime::class)
@@ -41,4 +42,5 @@ fun ProtestResourceEntity.asExternalModel() = ProtestResource(
     additionalInfo = additionalInfo,
     createdAt = createdAt,
     region = region,
+    updatedAt = updatedAt
 )
