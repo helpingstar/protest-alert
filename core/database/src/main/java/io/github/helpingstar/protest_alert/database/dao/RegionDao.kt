@@ -1,6 +1,8 @@
 package io.github.helpingstar.protest_alert.database.dao
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Upsert
 import io.github.helpingstar.protest_alert.database.model.RegionEntity
@@ -14,10 +16,13 @@ interface RegionDao {
         WHERE id = :regionId
         """
     )
-    fun getRegionEntity(regionId: Long): Flow<RegionEntity>
+    fun getRegionEntity(regionId: String): Flow<RegionEntity>
 
     @Query(value = "SELECT * FROM regions")
     fun getRegionEntities(): Flow<List<RegionEntity>>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertOrIgnoreRegions(regionEntities: List<RegionEntity>): List<Long>
 
     @Upsert
     suspend fun upsertRegions(entities: List<RegionEntity>)
@@ -28,5 +33,5 @@ interface RegionDao {
             WHERE id in (:ids)
         """
     )
-    suspend fun deleteRegions(ids: List<Long>)
+    suspend fun deleteRegions(ids: List<String>)
 }

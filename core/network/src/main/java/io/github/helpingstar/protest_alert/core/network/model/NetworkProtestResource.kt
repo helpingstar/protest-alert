@@ -9,7 +9,7 @@ import kotlin.time.Instant
 
 @OptIn(ExperimentalTime::class)
 @Serializable
-data class NetworkProtestResource constructor(
+data class NetworkProtestResource(
     val id: Long,
     val date: LocalDate,
     @SerialName("start_at") val startAt: Instant? = null,

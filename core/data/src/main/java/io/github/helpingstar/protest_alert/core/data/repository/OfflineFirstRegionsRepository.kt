@@ -27,7 +27,7 @@ class OfflineFirstRegionsRepository @Inject constructor(
         regionDao.getRegionEntities()
             .map { it.map(RegionEntity::asExternalModel) }
 
-    override fun getRegion(id: Long): Flow<Region> =
+    override fun getRegion(id: String): Flow<Region> =
         regionDao.getRegionEntity(id).map { it.asExternalModel() }
 
     override suspend fun syncWith(synchronizer: Synchronizer): Boolean {
@@ -37,8 +37,8 @@ class OfflineFirstRegionsRepository @Inject constructor(
             changeListFetcher = { lastUpdatedAt ->
                 network.getRegionChangeList(after = lastUpdatedAt)
             },
-            versionUpdater = { latestVersion ->
-                copy(regionLastUpdatedAt = latestVersion)
+            versionUpdater = { lastUpdatedAt ->
+                copy(regionLastUpdatedAt = lastUpdatedAt)
             },
             modelDeleter = regionDao::deleteRegions,
             modelUpdater = { changedIds ->

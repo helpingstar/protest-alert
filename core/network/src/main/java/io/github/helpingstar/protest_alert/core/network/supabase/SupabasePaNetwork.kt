@@ -17,7 +17,7 @@ class SupabasePaNetwork @Inject constructor(
     private val supabaseClient: SupabaseClient,
 ) : PaNetworkDataSource {
 
-    override suspend fun getRegions(ids: List<Long>?): List<NetworkRegion> =
+    override suspend fun getRegions(ids: List<String>?): List<NetworkRegion> =
         supabaseClient.from("regions")
             .select {
                 if (ids != null) {
@@ -28,7 +28,7 @@ class SupabasePaNetwork @Inject constructor(
             }
             .decodeList<NetworkRegion>()
 
-    override suspend fun getProtestResources(ids: List<Long>?): List<NetworkProtestResource> =
+    override suspend fun getProtestResources(ids: List<String>?): List<NetworkProtestResource> =
         supabaseClient.from("protests")
             .select {
                 if (ids != null) {
@@ -51,7 +51,7 @@ class SupabasePaNetwork @Inject constructor(
             .decodeList<NetworkRegion>()
             .map { region ->
                 NetworkChangeList(
-                    id = region.id,
+                    id = region.id.toString(),
                     lastUpdatedAt = region.createdAt,
                     isDelete = false
                 )
@@ -66,6 +66,13 @@ class SupabasePaNetwork @Inject constructor(
                     }
                 }
             }
-            .decodeList<NetworkChangeList>()
+            .decodeList<NetworkProtestResource>()
+            .map { protestResource ->
+                NetworkChangeList(
+                    id = protestResource.id.toString(),
+                    lastUpdatedAt = protestResource.updatedAt,
+                    isDelete = false
+                )
+            }
 
 }

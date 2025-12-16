@@ -8,9 +8,9 @@ import kotlin.time.Instant
 
 @OptIn(ExperimentalTime::class)
 interface PaNetworkDataSource {
-    suspend fun getRegions(ids: List<Long>? = null): List<NetworkRegion>
+    suspend fun getRegions(ids: List<String>? = null): List<NetworkRegion>
 
-    suspend fun getProtestResources(ids: List<Long>? = null): List<NetworkProtestResource>
+    suspend fun getProtestResources(ids: List<String>? = null): List<NetworkProtestResource>
 
     suspend fun getRegionChangeList(after: Instant? = null): List<NetworkChangeList>
 

@@ -23,7 +23,7 @@ class PaPreferencesDataSource @Inject constructor(
             )
         }
 
-    suspend fun setRegionIdFollowed(regionId: Long, followed: Boolean) {
+    suspend fun setRegionIdFollowed(regionId: String, followed: Boolean) {
         try {
             userPreferences.updateData {
                 it.copy {
@@ -57,8 +57,8 @@ class PaPreferencesDataSource @Inject constructor(
             userPreferences.updateData { currentPreferences ->
                 val updatedLastUpdatedAt = update(
                     LastUpdatedAt(
-                        regionLastUpdatedAt = Instant.parse(currentPreferences.regionLastUpdatedAt),
-                        protestResourceLastUpdatedAt = Instant.parse(currentPreferences.protestResourceLastUpdatedAt),
+                        regionLastUpdatedAt = Instant.parse(currentPreferences.regionLastUpdatedAt.ifEmpty { "1970-01-01T00:00:00Z" }),
+                        protestResourceLastUpdatedAt = Instant.parse(currentPreferences.protestResourceLastUpdatedAt.ifEmpty { "1970-01-01T00:00:00Z" }),
                     )
                 )
 

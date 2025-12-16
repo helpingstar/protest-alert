@@ -1,6 +1,5 @@
 package io.github.helpingstar.protest_alert.feature.settings
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,7 +28,7 @@ internal fun SettingsRoute(
 @Composable
 internal fun SettingsScreen(
     uiState: SettingsUiState,
-    followRegion: (Long, Boolean) -> Unit,
+    followRegion: (String, Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -39,11 +38,13 @@ internal fun SettingsScreen(
         when (uiState) {
             SettingsUiState.Loading ->
                 Text("Loading")
+
             is SettingsUiState.Settings ->
                 RegionsTabContent(
                     regions = uiState.regions,
                     onFollowButtonClick = followRegion,
                 )
+
             is SettingsUiState.Empty ->
                 Text("EMPTY")
         }

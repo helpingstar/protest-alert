@@ -2,6 +2,8 @@ package io.github.helpingstar.protest_alert.database.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import io.github.helpingstar.protest_alert.core.model.data.ProtestResource
 import kotlinx.datetime.LocalDate
@@ -11,7 +13,16 @@ import kotlin.time.Instant
 
 @OptIn(ExperimentalTime::class)
 @Entity(
-    tableName = "protest_resources"
+    tableName = "protest_resources",
+    foreignKeys = [
+        ForeignKey(
+            entity = RegionEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["region"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ],
+    indices = [Index(value = ["region"])]
 )
 data class ProtestResourceEntity(
     @PrimaryKey

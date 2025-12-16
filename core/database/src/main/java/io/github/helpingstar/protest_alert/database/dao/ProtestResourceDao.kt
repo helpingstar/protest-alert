@@ -25,5 +25,5 @@ interface ProtestResourceDao {
             WHERE id in (:ids)
         """,
     )
-    suspend fun deleteProtestResources(ids: List<Long>)
+    suspend fun deleteProtestResources(ids: List<String>)
 }

@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface RegionsRepository : Syncable {
     fun getRegions(): Flow<List<Region>>
 
-    fun getRegion(id: Long): Flow<Region>
+    fun getRegion(id: String): Flow<Region>
 }

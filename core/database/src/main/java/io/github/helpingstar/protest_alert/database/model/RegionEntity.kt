@@ -14,7 +14,7 @@ import kotlin.time.Instant
 )
 data class RegionEntity(
     @PrimaryKey
-    val id: Long,
+    val id: String,
     val name: String,
     @ColumnInfo("created_at")
     val createdAt: Instant,

@@ -17,7 +17,7 @@ data class NetworkRegion(
 @OptIn(ExperimentalTime::class)
 fun NetworkRegion.asExternalModel(): Region =
     Region(
-        id = id,
+        id = name,
         name = name,
         createdAt = createdAt,
     )

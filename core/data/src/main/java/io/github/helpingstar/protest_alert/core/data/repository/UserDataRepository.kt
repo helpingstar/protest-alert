@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface UserDataRepository {
     val userData: Flow<UserData>
 
-    suspend fun setRegionIdFollowed(followedRegionId: Long, followed: Boolean)
+    suspend fun setRegionIdFollowed(followedRegionId: String, followed: Boolean)
 }

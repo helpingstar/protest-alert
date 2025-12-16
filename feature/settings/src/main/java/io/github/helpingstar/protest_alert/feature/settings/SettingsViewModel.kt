@@ -41,7 +41,7 @@ class SettingsViewModel @Inject constructor(
         initialValue = SettingsUiState.Loading
     )
 
-    fun followRegion(followedRegionId: Long, followed: Boolean) {
+    fun followRegion(followedRegionId: String, followed: Boolean) {
         viewModelScope.launch {
             userDataRepository.setRegionIdFollowed(followedRegionId, followed)
         }

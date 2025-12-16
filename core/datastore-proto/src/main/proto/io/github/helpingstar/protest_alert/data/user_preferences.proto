@@ -6,5 +6,5 @@ option java_multiple_files = true;
 message UserPreferences {
   string regionLastUpdatedAt = 1;
   string protestResourceLastUpdatedAt = 2;
-  map<int64, bool> followed_region_ids = 3;
+  map<string, bool> followed_region_ids = 3;
 }

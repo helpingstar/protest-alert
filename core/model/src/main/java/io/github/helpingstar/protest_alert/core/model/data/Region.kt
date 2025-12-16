@@ -5,7 +5,7 @@ import kotlin.time.Instant
 
 @OptIn(ExperimentalTime::class)
 data class Region(
-    val id: Long,
+    val id: String,
     val name: String,
     val createdAt: Instant,
 )

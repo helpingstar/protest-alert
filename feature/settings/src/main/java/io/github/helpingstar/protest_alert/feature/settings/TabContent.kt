@@ -13,11 +13,11 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.helpingstar.protest_alert.core.model.data.FollowableRegion
@@ -34,7 +34,7 @@ private const val TAG = "TabContent"
 @Composable
 fun RegionsTabContent(
     regions: List<FollowableRegion>,
-    onFollowButtonClick: (Long, Boolean) -> Unit,
+    onFollowButtonClick: (String, Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Log.d(TAG, "${regions}")
@@ -110,23 +110,23 @@ private fun RegionCheckboxItem(
 @Composable
 private fun RegionsTabContentPreview() {
     val sampleRegions = listOf(
-        FollowableRegion(Region(1, "서울", Instant.DISTANT_PAST), isFollowed = true),
-        FollowableRegion(Region(2, "경기", Instant.DISTANT_PAST), isFollowed = false),
-        FollowableRegion(Region(3, "인천", Instant.DISTANT_PAST), isFollowed = false),
-        FollowableRegion(Region(4, "부산", Instant.DISTANT_PAST), isFollowed = false),
-        FollowableRegion(Region(5, "대구", Instant.DISTANT_PAST), isFollowed = false),
-        FollowableRegion(Region(6, "대전", Instant.DISTANT_PAST), isFollowed = false),
-        FollowableRegion(Region(7, "광주", Instant.DISTANT_PAST), isFollowed = false),
-        FollowableRegion(Region(8, "울산", Instant.DISTANT_PAST), isFollowed = false),
-        FollowableRegion(Region(9, "세종", Instant.DISTANT_PAST), isFollowed = false),
-        FollowableRegion(Region(10, "강원", Instant.DISTANT_PAST), isFollowed = false),
-        FollowableRegion(Region(11, "충북", Instant.DISTANT_PAST), isFollowed = false),
-        FollowableRegion(Region(12, "충남", Instant.DISTANT_PAST), isFollowed = false),
-        FollowableRegion(Region(13, "전북", Instant.DISTANT_PAST), isFollowed = false),
-        FollowableRegion(Region(14, "전남", Instant.DISTANT_PAST), isFollowed = false),
-        FollowableRegion(Region(15, "경북", Instant.DISTANT_PAST), isFollowed = false),
-        FollowableRegion(Region(16, "경남", Instant.DISTANT_PAST), isFollowed = false),
-        FollowableRegion(Region(17, "제주", Instant.DISTANT_PAST), isFollowed = false),
+        FollowableRegion(Region("서울", "서울", Instant.DISTANT_PAST), isFollowed = true),
+        FollowableRegion(Region("경기", "경기", Instant.DISTANT_PAST), isFollowed = false),
+        FollowableRegion(Region("인천", "인천", Instant.DISTANT_PAST), isFollowed = false),
+        FollowableRegion(Region("부산", "부산", Instant.DISTANT_PAST), isFollowed = false),
+        FollowableRegion(Region("대구", "대구", Instant.DISTANT_PAST), isFollowed = false),
+        FollowableRegion(Region("대전", "대전", Instant.DISTANT_PAST), isFollowed = false),
+        FollowableRegion(Region("광주", "광주", Instant.DISTANT_PAST), isFollowed = false),
+        FollowableRegion(Region("울산", "울산", Instant.DISTANT_PAST), isFollowed = false),
+        FollowableRegion(Region("세종", "세종", Instant.DISTANT_PAST), isFollowed = false),
+        FollowableRegion(Region("강원", "강원", Instant.DISTANT_PAST), isFollowed = false),
+        FollowableRegion(Region("충북", "충북", Instant.DISTANT_PAST), isFollowed = false),
+        FollowableRegion(Region("충남", "충남", Instant.DISTANT_PAST), isFollowed = false),
+        FollowableRegion(Region("전북", "전북", Instant.DISTANT_PAST), isFollowed = false),
+        FollowableRegion(Region("전남", "전남", Instant.DISTANT_PAST), isFollowed = false),
+        FollowableRegion(Region("경북", "경북", Instant.DISTANT_PAST), isFollowed = false),
+        FollowableRegion(Region("경남", "경남", Instant.DISTANT_PAST), isFollowed = false),
+        FollowableRegion(Region("제주", "제주", Instant.DISTANT_PAST), isFollowed = false),
     )
 
     RegionsTabContent(

@@ -6,7 +6,7 @@ import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
 fun NetworkRegion.asEntity() = RegionEntity(
-    id = id,
+    id = name,
     name = name,
     createdAt = createdAt
 )

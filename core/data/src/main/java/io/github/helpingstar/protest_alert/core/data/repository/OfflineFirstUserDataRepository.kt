@@ -11,7 +11,7 @@ internal class OfflineFirstUserDataRepository @Inject constructor(
     override val userData: Flow<UserData> =
         paPreferencesDataSource.userData
 
-    override suspend fun setRegionIdFollowed(followedRegionId: Long, followed: Boolean) {
+    override suspend fun setRegionIdFollowed(followedRegionId: String, followed: Boolean) {
         paPreferencesDataSource.setRegionIdFollowed(followedRegionId, followed)
     }
 }
