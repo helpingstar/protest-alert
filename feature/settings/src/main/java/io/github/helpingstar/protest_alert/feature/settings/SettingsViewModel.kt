@@ -20,11 +20,12 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val userDataRepository: UserDataRepository,
+    val userDataRepository: UserDataRepository,
     getFollowableRegions: GetFollowableRegionsUseCase,
 ) : ViewModel() {
     private val selectedRegionIdKey = "selectedRegionIdKey"
 
+    // TODO(hs) : 이거 필요없음
     private val settingsRoute: SettingsRoute = savedStateHandle.toRoute()
     private val selectedRegionId = savedStateHandle.getStateFlow(
         key = selectedRegionIdKey,

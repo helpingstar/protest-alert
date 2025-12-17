@@ -6,12 +6,14 @@ import kotlinx.coroutines.flow.Flow
 
 data class ProtestResourceQuery(
     val filterRegionIds: Set<String>? = null,
+    val filterNewsIds: Set<String>? = null,
 )
 
 interface ProtestRepository : Syncable {
-    fun getNewsResources(
+    fun getProtestResources(
         query: ProtestResourceQuery = ProtestResourceQuery(
             filterRegionIds = null,
+            filterNewsIds = null,
         )
     ): Flow<List<ProtestResource>>
 }

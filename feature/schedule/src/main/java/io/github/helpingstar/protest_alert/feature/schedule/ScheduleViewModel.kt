@@ -3,8 +3,8 @@ package io.github.helpingstar.protest_alert.feature.schedule
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.helpingstar.protest_alert.core.data.repository.ProtestRepository
 import io.github.helpingstar.protest_alert.core.data.repository.UserDataRepository
+import io.github.helpingstar.protest_alert.core.data.repository.UserProtestResourceRepository
 import io.github.helpingstar.protest_alert.core.data.util.SyncManager
 import io.github.helpingstar.protest_alert.core.ui.ProtestFeedUiState
 import kotlinx.coroutines.flow.SharingStarted
@@ -17,11 +17,18 @@ import javax.inject.Inject
 class ScheduleViewModel @Inject constructor(
     syncManager: SyncManager,
     private val userDataRepository: UserDataRepository,
-    protestRepository: ProtestRepository
+    userProtestResourceRepository: UserProtestResourceRepository,
 ) : ViewModel() {
 
+    val isSyncing = syncManager.isSyncing
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = false,
+        )
+
     val feedState: StateFlow<ProtestFeedUiState> =
-        protestRepository.getNewsResources()
+        userProtestResourceRepository.observeAllForFollowedRegions()
             .map(ProtestFeedUiState::Success)
             .stateIn(
                 scope = viewModelScope,

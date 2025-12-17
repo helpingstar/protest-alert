@@ -29,13 +29,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.helpingstar.protest_alert.core.designsystem.theme.fontFamily
-import io.github.helpingstar.protest_alert.core.model.data.ProtestResource
+import io.github.helpingstar.protest_alert.core.model.data.UserProtestResource
 import io.github.helpingstar.protest_alert.core.ui.ProtestFeedUiState
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -43,7 +42,6 @@ import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
 import java.util.Locale
 import kotlin.time.ExperimentalTime
-import kotlin.time.Instant
 
 
 // Colors from Figma design
@@ -92,7 +90,7 @@ internal fun ScheduleScreen(
 @OptIn(ExperimentalTime::class)
 @Composable
 private fun ScheduleContent(
-    protests: List<ProtestResource>,
+    protests: List<UserProtestResource>,
     modifier: Modifier = Modifier
 ) {
     val groupedProtests = groupProtestsByDate(protests)
@@ -151,7 +149,7 @@ private fun DateHeader(
 @OptIn(ExperimentalTime::class)
 @Composable
 private fun ScheduleItem(
-    protest: ProtestResource,
+    protest: UserProtestResource,
     modifier: Modifier = Modifier
 ) {
     val (startTime, endTime) = formatTimeRangePair(protest)
@@ -267,7 +265,7 @@ private fun RegionTag(
 }
 
 @OptIn(ExperimentalTime::class)
-private fun formatTimeRangePair(protest: ProtestResource): Pair<String, String> {
+private fun formatTimeRangePair(protest: UserProtestResource): Pair<String, String> {
     val timeZone = TimeZone.of("Asia/Seoul")
 
     val startTime = protest.startAt?.let {
@@ -295,68 +293,12 @@ private fun formatParticipantsWithComma(count: Int?): String {
  */
 @OptIn(ExperimentalTime::class)
 private fun groupProtestsByDate(
-    protests: List<ProtestResource>
-): Map<LocalDate, List<ProtestResource>> {
+    protests: List<UserProtestResource>
+): Map<LocalDate, List<UserProtestResource>> {
     return protests
         .groupBy { it.date }
         .toSortedMap(compareByDescending { it })
         .mapValues { (_, protestsForDate) ->
             protestsForDate.sortedBy { it.startAt }
         }
-}
-
-@OptIn(ExperimentalTime::class)
-@Preview(showBackground = true)
-@Composable
-private fun ScheduleScreenLoadingPreview() {
-    ScheduleScreen(
-        feedState = ProtestFeedUiState.Loading
-    )
-}
-
-@OptIn(ExperimentalTime::class)
-@Preview(showBackground = true)
-@Composable
-private fun ScheduleScreenSuccessPreview() {
-    val sampleProtests = listOf(
-        ProtestResource(
-            id = 1,
-            date = LocalDate(2024, 7, 26),
-            startAt = Instant.fromEpochSeconds(1721955600), // 09:00 KST
-            endAt = Instant.fromEpochSeconds(1721966400),   // 12:00 KST
-            location = "국회의사당역 3번 출구 앞\n국회의사당역 3번 출구 앞\n국회의사당역 3번 출구 앞",
-            participants = 7000,
-            additionalInfo = null,
-            createdAt = Instant.fromEpochSeconds(1721900000),
-            region = "서울",
-            updatedAt = Instant.fromEpochSeconds(1721900000)
-        ),
-        ProtestResource(
-            id = 2,
-            date = LocalDate(2024, 7, 26),
-            startAt = Instant.fromEpochSeconds(1721973600), // 14:00 KST
-            endAt = Instant.fromEpochSeconds(1721984400),   // 17:00 KST
-            location = "강남역 10번 출구",
-            participants = 1500,
-            additionalInfo = null,
-            createdAt = Instant.fromEpochSeconds(1721900000),
-            region = "서울",
-            updatedAt = Instant.fromEpochSeconds(1721900000)
-        ),
-        ProtestResource(
-            id = 3,
-            date = LocalDate(2024, 7, 25),
-            startAt = Instant.fromEpochSeconds(1721872800), // 10:00 KST
-            endAt = Instant.fromEpochSeconds(1721883600),   // 13:00 KST
-            location = "수원역 광장",
-            participants = 800,
-            additionalInfo = null,
-            createdAt = Instant.fromEpochSeconds(1721800000),
-            region = "경기남부",
-            updatedAt = Instant.fromEpochSeconds(1721900000)
-        )
-    )
-    ScheduleScreen(
-        feedState = ProtestFeedUiState.Success(feed = sampleProtests)
-    )
 }

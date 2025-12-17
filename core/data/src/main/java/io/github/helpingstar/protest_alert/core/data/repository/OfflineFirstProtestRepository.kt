@@ -11,6 +11,7 @@ import io.github.helpingstar.protest_alert.core.network.PaNetworkDataSource
 import io.github.helpingstar.protest_alert.core.network.model.NetworkProtestResource
 import io.github.helpingstar.protest_alert.database.dao.ProtestResourceDao
 import io.github.helpingstar.protest_alert.database.dao.RegionDao
+import io.github.helpingstar.protest_alert.database.model.ProtestResourceEntity
 import io.github.helpingstar.protest_alert.database.model.asExternalModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -27,9 +28,13 @@ internal class OfflineFirstProtestRepository @Inject constructor(
     private val network: PaNetworkDataSource,
 //    private val notifier: Notifier
 ) : ProtestRepository {
-    override fun getNewsResources(query: ProtestResourceQuery): Flow<List<ProtestResource>> =
-        protestResourceDao.getProtestResources()
-            .map { it.map { it.asExternalModel() } }
+    override fun getProtestResources(
+        query: ProtestResourceQuery
+    ): Flow<List<ProtestResource>> = protestResourceDao.getProtestResources(
+        useFilterRegionIds = query.filterRegionIds != null,
+        filterRegionIds = query.filterRegionIds ?: emptySet(),
+    )
+        .map { it.map(ProtestResourceEntity::asExternalModel) }
 
     override suspend fun syncWith(synchronizer: Synchronizer): Boolean {
         // TODO(hs) have to handle it

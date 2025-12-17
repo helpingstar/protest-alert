@@ -19,7 +19,7 @@ class PaPreferencesDataSource @Inject constructor(
     val userData = userPreferences.data
         .map {
             UserData(
-                followedRegions = it.followedRegionIdsMap.keys,
+                unfollowedRegions = it.unfollowedRegionIdsMap.keys,
             )
         }
 
@@ -28,9 +28,9 @@ class PaPreferencesDataSource @Inject constructor(
             userPreferences.updateData {
                 it.copy {
                     if (followed) {
-                        followedRegionIds.put(regionId, true)
+                        unfollowedRegionIds.remove(regionId)
                     } else {
-                        followedRegionIds.remove(regionId)
+                        unfollowedRegionIds.put(regionId, true)
                     }
                 }
             }
