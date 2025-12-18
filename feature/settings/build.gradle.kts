@@ -40,6 +40,7 @@ dependencies {
     implementation(projects.core.data)
     implementation(projects.core.model)
     implementation(projects.core.domain)
+    implementation(projects.core.designsystem)
 
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.android)

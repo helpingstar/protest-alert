@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.github.helpingstar.protest_alert.core.designsystem.theme.fontFamily
 import io.github.helpingstar.protest_alert.core.model.data.FollowableRegion
 import io.github.helpingstar.protest_alert.core.model.data.Region
 import kotlin.time.ExperimentalTime
@@ -46,6 +47,7 @@ fun RegionsTabContent(
         Text(
             text = "관심 지역 선택",
             fontSize = 16.sp,
+            fontFamily = fontFamily,
             fontWeight = FontWeight.Medium,
             color = TextColor,
             lineHeight = 24.sp,
@@ -57,7 +59,6 @@ fun RegionsTabContent(
                 .fillMaxWidth()
                 .padding(top = 12.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(14.dp),
         ) {
             items(
                 items = regions,
@@ -98,7 +99,8 @@ private fun RegionCheckboxItem(
         Text(
             text = regionName,
             fontSize = 14.sp,
-            fontWeight = FontWeight.Medium,
+            fontFamily = fontFamily,
+            fontWeight = FontWeight.Bold,
             color = TextColor,
             lineHeight = 22.sp,
         )
