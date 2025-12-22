@@ -13,7 +13,7 @@ interface ProtestResourceDao {
             SELECT * FROM protest_resources
             WHERE
                 CASE WHEN :useFilterRegionIds
-                    THEN region NOT IN (:filterRegionIds)
+                    THEN region IN (:filterRegionIds)
                     ELSE 1
                 END
     """,
@@ -22,6 +22,21 @@ interface ProtestResourceDao {
         useFilterRegionIds: Boolean = false,
         filterRegionIds: Set<String> = emptySet(),
     ): Flow<List<ProtestResourceEntity>>
+
+    @Query(
+        value = """
+            SELECT id FROM protest_resources
+            WHERE
+                CASE WHEN :useFilterRegionIds
+                    THEN region IN (:filterRegionIds)
+                    ELSE 1
+                END
+    """,
+    )
+    fun getProtestResourceIds(
+        useFilterRegionIds: Boolean = false,
+        filterRegionIds: Set<String> = emptySet(),
+    ): Flow<List<Long>>
 
     @Upsert
     suspend fun upsertProtestResources(protestResourceEntities: List<ProtestResourceEntity>)

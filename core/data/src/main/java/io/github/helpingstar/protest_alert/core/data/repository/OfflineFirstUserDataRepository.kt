@@ -14,4 +14,8 @@ internal class OfflineFirstUserDataRepository @Inject constructor(
     override suspend fun setRegionIdFollowed(followedRegionId: String, followed: Boolean) {
         paPreferencesDataSource.setRegionIdFollowed(followedRegionId, followed)
     }
+
+    override suspend fun setShouldHideOnboarding(shouldHideOnboarding: Boolean) {
+        paPreferencesDataSource.setShouldHideOnboarding(shouldHideOnboarding)
+    }
 }

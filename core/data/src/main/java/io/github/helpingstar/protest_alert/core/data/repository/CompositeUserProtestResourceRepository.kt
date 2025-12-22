@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -23,11 +24,11 @@ class CompositeUserProtestResourceRepository @Inject constructor(
             }
 
     override fun observeAllForFollowedRegions(): Flow<List<UserProtestResource>> =
-        userDataRepository.userData.map { it.unfollowedRegions }.distinctUntilChanged()
-            .flatMapLatest { unfollowedTopics ->
+        userDataRepository.userData.map { it.followedRegions }.distinctUntilChanged()
+            .flatMapLatest { followedTopics ->
                 when {
-                    unfollowedTopics.isEmpty() -> observeAll(ProtestResourceQuery())
-                    else -> observeAll(ProtestResourceQuery(filterRegionIds = unfollowedTopics))
+                    followedTopics.isEmpty() -> flowOf(emptyList())
+                    else -> observeAll(ProtestResourceQuery(filterRegionIds = followedTopics))
                 }
             }
 }

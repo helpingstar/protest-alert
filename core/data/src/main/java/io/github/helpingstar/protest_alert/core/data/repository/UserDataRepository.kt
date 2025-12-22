@@ -7,4 +7,6 @@ interface UserDataRepository {
     val userData: Flow<UserData>
 
     suspend fun setRegionIdFollowed(followedRegionId: String, followed: Boolean)
+    
+    suspend fun setShouldHideOnboarding(shouldHideOnboarding: Boolean)
 }

@@ -56,8 +56,13 @@ internal fun ScheduleRoute(
     modifier: Modifier = Modifier,
     viewModel: ScheduleViewModel = hiltViewModel()
 ) {
+    val onboardingUiState by viewModel.onboardingUiState.collectAsStateWithLifecycle()
     val feedState by viewModel.feedState.collectAsStateWithLifecycle()
+    val isSyncing by viewModel.isSyncing.collectAsStateWithLifecycle()
+
     ScheduleScreen(
+        isSyncing = isSyncing,
+        onboardingUiState = onboardingUiState,
         feedState = feedState,
         modifier = modifier
     )
@@ -65,6 +70,8 @@ internal fun ScheduleRoute(
 
 @Composable
 internal fun ScheduleScreen(
+    isSyncing: Boolean,
+    onboardingUiState: OnboardingUiState,
     feedState: ProtestFeedUiState,
     modifier: Modifier = Modifier
 ) {
@@ -85,6 +92,25 @@ internal fun ScheduleScreen(
             )
         }
     }
+}
+
+@Composable
+private fun Onboarding(
+    onboardingUiState: OnboardingUiState,
+    onRegionCheckedChanged: (String, Boolean) -> Unit,
+    saveFollowedRegions: () -> Unit,
+) {
+    when (onboardingUiState) {
+        OnboardingUiState.Loading,
+        OnboardingUiState.LoadFailed,
+        OnboardingUiState.NotShown,
+            -> Unit
+
+        is OnboardingUiState.Shown -> {
+
+        }
+    }
+
 }
 
 @OptIn(ExperimentalTime::class)

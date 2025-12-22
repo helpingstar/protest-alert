@@ -19,7 +19,8 @@ class PaPreferencesDataSource @Inject constructor(
     val userData = userPreferences.data
         .map {
             UserData(
-                unfollowedRegions = it.unfollowedRegionIdsMap.keys,
+                followedRegions = it.followedRegionIdsMap.keys,
+                shouldHideOnboarding = it.shouldHideOnboarding,
             )
         }
 
@@ -28,10 +29,11 @@ class PaPreferencesDataSource @Inject constructor(
             userPreferences.updateData {
                 it.copy {
                     if (followed) {
-                        unfollowedRegionIds.remove(regionId)
+                        followedRegionIds.put(regionId, true)
                     } else {
-                        unfollowedRegionIds.put(regionId, true)
+                        followedRegionIds.remove(regionId)
                     }
+                    updateShouldHideOnboardingIfNecessary()
                 }
             }
         } catch (ioException: IOException) {
@@ -71,5 +73,17 @@ class PaPreferencesDataSource @Inject constructor(
         } catch (ioException: IOException) {
             Log.e(TAG, "Failed to update user preferences", ioException)
         }
+    }
+
+    suspend fun setShouldHideOnboarding(shouldHideOnboarding: Boolean) {
+        userPreferences.updateData {
+            it.copy { this.shouldHideOnboarding = shouldHideOnboarding }
+        }
+    }
+}
+
+private fun UserPreferencesKt.Dsl.updateShouldHideOnboardingIfNecessary() {
+    if (followedRegionIds.isEmpty()) {
+        shouldHideOnboarding = false
     }
 }
