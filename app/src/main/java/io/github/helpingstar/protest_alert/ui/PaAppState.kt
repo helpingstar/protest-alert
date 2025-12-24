@@ -13,8 +13,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import io.github.helpingstar.protest_alert.core.data.util.NetworkMonitor
-import io.github.helpingstar.protest_alert.feature.schedule.navigation.navigateToSchedule
-import io.github.helpingstar.protest_alert.feature.settings.navigation.navigateToSetting
+import io.github.helpingstar.protest_alert.feature.schedule.impl.navigation.navigateToSchedule
+import io.github.helpingstar.protest_alert.feature.settings.impl.navigation.navigateToSetting
 import io.github.helpingstar.protest_alert.navigation.TopLevelDestination
 import io.github.helpingstar.protest_alert.navigation.TopLevelDestination.SCHEDULE
 import io.github.helpingstar.protest_alert.navigation.TopLevelDestination.SETTINGS

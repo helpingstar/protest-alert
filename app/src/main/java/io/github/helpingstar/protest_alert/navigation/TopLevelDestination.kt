@@ -3,8 +3,8 @@ package io.github.helpingstar.protest_alert.navigation
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector
 import io.github.helpingstar.protest_alert.core.designsystem.icon.PaIcons
-import io.github.helpingstar.protest_alert.feature.schedule.navigation.ScheduleRoute
-import io.github.helpingstar.protest_alert.feature.settings.navigation.SettingsRoute
+import io.github.helpingstar.protest_alert.feature.schedule.impl.navigation.ScheduleRoute
+import io.github.helpingstar.protest_alert.feature.settings.impl.navigation.SettingsRoute
 import kotlin.reflect.KClass
 import io.github.helpingstar.protest_alert.feature.schedule.R as scheduleR
 import io.github.helpingstar.protest_alert.feature.settings.R as settingsR

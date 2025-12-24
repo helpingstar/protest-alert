@@ -43,9 +43,9 @@ android {
 }
 
 dependencies {
-    implementation(projects.feature.schedule)
-    implementation(projects.feature.settings)
-    
+    implementation(projects.feature.schedule.impl)
+    implementation(projects.feature.settings.impl)
+
     implementation(projects.core.data)
     implementation(projects.core.designsystem)
     implementation(projects.sync.work)
@@ -63,8 +63,8 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material.iconsExtended)
     implementation(libs.androidx.core.splashscreen)
-    implementation(projects.feature.schedule)
-    implementation(projects.feature.settings)
+    implementation(projects.feature.schedule.impl)
+    implementation(projects.feature.settings.impl)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)

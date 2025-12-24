@@ -3,9 +3,9 @@ package io.github.helpingstar.protest_alert.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
-import io.github.helpingstar.protest_alert.feature.schedule.navigation.ScheduleRoute
-import io.github.helpingstar.protest_alert.feature.schedule.navigation.scheduleScreen
-import io.github.helpingstar.protest_alert.feature.settings.navigation.settingsScreen
+import io.github.helpingstar.protest_alert.feature.schedule.impl.navigation.ScheduleRoute
+import io.github.helpingstar.protest_alert.feature.schedule.impl.navigation.scheduleScreen
+import io.github.helpingstar.protest_alert.feature.settings.impl.navigation.settingsScreen
 import io.github.helpingstar.protest_alert.ui.PaAppState
 
 @Composable

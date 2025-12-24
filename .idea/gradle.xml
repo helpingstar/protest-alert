@@ -39,7 +39,11 @@
             <option value="$PROJECT_DIR$/core/ui" />
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/schedule" />
+            <option value="$PROJECT_DIR$/feature/schedule/api" />
+            <option value="$PROJECT_DIR$/feature/schedule/impl" />
             <option value="$PROJECT_DIR$/feature/settings" />
+            <option value="$PROJECT_DIR$/feature/settings/api" />
+            <option value="$PROJECT_DIR$/feature/settings/impl" />
             <option value="$PROJECT_DIR$/sync" />
             <option value="$PROJECT_DIR$/sync/work" />
           </set>

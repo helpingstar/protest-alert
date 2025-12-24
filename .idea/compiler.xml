@@ -2,6 +2,9 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="17">
+      <module name="ProtestAlert.feature.schedule-impl" target="21" />
+      <module name="ProtestAlert.feature.scheduleimpl" target="21" />
+      <module name="ProtestAlert.feature.settingsimpl" target="21" />
       <module name="ProtestAlert.notifications" target="21" />
       <module name="ProtestAlert.work" target="21" />
     </bytecodeTargetLevel>
