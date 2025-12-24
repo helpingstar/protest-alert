@@ -35,6 +35,14 @@ gradlePlugin {
             id = libs.plugins.protestalert.android.library.asProvider().get().pluginId
             implementationClass = "AndroidLibraryConventionPlugin"
         }
+        register("androidFeatureImpl") {
+            id = libs.plugins.protestalert.android.feature.impl.get().pluginId
+            implementationClass = "AndroidFeatureImplConventionPlugin"
+        }
+        register("androidFeatureApi") {
+            id = libs.plugins.protestalert.android.feature.api.get().pluginId
+            implementationClass = "AndroidFeatureApiConventionPlugin"
+        }
         register("androidRoom") {
             id = libs.plugins.protestalert.android.room.get().pluginId
             implementationClass = "AndroidRoomConventionPlugin"

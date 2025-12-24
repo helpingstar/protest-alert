@@ -9,6 +9,10 @@ espressoCore = "3.7.0"
 lifecycleRuntimeKtx = "2.10.0"
 activityCompose = "1.12.0"
 androidxComposeBom = "2025.08.01"
+androidxHiltLifecycleViewModelCompose = "1.3.0"
+androidxLifecycle = "2.10.0"
+androidxLifecycleViewModelNavigation3 = "2.10.0"
+androidxNavigation3 = "1.0.0"
 kotlinxCoroutines = "1.10.1"
 appcompat = "1.7.1"
 material = "1.13.0"
@@ -40,6 +44,11 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-dataStore = { group = "androidx.datastore", name = "datastore", version.ref = "androidxDataStore" }
+androidx-hilt-lifecycle-viewModelCompose = { group = "androidx.hilt", name = "hilt-lifecycle-viewmodel-compose", version.ref = "androidxHiltLifecycleViewModelCompose" }
+androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
+androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
+androidx-lifecycle-viewModel-navigation3 = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-navigation3", version.ref = "androidxLifecycleViewModelNavigation3" }
+androidx-navigation3-runtime = { group = "androidx.navigation3", name = "navigation3-runtime", version.ref = "androidxNavigation3" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
@@ -82,6 +91,8 @@ kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime",
 hilt-ext-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hiltExt" }
 androidx-work-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "androidxWork" }
 hilt-ext-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hiltExt" }
+androidx-navigation3-ui = { group = "androidx.navigation3", name = "navigation3-ui", version.ref = "androidxNavigation3" }
+androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -98,6 +109,8 @@ protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
 # Plugins defined by this project
 protestalert-android-library = { id = "protestalert.android.library" }
 protestalert-android-library-compose = { id = "protestalert.android.library.compose" }
+protestalert-android-feature-impl = { id = "protestalert.android.feature.impl" }
+protestalert-android-feature-api = { id = "protestalert.android.feature.api" }
 protestalert-hilt = { id = "protestalert.hilt" }
 protestalert-jvm-library = { id = "protestalert.jvm.library" }
 protestalert-android-room = { id = "protestalert.android.room" }

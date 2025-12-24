@@ -1,5 +1,6 @@
 package io.github.helpingstar.protest_alert.feature.schedule.impl
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,6 +24,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,7 +37,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.helpingstar.protest_alert.core.designsystem.theme.fontFamily
 import io.github.helpingstar.protest_alert.core.model.data.FollowableRegion
@@ -107,6 +109,11 @@ internal fun ScheduleScreen(
                 feedState = feedState,
                 modifier = modifier
             )
+        }
+        AnimatedVisibility(
+            visible = isSyncing || isFeedLoading || isOnboardingLoading
+        ) {
+            CircularProgressIndicator()
         }
 
     }

@@ -3,16 +3,14 @@ package io.github.helpingstar.protest_alert.feature.settings.impl
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.helpingstar.protest_alert.core.data.repository.UserDataRepository
 import io.github.helpingstar.protest_alert.core.domain.GetFollowableRegionsUseCase
 import io.github.helpingstar.protest_alert.core.domain.RegionSortField
 import io.github.helpingstar.protest_alert.core.model.data.FollowableRegion
-import io.github.helpingstar.protest_alert.feature.settings.impl.navigation.SettingsRoute
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,42 +21,25 @@ class SettingsViewModel @Inject constructor(
     val userDataRepository: UserDataRepository,
     getFollowableRegions: GetFollowableRegionsUseCase,
 ) : ViewModel() {
-    private val selectedRegionIdKey = "selectedRegionIdKey"
-
-    // TODO(hs) : 이거 필요없음
-    private val settingsRoute: SettingsRoute = savedStateHandle.toRoute()
-    private val selectedRegionId = savedStateHandle.getStateFlow(
-        key = selectedRegionIdKey,
-        initialValue = settingsRoute.initialRegionId,
-    )
-
-    val uiState: StateFlow<SettingsUiState> = combine(
-        selectedRegionId,
-        getFollowableRegions(RegionSortField.NAME),
-        SettingsUiState::Settings,
-    ).stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = SettingsUiState.Loading
-    )
+    val uiState: StateFlow<SettingsUiState> = getFollowableRegions(RegionSortField.NAME)
+        .map { regions -> SettingsUiState.Settings(regions) }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = SettingsUiState.Loading
+        )
 
     fun followRegion(followedRegionId: String, followed: Boolean) {
         viewModelScope.launch {
             userDataRepository.setRegionIdFollowed(followedRegionId, followed)
         }
     }
-
-    fun onRegionClick(regionId: Long) {
-        savedStateHandle[selectedRegionIdKey] = regionId
-    }
-
 }
 
 sealed interface SettingsUiState {
     data object Loading : SettingsUiState
 
     data class Settings(
-        val selectedRegionId: String?,
         val regions: List<FollowableRegion>,
     ) : SettingsUiState
 
