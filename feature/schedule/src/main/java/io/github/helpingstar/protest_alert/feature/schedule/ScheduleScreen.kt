@@ -20,6 +20,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -27,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -36,6 +39,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.helpingstar.protest_alert.core.designsystem.theme.fontFamily
+import io.github.helpingstar.protest_alert.core.model.data.FollowableRegion
+import io.github.helpingstar.protest_alert.core.model.data.ProtestResource
+import io.github.helpingstar.protest_alert.core.model.data.Region
+import io.github.helpingstar.protest_alert.core.model.data.UserData
 import io.github.helpingstar.protest_alert.core.model.data.UserProtestResource
 import io.github.helpingstar.protest_alert.core.ui.ProtestFeedUiState
 import io.github.helpingstar.protest_alert.core.ui.RegionsTabContent
@@ -45,6 +52,7 @@ import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
 import java.util.Locale
 import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 
 // Colors from Figma design
@@ -128,14 +136,19 @@ private fun Onboarding(
             ) {
                 Button(
                     onClick = saveFollowedRegions,
+                    shape = RoundedCornerShape(16.dp),
                     enabled = onboardingUiState.isDismissable,
                     modifier = Modifier
                         .padding(horizontal = 24.dp)
                         .widthIn(364.dp)
                         .fillMaxWidth(),
+                    contentPadding = ButtonDefaults.ContentPadding
                 ) {
                     Text(
                         text = "완료",
+                        fontFamily = fontFamily,
+                        fontWeight = FontWeight.Bold,
+                        lineHeight = 22.sp,
                     )
                 }
             }
@@ -365,4 +378,73 @@ private fun groupProtestsByDate(
         .mapValues { (_, protestsForDate) ->
             protestsForDate.sortedBy { it.startAt }
         }
+}
+
+@OptIn(ExperimentalTime::class)
+@Preview(showBackground = true)
+@Composable
+private fun ScheduleScreenOnboardingPreview() {
+    val sampleRegions = listOf(
+        FollowableRegion(
+            region = Region(id = "seoul", name = "서울", createdAt = Instant.DISTANT_PAST),
+            isFollowed = true
+        ),
+        FollowableRegion(
+            region = Region(id = "busan", name = "부산", createdAt = Instant.DISTANT_PAST),
+            isFollowed = false
+        ),
+        FollowableRegion(
+            region = Region(id = "daegu", name = "대구", createdAt = Instant.DISTANT_PAST),
+            isFollowed = false
+        ),
+    )
+
+    ScheduleScreen(
+        isSyncing = false,
+        onboardingUiState = OnboardingUiState.Shown(regions = sampleRegions),
+        onRegionCheckedChanged = { _, _ -> },
+        feedState = ProtestFeedUiState.Loading,
+        saveFollowedRegions = {},
+    )
+}
+
+@OptIn(ExperimentalTime::class)
+@Preview(showBackground = true)
+@Composable
+private fun ScheduleScreenWithFeedPreview() {
+    val userData = UserData(followedRegions = emptySet(), shouldHideOnboarding = true)
+    val sampleProtests = listOf(
+        ProtestResource(
+            id = 1L,
+            date = LocalDate(2025, 1, 15),
+            startAt = Instant.parse("2025-01-15T10:00:00Z"),
+            endAt = Instant.parse("2025-01-15T12:00:00Z"),
+            location = "서울시청 앞 광장",
+            participants = 1500,
+            additionalInfo = null,
+            createdAt = Instant.DISTANT_PAST,
+            region = "서울",
+            updatedAt = Instant.DISTANT_PAST
+        ),
+        ProtestResource(
+            id = 2L,
+            date = LocalDate(2025, 1, 15),
+            startAt = Instant.parse("2025-01-15T14:00:00Z"),
+            endAt = Instant.parse("2025-01-15T16:00:00Z"),
+            location = "광화문 광장",
+            participants = 3000,
+            additionalInfo = null,
+            createdAt = Instant.DISTANT_PAST,
+            region = "서울",
+            updatedAt = Instant.DISTANT_PAST
+        ),
+    ).map { UserProtestResource(it, userData) }
+
+    ScheduleScreen(
+        isSyncing = false,
+        onboardingUiState = OnboardingUiState.NotShown,
+        onRegionCheckedChanged = { _, _ -> },
+        feedState = ProtestFeedUiState.Success(feed = sampleProtests),
+        saveFollowedRegions = {},
+    )
 }

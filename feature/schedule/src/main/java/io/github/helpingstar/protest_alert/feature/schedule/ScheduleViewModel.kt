@@ -7,6 +7,7 @@ import io.github.helpingstar.protest_alert.core.data.repository.UserDataReposito
 import io.github.helpingstar.protest_alert.core.data.repository.UserProtestResourceRepository
 import io.github.helpingstar.protest_alert.core.data.util.SyncManager
 import io.github.helpingstar.protest_alert.core.domain.GetFollowableRegionsUseCase
+import io.github.helpingstar.protest_alert.core.domain.RegionSortField
 import io.github.helpingstar.protest_alert.core.ui.ProtestFeedUiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -43,10 +44,11 @@ class ScheduleViewModel @Inject constructor(
                 initialValue = ProtestFeedUiState.Loading
             )
 
+
     val onboardingUiState: StateFlow<OnboardingUiState> =
         combine(
             shouldShowOnboarding,
-            getFollowableRegions(),
+            getFollowableRegions(RegionSortField.NAME),
         ) { shouldShowOnboarding, regions ->
             if (shouldShowOnboarding) {
                 OnboardingUiState.Shown(regions = regions)
