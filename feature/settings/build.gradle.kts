@@ -41,6 +41,7 @@ dependencies {
     implementation(projects.core.model)
     implementation(projects.core.domain)
     implementation(projects.core.designsystem)
+    implementation(projects.core.ui)
 
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.android)

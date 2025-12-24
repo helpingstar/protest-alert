@@ -60,6 +60,12 @@ class ScheduleViewModel @Inject constructor(
                 initialValue = OnboardingUiState.Loading
             )
 
+    fun updateRegionSelection(regionId: String, isChecked: Boolean) {
+        viewModelScope.launch {
+            userDataRepository.setRegionIdFollowed(regionId, isChecked)
+        }
+    }
+
     fun dismissOnboarding() {
         viewModelScope.launch {
             userDataRepository.setShouldHideOnboarding(true)

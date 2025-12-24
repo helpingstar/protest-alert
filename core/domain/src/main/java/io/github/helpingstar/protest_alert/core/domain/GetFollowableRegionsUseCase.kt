@@ -22,7 +22,7 @@ class GetFollowableRegionsUseCase @Inject constructor(
                 .map { region ->
                     FollowableRegion(
                         region = region,
-                        isFollowed = region.id !in userData.followedRegions,
+                        isFollowed = region.id in userData.followedRegions,
                     )
                 }
             when (sortBy) {

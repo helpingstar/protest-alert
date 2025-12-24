@@ -1,6 +1,7 @@
 package io.github.helpingstar.protest_alert.feature.schedule
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,14 +13,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Group
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,6 +38,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.helpingstar.protest_alert.core.designsystem.theme.fontFamily
 import io.github.helpingstar.protest_alert.core.model.data.UserProtestResource
 import io.github.helpingstar.protest_alert.core.ui.ProtestFeedUiState
+import io.github.helpingstar.protest_alert.core.ui.RegionsTabContent
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
@@ -52,7 +55,7 @@ private val TagText = Color(0xFF3899FA)
 private val CardBackground = Color(0x99F3F4F6) // rgba(243,244,246,0.6)
 
 @Composable
-internal fun ScheduleRoute(
+fun ScheduleScreen(
     modifier: Modifier = Modifier,
     viewModel: ScheduleViewModel = hiltViewModel()
 ) {
@@ -64,6 +67,8 @@ internal fun ScheduleRoute(
         isSyncing = isSyncing,
         onboardingUiState = onboardingUiState,
         feedState = feedState,
+        onRegionCheckedChanged = viewModel::updateRegionSelection,
+        saveFollowedRegions = viewModel::dismissOnboarding,
         modifier = modifier
     )
 }
@@ -72,25 +77,31 @@ internal fun ScheduleRoute(
 internal fun ScheduleScreen(
     isSyncing: Boolean,
     onboardingUiState: OnboardingUiState,
+    onRegionCheckedChanged: (String, Boolean) -> Unit,
     feedState: ProtestFeedUiState,
+    saveFollowedRegions: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    when (feedState) {
-        ProtestFeedUiState.Loading -> {
-            Box(
-                modifier = modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        }
+    val isOnboardingLoading = onboardingUiState is OnboardingUiState.Loading
+    val isFeedLoading = feedState is ProtestFeedUiState.Loading
 
-        is ProtestFeedUiState.Success -> {
+    Box(
+        modifier = Modifier
+            .fillMaxSize(),
+    ) {
+        Column() {
+            Onboarding(
+                onboardingUiState = onboardingUiState,
+                onRegionCheckedChanged = onRegionCheckedChanged,
+                saveFollowedRegions = saveFollowedRegions
+            )
+
             ScheduleContent(
-                protests = feedState.feed,
+                feedState = feedState,
                 modifier = modifier
             )
         }
+
     }
 }
 
@@ -107,7 +118,27 @@ private fun Onboarding(
             -> Unit
 
         is OnboardingUiState.Shown -> {
-
+            RegionsTabContent(
+                regions = onboardingUiState.regions,
+                onFollowButtonClick = onRegionCheckedChanged,
+            )
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Button(
+                    onClick = saveFollowedRegions,
+                    enabled = onboardingUiState.isDismissable,
+                    modifier = Modifier
+                        .padding(horizontal = 24.dp)
+                        .widthIn(364.dp)
+                        .fillMaxWidth(),
+                ) {
+                    Text(
+                        text = "완료",
+                    )
+                }
+            }
         }
     }
 
@@ -116,35 +147,42 @@ private fun Onboarding(
 @OptIn(ExperimentalTime::class)
 @Composable
 private fun ScheduleContent(
-    protests: List<UserProtestResource>,
+    feedState: ProtestFeedUiState,
     modifier: Modifier = Modifier
 ) {
-    val groupedProtests = groupProtestsByDate(protests)
 
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 17.dp),
-    ) {
-        groupedProtests.forEach { (date, protestsForDate) ->
-            item(key = "header_$date") {
-                DateHeader(date = date)
-            }
+    when (feedState) {
+        ProtestFeedUiState.Loading -> Unit
+        is ProtestFeedUiState.Success -> {
+            val groupedProtests = groupProtestsByDate(feedState.feed)
 
-            itemsIndexed(
-                items = protestsForDate,
-                key = { _, protest -> protest.id }
-            ) { index, protest ->
-                ScheduleItem(protest = protest)
-                if (index < protestsForDate.size - 1) {
-                    Spacer(modifier = Modifier.height(12.dp))
+            LazyColumn(
+                modifier = modifier.fillMaxSize(),
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 17.dp),
+            ) {
+                groupedProtests.forEach { (date, protestsForDate) ->
+                    item(key = "header_$date") {
+                        DateHeader(date = date)
+                    }
+
+                    itemsIndexed(
+                        items = protestsForDate,
+                        key = { _, protest -> protest.id }
+                    ) { index, protest ->
+                        ScheduleItem(protest = protest)
+                        if (index < protestsForDate.size - 1) {
+                            Spacer(modifier = Modifier.height(12.dp))
+                        }
+                    }
+
+                    item {
+                        Spacer(modifier = Modifier.height(17.dp))
+                    }
                 }
-            }
-
-            item {
-                Spacer(modifier = Modifier.height(17.dp))
             }
         }
     }
+
 }
 
 @Composable
