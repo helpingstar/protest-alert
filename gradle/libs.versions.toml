@@ -28,8 +28,11 @@ protobuf = "4.29.2"
 kotlinxDatetime = "0.7.1"
 hiltExt = "1.2.0"
 androidxWork = "2.10.0"
+androidxComposeFoundation = "1.10.0"
 
 [libraries]
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "androidxComposeFoundation" }
+androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -91,3 +94,10 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 room = { id = "androidx.room", version.ref = "room" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
+
+# Plugins defined by this project
+protestalert-android-library = { id = "protestalert.android.library" }
+protestalert-android-library-compose = { id = "protestalert.android.library.compose" }
+protestalert-hilt = { id = "protestalert.hilt" }
+protestalert-jvm-library = { id = "protestalert.jvm.library" }
+protestalert-android-room = { id = "protestalert.android.room" }

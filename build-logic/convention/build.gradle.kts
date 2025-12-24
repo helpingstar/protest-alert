@@ -24,3 +24,28 @@ dependencies {
     compileOnly(libs.ksp.gradlePlugin)
     compileOnly(libs.room.gradlePlugin)
 }
+
+gradlePlugin {
+    plugins {
+        register("androidLibraryCompose") {
+            id = libs.plugins.protestalert.android.library.compose.get().pluginId
+            implementationClass = "AndroidLibraryComposeConventionPlugin"
+        }
+        register("androidLibrary") {
+            id = libs.plugins.protestalert.android.library.asProvider().get().pluginId
+            implementationClass = "AndroidLibraryConventionPlugin"
+        }
+        register("androidRoom") {
+            id = libs.plugins.protestalert.android.room.get().pluginId
+            implementationClass = "AndroidRoomConventionPlugin"
+        }
+        register("hilt") {
+            id = libs.plugins.protestalert.hilt.get().pluginId
+            implementationClass = "HiltConventionPlugin"
+        }
+        register("jvmLibrary") {
+            id = libs.plugins.protestalert.jvm.library.get().pluginId
+            implementationClass = "JvmLibraryConventionPlugin"
+        }
+    }
+}

@@ -2,9 +2,7 @@ package io.github.helpingstar.protest_alert.convention
 
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.assign
-import org.gradle.kotlin.dsl.configure
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
+import org.gradle.kotlin.dsl.dependencies
 
 internal fun Project.configureAndroidCompose(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
@@ -17,10 +15,11 @@ internal fun Project.configureAndroidCompose(
         }
     }
 
-    extensions.configure<ComposeCompilerGradlePluginExtension> {
-        reportsDestination = layout.buildDirectory.dir("compose_compiler")
-
-        stabilityConfigurationFiles
-            .add(isolated.rootProject.projectDirectory.file("compose_compiler_config.conf"))
+    dependencies {
+        val bom = libs.findLibrary("androidx-compose-bom").get()
+        "implementation"(platform(bom))
+        "androidTestImplementation"(platform(bom))
+        "implementation"(libs.findLibrary("androidx-compose-ui-tooling-preview").get())
+        "debugImplementation"(libs.findLibrary("androidx-compose-ui-tooling").get())
     }
 }
