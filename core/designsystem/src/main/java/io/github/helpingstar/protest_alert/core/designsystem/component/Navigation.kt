@@ -9,8 +9,8 @@ import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteItemColors
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
-import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,9 +22,8 @@ fun PaNavigationSuiteScaffold(
     windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
     content: @Composable () -> Unit,
 ) {
-//    val layoutType = NavigationSuiteScaffoldDefaults
-//        .calculateFromAdaptiveInfo(windowAdaptiveInfo)
-    val layoutType = NavigationSuiteType.NavigationBar  // TODO(hs) support Rail, Drawer
+    val layoutType = NavigationSuiteScaffoldDefaults
+        .calculateFromAdaptiveInfo(windowAdaptiveInfo)
     val navigationSuiteItemColors = NavigationSuiteItemColors(
         navigationBarItemColors = NavigationBarItemDefaults.colors(
             selectedIconColor = PaNavigationDefaults.navigationSelectedItemColor(),

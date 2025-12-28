@@ -1,6 +1,10 @@
 package io.github.helpingstar.protest_alert.feature.schedule.impl
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -111,9 +115,24 @@ internal fun ScheduleScreen(
             )
         }
         AnimatedVisibility(
-            visible = isSyncing || isFeedLoading || isOnboardingLoading
+            visible = isSyncing || isFeedLoading || isOnboardingLoading,
+            enter = slideInVertically(
+                initialOffsetY = { it }
+            ) + fadeIn(),
+            exit = slideOutVertically(
+                targetOffsetY = { -it }
+            ) + fadeOut()
         ) {
-            CircularProgressIndicator()
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp)
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                )
+            }
         }
 
     }
