@@ -15,6 +15,7 @@ import io.github.helpingstar.protest_alert.database.model.ProtestResourceEntity
 import io.github.helpingstar.protest_alert.database.model.asExternalModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.datetime.LocalDate
 import javax.inject.Inject
 import kotlin.time.ExperimentalTime
 
@@ -33,6 +34,8 @@ internal class OfflineFirstProtestRepository @Inject constructor(
     ): Flow<List<ProtestResource>> = protestResourceDao.getProtestResources(
         useFilterRegionIds = query.filterRegionIds != null,
         filterRegionIds = query.filterRegionIds ?: emptySet(),
+        useFilterSinceDate = query.filterSinceDate != null,
+        sinceDate = query.filterSinceDate ?: LocalDate.fromEpochDays(0),
     )
         .map { it.map(ProtestResourceEntity::asExternalModel) }
 

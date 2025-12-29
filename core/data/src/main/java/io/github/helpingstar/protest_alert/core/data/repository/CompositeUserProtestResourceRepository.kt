@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import kotlinx.datetime.LocalDate
 import javax.inject.Inject
 
 class CompositeUserProtestResourceRepository @Inject constructor(
@@ -23,12 +24,19 @@ class CompositeUserProtestResourceRepository @Inject constructor(
                 protestResources.mapToUserProtestResources(userData)
             }
 
-    override fun observeAllForFollowedRegions(): Flow<List<UserProtestResource>> =
+    override fun observeAllForFollowedRegions(
+        sinceDate: LocalDate?
+    ): Flow<List<UserProtestResource>> =
         userDataRepository.userData.map { it.followedRegions }.distinctUntilChanged()
             .flatMapLatest { followedTopics ->
                 when {
                     followedTopics.isEmpty() -> flowOf(emptyList())
-                    else -> observeAll(ProtestResourceQuery(filterRegionIds = followedTopics))
+                    else -> observeAll(
+                        ProtestResourceQuery(
+                            filterRegionIds = followedTopics,
+                            filterSinceDate = sinceDate
+                        )
+                    )
                 }
             }
 }

@@ -5,6 +5,7 @@ import androidx.room.Query
 import androidx.room.Upsert
 import io.github.helpingstar.protest_alert.database.model.ProtestResourceEntity
 import kotlinx.coroutines.flow.Flow
+import kotlinx.datetime.LocalDate
 
 @Dao
 interface ProtestResourceDao {
@@ -16,11 +17,17 @@ interface ProtestResourceDao {
                     THEN region IN (:filterRegionIds)
                     ELSE 1
                 END
+                AND CASE WHEN :useFilterSinceDate
+                    THEN date >= :sinceDate
+                    ELSE 1
+                END
     """,
     )
     fun getProtestResources(
         useFilterRegionIds: Boolean = false,
         filterRegionIds: Set<String> = emptySet(),
+        useFilterSinceDate: Boolean = false,
+        sinceDate: LocalDate = LocalDate.fromEpochDays(0)
     ): Flow<List<ProtestResourceEntity>>
 
     @Query(

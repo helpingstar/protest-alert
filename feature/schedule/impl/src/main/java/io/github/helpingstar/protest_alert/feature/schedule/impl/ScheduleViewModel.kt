@@ -16,7 +16,13 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.minus
+import kotlinx.datetime.toLocalDateTime
 import javax.inject.Inject
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 @HiltViewModel
 class ScheduleViewModel @Inject constructor(
@@ -28,6 +34,12 @@ class ScheduleViewModel @Inject constructor(
     private val shouldShowOnboarding: Flow<Boolean> =
         userDataRepository.userData.map { !it.shouldHideOnboarding }
 
+    @OptIn(ExperimentalTime::class)
+    private val onWeekAgo = Clock.System.now()
+        .toLocalDateTime(TimeZone.currentSystemDefault())
+        .date
+        .minus(7, DateTimeUnit.DAY)
+
     val isSyncing = syncManager.isSyncing
         .stateIn(
             scope = viewModelScope,
@@ -36,7 +48,7 @@ class ScheduleViewModel @Inject constructor(
         )
 
     val feedState: StateFlow<ProtestFeedUiState> =
-        userProtestResourceRepository.observeAllForFollowedRegions()
+        userProtestResourceRepository.observeAllForFollowedRegions(sinceDate = onWeekAgo)
             .map(ProtestFeedUiState::Success)
             .stateIn(
                 scope = viewModelScope,
