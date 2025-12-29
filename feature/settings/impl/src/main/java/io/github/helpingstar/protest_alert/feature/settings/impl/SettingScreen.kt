@@ -42,6 +42,7 @@ internal fun SettingsScreen(
 
             is SettingsUiState.Settings ->
                 RegionsTabContent(
+                    title = "관심 지역 선택",
                     regions = uiState.regions,
                     onFollowButtonClick = followRegion,
                 )

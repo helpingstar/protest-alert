@@ -34,6 +34,7 @@ private const val TAG = "TabContent"
 
 @Composable
 fun RegionsTabContent(
+    title: String,
     regions: List<FollowableRegion>,
     onFollowButtonClick: (String, Boolean) -> Unit,
     modifier: Modifier = Modifier,
@@ -45,10 +46,10 @@ fun RegionsTabContent(
             .padding(horizontal = 24.dp),
     ) {
         Text(
-            text = "관심 지역 선택",
-            fontSize = 16.sp,
+            text = title,
+            fontSize = 18.sp,
             fontFamily = fontFamily,
-            fontWeight = FontWeight.Medium,
+            fontWeight = FontWeight.SemiBold,
             color = TextColor,
             lineHeight = 24.sp,
         )
@@ -132,6 +133,7 @@ private fun RegionsTabContentPreview() {
     )
 
     RegionsTabContent(
+        title = "관심 지역 선택",
         regions = sampleRegions,
         onFollowButtonClick = { _, _ -> },
     )

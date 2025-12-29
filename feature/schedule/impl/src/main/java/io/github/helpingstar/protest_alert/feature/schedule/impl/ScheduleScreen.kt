@@ -152,6 +152,7 @@ private fun Onboarding(
 
         is OnboardingUiState.Shown -> {
             RegionsTabContent(
+                title = "관심 지역 선택 후 완료 버튼을 눌러주세요",
                 regions = onboardingUiState.regions,
                 onFollowButtonClick = onRegionCheckedChanged,
             )
