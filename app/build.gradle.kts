@@ -12,10 +12,10 @@ android {
 
     defaultConfig {
         applicationId = "io.github.helpingstar.protest_alert"
-        minSdk = 24
+        minSdk = 23
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
