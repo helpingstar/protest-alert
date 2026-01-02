@@ -1,16 +1,24 @@
 package io.github.helpingstar.protest_alert.core.ui
 
 import android.util.Log
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,9 +33,11 @@ import io.github.helpingstar.protest_alert.core.model.data.FollowableRegion
 import io.github.helpingstar.protest_alert.core.model.data.Region
 import kotlin.time.Instant
 
-private val CheckedColor = Color(0xFF3899FA)
-private val UncheckedBorderColor = Color(0xFF565D6D)
-private val TextColor = Color(0xFF171A1F)
+private val AccentColor = Color(0xFF3899FA)
+private val SelectedBackground = Color(0xFFEBF5FF)
+private val DefaultBackground = Color(0xFFF3F4F6)
+private val DefaultTextColor = Color(0xFF374151)
+private val TitleTextColor = Color(0xFF171A1F)
 
 private const val TAG = "TabContent"
 
@@ -38,7 +48,7 @@ fun RegionsTabContent(
     onFollowButtonClick: (String, Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Log.d(TAG, "${regions}")
+    Log.d(TAG, "$regions")
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -49,26 +59,30 @@ fun RegionsTabContent(
             fontSize = 18.sp,
             fontFamily = fontFamily,
             fontWeight = FontWeight.SemiBold,
-            color = TextColor,
+            color = TitleTextColor,
             lineHeight = 24.sp,
         )
 
         LazyVerticalGrid(
-            columns = GridCells.Fixed(4),
+            columns = GridCells.Fixed(3),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 12.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                .padding(top = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             items(
                 items = regions,
                 key = { it.region.id }
             ) { followableRegion ->
-                RegionCheckboxItem(
+                SelectableRegionChip(
                     regionName = followableRegion.region.name,
-                    isFollowed = followableRegion.isFollowed,
-                    onCheckedChange = { checked ->
-                        onFollowButtonClick(followableRegion.region.id, checked)
+                    isSelected = followableRegion.isFollowed,
+                    onClick = {
+                        onFollowButtonClick(
+                            followableRegion.region.id,
+                            !followableRegion.isFollowed
+                        )
                     },
                 )
             }
@@ -77,43 +91,65 @@ fun RegionsTabContent(
 }
 
 @Composable
-private fun RegionCheckboxItem(
+private fun SelectableRegionChip(
     regionName: String,
-    isFollowed: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
+    isSelected: Boolean,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
+    val backgroundColor = if (isSelected) SelectedBackground else DefaultBackground
+    val contentColor = if (isSelected) AccentColor else DefaultTextColor
+    val borderStroke = if (isSelected) {
+        BorderStroke(width = 2.dp, color = AccentColor)
+    } else {
+        null
+    }
+
+    Surface(
+        onClick = onClick,
+        modifier = modifier.height(44.dp),
+        shape = RoundedCornerShape(22.dp),
+        color = backgroundColor,
+        border = borderStroke,
     ) {
-        Checkbox(
-            checked = isFollowed,
-            onCheckedChange = onCheckedChange,
-            colors = CheckboxDefaults.colors(
-                checkedColor = CheckedColor,
-                uncheckedColor = UncheckedBorderColor,
-                checkmarkColor = Color.White,
-            ),
-        )
-        Text(
-            text = regionName,
-            fontSize = 14.sp,
-            fontFamily = fontFamily,
-            fontWeight = FontWeight.Bold,
-            color = TextColor,
-            lineHeight = 22.sp,
-        )
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            if (isSelected) {
+                Icon(
+                    imageVector = Icons.Default.Check,
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp),
+                    tint = contentColor,
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+            }
+            Text(
+                text = regionName,
+                fontSize = 14.sp,
+                fontFamily = fontFamily,
+                fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
+                color = contentColor,
+                lineHeight = 20.sp,
+            )
+        }
     }
 }
 
 
-@Preview(showBackground = true)
+@Preview(
+    name = "Small width (320dp)",
+    widthDp = 320,
+    heightDp = 640,
+    showBackground = true
+)
 @Composable
 private fun RegionsTabContentPreview() {
     val sampleRegions = listOf(
         FollowableRegion(Region("서울", "서울", Instant.DISTANT_PAST), isFollowed = true),
-        FollowableRegion(Region("경기", "경기", Instant.DISTANT_PAST), isFollowed = false),
+        FollowableRegion(Region("경기", "경기북부", Instant.DISTANT_PAST), isFollowed = false),
         FollowableRegion(Region("인천", "인천", Instant.DISTANT_PAST), isFollowed = false),
         FollowableRegion(Region("부산", "부산", Instant.DISTANT_PAST), isFollowed = false),
         FollowableRegion(Region("대구", "대구", Instant.DISTANT_PAST), isFollowed = false),

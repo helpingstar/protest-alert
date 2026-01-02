@@ -155,9 +155,10 @@ private fun Onboarding(
                 regions = onboardingUiState.regions,
                 onFollowButtonClick = onRegionCheckedChanged,
             )
+            Spacer(modifier = Modifier.height(16.dp))
             Row(
                 horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Button(
                     onClick = saveFollowedRegions,
@@ -166,7 +167,8 @@ private fun Onboarding(
                     modifier = Modifier
                         .padding(horizontal = 24.dp)
                         .widthIn(364.dp)
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .height(48.dp),
                     contentPadding = ButtonDefaults.ContentPadding
                 ) {
                     Text(
@@ -347,17 +349,17 @@ private fun RegionTag(
 ) {
     Box(
         modifier = modifier
-            .height(22.dp)
+            .height(28.dp)
             .background(
                 color = TagBackground,
-                shape = RoundedCornerShape(11.dp)
+                shape = RoundedCornerShape(14.dp)
             )
             .padding(horizontal = 12.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = region,
-            fontSize = 12.sp,
+            fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
             fontFamily = fontFamily,
             color = TagText,
@@ -406,7 +408,12 @@ private fun groupProtestsByDate(
 }
 
 
-@Preview(showBackground = true)
+@Preview(
+    name = "Small width (320dp)",
+    widthDp = 320,
+    heightDp = 640,
+    showBackground = true
+)
 @Composable
 private fun ScheduleScreenOnboardingPreview() {
     val sampleRegions = listOf(
@@ -434,7 +441,12 @@ private fun ScheduleScreenOnboardingPreview() {
 }
 
 
-@Preview(showBackground = true)
+@Preview(
+    name = "Small width (320dp)",
+    widthDp = 320,
+    heightDp = 640,
+    showBackground = true
+)
 @Composable
 private fun ScheduleScreenWithFeedPreview() {
     val userData = UserData(followedRegions = emptySet(), shouldHideOnboarding = true)
