@@ -1,6 +1,6 @@
 [versions]
 androidGradlePlugin = "8.13.1"
-kotlin = "2.2.21"
+kotlin = "2.3.0"
 coreKtx = "1.17.0"
 junit = "4.13.2"
 androidTools = "31.13.1"
@@ -35,6 +35,7 @@ androidxWork = "2.10.0"
 androidxComposeFoundation = "1.10.0"
 
 [libraries]
+kotlin-metadata-jvm = { module = "org.jetbrains.kotlin:kotlin-metadata-jvm", version.ref = "kotlin" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "androidxComposeFoundation" }
 androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

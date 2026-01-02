@@ -1,10 +1,9 @@
 package io.github.helpingstar.protest_alert.database.util
 
 import androidx.room.TypeConverter
-import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
-@OptIn(ExperimentalTime::class)
+
 internal class InstantConverter {
     @TypeConverter
     fun longToInstant(value: Long?): Instant? =

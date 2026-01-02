@@ -14,11 +14,10 @@ import io.github.helpingstar.protest_alert.database.model.asExternalModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
-import kotlin.time.ExperimentalTime
 
 private const val TAG = "OfflineFirstRegionsRepository"
 
-@OptIn(ExperimentalTime::class)
+
 class OfflineFirstRegionsRepository @Inject constructor(
     private val regionDao: RegionDao,
     private val network: PaNetworkDataSource,

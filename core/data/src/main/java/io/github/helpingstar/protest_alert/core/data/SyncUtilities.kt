@@ -4,7 +4,6 @@ import android.util.Log
 import io.github.helpingstar.protest_alert.core.datastore.LastUpdatedAt
 import io.github.helpingstar.protest_alert.core.network.model.NetworkChangeList
 import kotlin.coroutines.cancellation.CancellationException
-import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 private const val TAG = "SyncUtilities"
@@ -34,7 +33,7 @@ private suspend fun <T> suspendRunCatching(block: suspend () -> T): Result<T> = 
     Result.failure(exception)
 }
 
-@OptIn(ExperimentalTime::class)
+
 suspend fun Synchronizer.changeListSync(
     versionReader: (LastUpdatedAt) -> Instant,
     changeListFetcher: suspend (Instant) -> List<NetworkChangeList>,

@@ -6,11 +6,6 @@ plugins {
 
 android {
     namespace = "io.github.helpingstar.protest_alert.database"
-    kotlinOptions {
-        freeCompilerArgs += listOf(
-            "-opt-in=kotlin.time.ExperimentalTime"
-        )
-    }
 }
 
 

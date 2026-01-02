@@ -8,11 +8,10 @@ import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.from
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 @Singleton
-@OptIn(ExperimentalTime::class)
+
 class SupabasePaNetwork @Inject constructor(
     private val supabaseClient: SupabaseClient,
 ) : PaNetworkDataSource {

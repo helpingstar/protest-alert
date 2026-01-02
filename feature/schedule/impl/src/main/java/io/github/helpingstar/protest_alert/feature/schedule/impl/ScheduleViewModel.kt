@@ -22,7 +22,6 @@ import kotlinx.datetime.minus
 import kotlinx.datetime.toLocalDateTime
 import javax.inject.Inject
 import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 @HiltViewModel
 class ScheduleViewModel @Inject constructor(
@@ -34,7 +33,7 @@ class ScheduleViewModel @Inject constructor(
     private val shouldShowOnboarding: Flow<Boolean> =
         userDataRepository.userData.map { !it.shouldHideOnboarding }
 
-    @OptIn(ExperimentalTime::class)
+
     private val onWeekAgo = Clock.System.now()
         .toLocalDateTime(TimeZone.currentSystemDefault())
         .date

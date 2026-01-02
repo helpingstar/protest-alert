@@ -56,7 +56,6 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
 import java.util.Locale
-import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 
@@ -183,7 +182,7 @@ private fun Onboarding(
 
 }
 
-@OptIn(ExperimentalTime::class)
+
 @Composable
 private fun ScheduleContent(
     feedState: ProtestFeedUiState,
@@ -249,7 +248,7 @@ private fun DateHeader(
     )
 }
 
-@OptIn(ExperimentalTime::class)
+
 @Composable
 private fun ScheduleItem(
     protest: UserProtestResource,
@@ -367,7 +366,7 @@ private fun RegionTag(
     }
 }
 
-@OptIn(ExperimentalTime::class)
+
 private fun formatTimeRangePair(protest: UserProtestResource): Pair<String, String> {
     val timeZone = TimeZone.of("Asia/Seoul")
 
@@ -394,7 +393,7 @@ private fun formatParticipantsWithComma(count: Int?): String {
  * Groups protests by date, sorted in descending order (most recent first).
  * Within the same date, protests are sorted by start time in ascending order.
  */
-@OptIn(ExperimentalTime::class)
+
 private fun groupProtestsByDate(
     protests: List<UserProtestResource>
 ): Map<LocalDate, List<UserProtestResource>> {
@@ -406,7 +405,7 @@ private fun groupProtestsByDate(
         }
 }
 
-@OptIn(ExperimentalTime::class)
+
 @Preview(showBackground = true)
 @Composable
 private fun ScheduleScreenOnboardingPreview() {
@@ -434,7 +433,7 @@ private fun ScheduleScreenOnboardingPreview() {
     )
 }
 
-@OptIn(ExperimentalTime::class)
+
 @Preview(showBackground = true)
 @Composable
 private fun ScheduleScreenWithFeedPreview() {

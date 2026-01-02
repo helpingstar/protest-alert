@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.sp
 import io.github.helpingstar.protest_alert.core.designsystem.theme.fontFamily
 import io.github.helpingstar.protest_alert.core.model.data.FollowableRegion
 import io.github.helpingstar.protest_alert.core.model.data.Region
-import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 private val CheckedColor = Color(0xFF3899FA)
@@ -108,7 +107,7 @@ private fun RegionCheckboxItem(
     }
 }
 
-@OptIn(ExperimentalTime::class)
+
 @Preview(showBackground = true)
 @Composable
 private fun RegionsTabContentPreview() {
