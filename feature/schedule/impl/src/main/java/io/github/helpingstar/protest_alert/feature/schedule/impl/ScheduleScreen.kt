@@ -56,6 +56,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
 import java.util.Locale
+import kotlin.math.log10
 import kotlin.time.Instant
 
 
@@ -64,7 +65,7 @@ private val TextPrimary = Color(0xFF171A1F)
 private val TextSecondary = Color(0xFF787878)
 private val TagBackground = Color(0x1A3899FA) // rgba(56,153,250,0.1)
 private val TagText = Color(0xFF3899FA)
-private val CardBackground = Color(0x99F3F4F6) // rgba(243,244,246,0.6)
+private val CardBackground = Color(0xFFEDEEEF) // rgba(243,244,246,0.6)
 
 @Composable
 fun ScheduleScreen(
@@ -257,13 +258,14 @@ private fun ScheduleItem(
     modifier: Modifier = Modifier
 ) {
     val (startTime, endTime) = formatTimeRangePair(protest)
+    val calculatedAlpha = expToLinear(protest.participants ?: 0)
 
     Card(
         modifier = modifier
             .fillMaxWidth(),
         shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(
-            containerColor = CardBackground
+            containerColor = CardBackground.copy(alpha = calculatedAlpha.toFloat())
         ),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 0.dp
@@ -484,4 +486,17 @@ private fun ScheduleScreenWithFeedPreview() {
         feedState = ProtestFeedUiState.Success(feed = sampleProtests),
         saveFollowedRegions = {},
     )
+}
+
+fun expToLinear(value: Int, max: Int = 100_000, minOut: Double = 0.2): Double {
+    require(minOut in 0.0..1.0) { "minOut must be within [0.0, 1.0]" }
+
+    val clamped = value.coerceIn(0, max)
+
+    // 0은 로그 계산 불가 -> 하한으로 매핑
+    if (clamped == 0) return minOut.coerceIn(0.0, 1.0)
+
+    val t = log10(clamped.toDouble()) / log10(max.toDouble())
+    val out = minOut + t * (1.0 - minOut)
+    return out.coerceIn(minOut, 1.0)
 }
