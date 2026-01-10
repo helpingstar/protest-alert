@@ -84,5 +84,7 @@ class PaPreferencesDataSource @Inject constructor(
 private fun UserPreferencesKt.Dsl.updateShouldHideOnboardingIfNecessary() {
     if (followedRegionIds.isEmpty()) {
         shouldHideOnboarding = false
+    } else {
+        shouldHideOnboarding = true
     }
 }
