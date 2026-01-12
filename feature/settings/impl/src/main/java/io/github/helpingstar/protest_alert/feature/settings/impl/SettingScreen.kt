@@ -2,6 +2,8 @@ package io.github.helpingstar.protest_alert.feature.settings.impl
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -12,10 +14,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.github.helpingstar.protest_alert.core.designsystem.component.NavigationListItem
+import io.github.helpingstar.protest_alert.core.designsystem.icon.PaIcons
 import io.github.helpingstar.protest_alert.core.model.data.FollowableRegion
 import io.github.helpingstar.protest_alert.core.model.data.Region
 import io.github.helpingstar.protest_alert.core.ui.RegionsTabContent
-import io.github.helpingstar.protest_alert.feature.settings.impl.component.PrivacyPolicyButton
 import kotlin.time.Instant
 
 private const val TAG = "SettingScreen"
@@ -43,9 +46,9 @@ internal fun SettingsScreen(
     val uriHandler = LocalUriHandler.current
 
     Column(
-        modifier = modifier,
+        modifier = modifier.padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         when (uiState) {
             SettingsUiState.Loading ->
@@ -61,9 +64,20 @@ internal fun SettingsScreen(
             is SettingsUiState.Empty ->
                 Text("EMPTY")
         }
-        PrivacyPolicyButton(
-            onClick = { uriHandler.openUri(PRIVACY_POLICY_URL) },
-        )
+
+
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            NavigationListItem(
+                "개인정보처리방침",
+                PaIcons.Lock,
+                onClick = { uriHandler.openUri(PRIVACY_POLICY_URL) }
+            )
+        }
+
+
     }
 }
 

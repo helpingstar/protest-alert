@@ -52,7 +52,6 @@ fun RegionsTabContent(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp),
     ) {
         Text(
             text = title,
@@ -141,7 +140,7 @@ private fun SelectableRegionChip(
 
 @Preview(
     name = "Small width (320dp)",
-    widthDp = 320,
+    widthDp = 390,
     heightDp = 640,
     showBackground = true
 )
