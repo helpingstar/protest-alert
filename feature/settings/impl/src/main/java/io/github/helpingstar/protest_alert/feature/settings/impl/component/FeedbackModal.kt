@@ -80,7 +80,7 @@ fun FeedbackModal(
                 spotColor = Color.Black.copy(alpha = 0.25f),
             ),
         shape = RoundedCornerShape(16.dp),
-        color = PaColor.BackgroundSurface,
+        color = PaColor.backgroundSurface,
     ) {
         if (isSuccess) {
             // Success state
@@ -133,7 +133,7 @@ private fun FeedbackSuccessContent(
                 modifier = Modifier
                     .size(90.dp)
                     .background(
-                        color = PaColor.AccentPrimary,
+                        color = PaColor.accentPrimary,
                         shape = CircleShape,
                     ),
                 contentAlignment = Alignment.Center,
@@ -154,7 +154,7 @@ private fun FeedbackSuccessContent(
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
                     lineHeight = 27.sp,
-                    color = PaColor.SecondaryText,
+                    color = PaColor.textSecondary,
                 ),
             )
         }
@@ -171,7 +171,7 @@ private fun FeedbackModalHeader(
             .fillMaxWidth()
             .border(
                 width = 1.dp,
-                color = PaColor.BorderDefault,
+                color = PaColor.borderDefault,
                 shape = RoundedCornerShape(
                     bottomStart = 0.dp,
                     bottomEnd = 0.dp,
@@ -190,7 +190,7 @@ private fun FeedbackModalHeader(
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp,
                 lineHeight = 27.sp,
-                color = PaColor.PrimaryText,
+                color = PaColor.textPrimary,
             ),
         )
         IconButton(
@@ -201,7 +201,7 @@ private fun FeedbackModalHeader(
                 imageVector = PaIcons.Close,
                 contentDescription = "닫기",
                 modifier = Modifier.size(20.dp),
-                tint = PaColor.PrimaryText,
+                tint = PaColor.textPrimary,
             )
         }
     }
@@ -228,7 +228,7 @@ private fun FeedbackModalContent(
                 fontWeight = FontWeight.Medium,
                 fontSize = 14.sp,
                 lineHeight = 21.sp,
-                color = PaColor.SecondaryText,
+                color = PaColor.textSecondary,
             ),
             modifier = Modifier.fillMaxWidth(),
         )
@@ -240,7 +240,7 @@ private fun FeedbackModalContent(
                 .height(150.dp)
                 .border(
                     width = 1.dp,
-                    color = PaColor.BorderDefault,
+                    color = PaColor.borderDefault,
                     shape = RoundedCornerShape(8.dp),
                 )
                 .padding(12.dp),
@@ -253,7 +253,7 @@ private fun FeedbackModalContent(
                     fontWeight = FontWeight.Normal,
                     fontSize = 14.sp,
                     lineHeight = 21.sp,
-                    color = PaColor.PrimaryText,
+                    color = PaColor.textPrimary,
                 ),
                 modifier = Modifier.fillMaxWidth(),
                 decorationBox = { innerTextField ->
@@ -266,7 +266,7 @@ private fun FeedbackModalContent(
                                     fontWeight = FontWeight.Normal,
                                     fontSize = 14.sp,
                                     lineHeight = 21.sp,
-                                    color = PaColor.PlaceholderText,
+                                    color = PaColor.textPlaceholder,
                                 ),
                             )
                         }
@@ -315,8 +315,8 @@ private fun RowScope.CancelButton(
             .weight(1f)
             .height(46.dp),
         shape = RoundedCornerShape(8.dp),
-        color = PaColor.BackgroundSurface,
-        border = BorderStroke(1.dp, PaColor.BorderDefault),
+        color = PaColor.backgroundSurface,
+        border = BorderStroke(1.dp, PaColor.borderDefault),
     ) {
         Box(
             contentAlignment = Alignment.Center,
@@ -328,7 +328,7 @@ private fun RowScope.CancelButton(
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 14.sp,
                     lineHeight = 21.sp,
-                    color = PaColor.PrimaryText,
+                    color = PaColor.textPrimary,
                 ),
             )
         }
@@ -347,7 +347,7 @@ private fun RowScope.SendButton(
             .weight(1f)
             .height(46.dp),
         shape = RoundedCornerShape(8.dp),
-        color = if (isEditing) PaColor.AccentPrimary else PaColor.DisabledBackground,
+        color = if (isEditing) PaColor.accentPrimary else PaColor.backgroundDisabled,
         enabled = isEditing,
     ) {
         Box(
@@ -360,7 +360,7 @@ private fun RowScope.SendButton(
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 14.sp,
                     lineHeight = 21.sp,
-                    color = if (isEditing) PaColor.OnAccent else PaColor.DisabledText,
+                    color = if (isEditing) PaColor.textOnAccent else PaColor.textDisabled,
                 ),
             )
         }

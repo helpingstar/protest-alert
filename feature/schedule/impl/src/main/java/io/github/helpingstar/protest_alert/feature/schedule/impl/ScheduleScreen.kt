@@ -9,7 +9,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,7 +17,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.github.helpingstar.protest_alert.core.designsystem.theme.PaColor
 import io.github.helpingstar.protest_alert.core.designsystem.theme.fontFamily
 import io.github.helpingstar.protest_alert.core.model.data.FollowableRegion
 import io.github.helpingstar.protest_alert.core.model.data.ProtestResource
@@ -59,13 +58,8 @@ import java.util.Locale
 import kotlin.math.log10
 import kotlin.time.Instant
 
-
-// Colors from Figma design
-private val TextPrimary = Color(0xFF171A1F)
-private val TextSecondary = Color(0xFF787878)
 private val TagBackground = Color(0x1A3899FA) // rgba(56,153,250,0.1)
-private val TagText = Color(0xFF3899FA)
-private val CardBackground = Color(0xFFEDEEEF) // rgba(243,244,246,0.6)
+
 
 @Composable
 fun ScheduleScreen(
@@ -102,7 +96,9 @@ internal fun ScheduleScreen(
         modifier = Modifier
             .fillMaxSize(),
     ) {
-        Column() {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
             Onboarding(
                 onboardingUiState = onboardingUiState,
                 onRegionCheckedChanged = onRegionCheckedChanged,
@@ -163,14 +159,18 @@ private fun Onboarding(
             ) {
                 Button(
                     onClick = saveFollowedRegions,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = PaColor.accentPrimary,
+                        contentColor = PaColor.textOnAccent,
+                        disabledContainerColor = PaColor.backgroundDisabled,
+                        disabledContentColor = PaColor.textDisabled
+                    ),
                     shape = RoundedCornerShape(16.dp),
                     enabled = onboardingUiState.isDismissable,
                     modifier = Modifier
-                        .padding(horizontal = 24.dp)
-                        .widthIn(364.dp)
                         .fillMaxWidth()
                         .height(48.dp),
-                    contentPadding = ButtonDefaults.ContentPadding
+                    contentPadding = ButtonDefaults.ContentPadding,
                 ) {
                     Text(
                         text = "완료",
@@ -199,7 +199,6 @@ private fun ScheduleContent(
 
             LazyColumn(
                 modifier = modifier.fillMaxSize(),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 17.dp),
             ) {
                 groupedProtests.forEach { (date, protestsForDate) ->
                     item(key = "header_$date") {
@@ -243,7 +242,7 @@ private fun DateHeader(
         fontSize = 18.sp,
         fontWeight = FontWeight.Bold,
         fontFamily = fontFamily,
-        color = TextPrimary,
+        color = PaColor.textPrimary,
         lineHeight = 28.sp,
         modifier = modifier
             .fillMaxWidth()
@@ -265,7 +264,7 @@ private fun ScheduleItem(
             .fillMaxWidth(),
         shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(
-            containerColor = CardBackground.copy(alpha = calculatedAlpha.toFloat())
+            containerColor = PaColor.surfaceCard.copy(alpha = calculatedAlpha.toFloat())
         ),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 0.dp
@@ -286,7 +285,7 @@ private fun ScheduleItem(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = fontFamily,
-                    color = TextPrimary,
+                    color = PaColor.textPrimary,
                     lineHeight = 18.sp,
                     textAlign = TextAlign.Center
                 )
@@ -302,7 +301,7 @@ private fun ScheduleItem(
                     text = protest.location ?: "-",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = TextPrimary,
+                    color = PaColor.textPrimary,
                     fontFamily = fontFamily,
                     lineHeight = 21.sp,
                     modifier = Modifier
@@ -317,7 +316,7 @@ private fun ScheduleItem(
                         imageVector = Icons.Default.Group,
                         contentDescription = null,
                         modifier = Modifier.size(16.dp),
-                        tint = TextSecondary
+                        tint = PaColor.textSecondary
                     )
 
                     Spacer(modifier = Modifier.width(8.dp))
@@ -327,7 +326,7 @@ private fun ScheduleItem(
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         fontFamily = fontFamily,
-                        color = TextSecondary,
+                        color = PaColor.textSecondary,
                         lineHeight = 20.sp
                     )
                 }
@@ -364,7 +363,7 @@ private fun RegionTag(
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
             fontFamily = fontFamily,
-            color = TagText,
+            color = PaColor.accentPrimary,
             lineHeight = 20.sp
         )
     }

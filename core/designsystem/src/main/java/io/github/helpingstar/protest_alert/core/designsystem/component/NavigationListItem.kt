@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -47,9 +46,9 @@ fun NavigationListItem(
         modifier = modifier
             .fillMaxWidth()
             .height(58.dp),
-        color = PaColor.BackgroundSurface,
+        color = PaColor.backgroundSurface,
         shape = RoundedCornerShape(10.dp),
-        border = BorderStroke(1.dp, PaColor.BorderDefault),
+        border = BorderStroke(1.dp, PaColor.borderDefault),
     ) {
         Row(
             modifier = Modifier
@@ -72,7 +71,7 @@ fun NavigationListItem(
                         imageVector = leadingIcon,
                         contentDescription = null,
                         modifier = Modifier.size(20.dp),
-                        tint = PaColor.AccentPrimary,
+                        tint = PaColor.accentPrimary,
                     )
                 }
 
@@ -83,7 +82,7 @@ fun NavigationListItem(
                         fontWeight = FontWeight.Medium,
                         fontSize = 16.sp,
                         lineHeight = 24.sp,
-                        color = PaColor.PrimaryText,
+                        color = PaColor.textPrimary,
                     ),
                 )
             }
@@ -93,7 +92,7 @@ fun NavigationListItem(
                 imageVector = PaIcons.ArrowForwardIOS,
                 contentDescription = "이동",
                 modifier = Modifier.size(20.dp),
-                tint = PaColor.SecondaryText,
+                tint = PaColor.textSecondary,
             )
         }
     }
