@@ -4,6 +4,7 @@ import io.github.helpingstar.protest_alert.core.network.PaNetworkDataSource
 import io.github.helpingstar.protest_alert.core.network.model.NetworkChangeList
 import io.github.helpingstar.protest_alert.core.network.model.NetworkProtestResource
 import io.github.helpingstar.protest_alert.core.network.model.NetworkRegion
+import io.github.helpingstar.protest_alert.core.network.model.NetworkUserFeedback
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.from
 import javax.inject.Inject
@@ -73,5 +74,10 @@ class SupabasePaNetwork @Inject constructor(
                     isDelete = false
                 )
             }
+
+    override suspend fun insertUserFeedback(content: String) {
+        supabaseClient.from("user_feedbacks")
+            .insert(NetworkUserFeedback(content = content))
+    }
 
 }

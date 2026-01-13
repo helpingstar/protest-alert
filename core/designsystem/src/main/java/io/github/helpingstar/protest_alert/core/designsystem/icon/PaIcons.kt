@@ -9,7 +9,9 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.rounded.CalendarMonth
+import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Settings
+
 
 object PaIcons {
     val CalendarBorder = Icons.Outlined.CalendarMonth
@@ -21,4 +23,5 @@ object PaIcons {
     val ArrowForwardIOS = Icons.AutoMirrored.Outlined.ArrowForwardIos
     val Close = Icons.Outlined.Close
     val ChatBubble = Icons.Default.ChatBubble
+    val Check = Icons.Rounded.Check
 }

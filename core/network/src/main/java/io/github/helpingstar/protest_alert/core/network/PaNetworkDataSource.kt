@@ -14,4 +14,6 @@ interface PaNetworkDataSource {
     suspend fun getRegionChangeList(after: Instant? = null): List<NetworkChangeList>
 
     suspend fun getProtestResourceChangeList(after: Instant? = null): List<NetworkChangeList>
+
+    suspend fun insertUserFeedback(content: String)
 }

@@ -1,11 +1,14 @@
 package io.github.helpingstar.protest_alert.ui
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
@@ -15,12 +18,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration.Indefinite
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -37,6 +42,7 @@ import io.github.helpingstar.protest_alert.core.designsystem.component.PaBackgro
 import io.github.helpingstar.protest_alert.core.designsystem.component.PaNavigationSuiteScaffold
 import io.github.helpingstar.protest_alert.core.designsystem.component.PaTopAppbar
 import io.github.helpingstar.protest_alert.core.navigation.Navigator
+import io.github.helpingstar.protest_alert.core.ui.LocalSnackbarHostState
 import io.github.helpingstar.protest_alert.feature.schedule.impl.navigation.scheduleEntry
 import io.github.helpingstar.protest_alert.feature.settings.impl.navigation.settingsEntry
 import io.github.helpingstar.protest_alert.navigation.TOP_LEVEL_NAV_ITEMS
@@ -53,6 +59,7 @@ fun PaApp(
         val snackbarHostState = remember { SnackbarHostState() }
 
         val isOffline by appState.isOffline.collectAsStateWithLifecycle()
+        Log.d(TAG, "isOffline: $isOffline")
 
         val notConnectedMessage = stringResource(R.string.not_connected)
         LaunchedEffect(isOffline) {
@@ -63,11 +70,12 @@ fun PaApp(
                 )
             }
         }
-
-        PaAppContent(
-            appState = appState,
-            windowAdaptiveInfo = windowAdaptiveInfo
-        )
+        CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
+            PaAppContent(
+                appState = appState,
+                windowAdaptiveInfo = windowAdaptiveInfo
+            )
+        }
     }
 }
 
@@ -78,6 +86,8 @@ internal fun PaAppContent(
     modifier: Modifier = Modifier,
     windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
 ) {
+    val snackbarHostState = LocalSnackbarHostState.current
+
     val navigator = remember { Navigator(appState.navigationState) }
 
     PaNavigationSuiteScaffold(
@@ -111,6 +121,16 @@ internal fun PaAppContent(
             containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.onBackground,
             contentWindowInsets = WindowInsets(0, 0, 0, 0),
+            snackbarHost = {
+                SnackbarHost(
+                    snackbarHostState,
+                    modifier = Modifier.windowInsetsPadding(
+                        WindowInsets.safeDrawing.exclude(
+                            WindowInsets.ime,
+                        )
+                    )
+                )
+            }
         ) { padding ->
             Column(
                 Modifier
