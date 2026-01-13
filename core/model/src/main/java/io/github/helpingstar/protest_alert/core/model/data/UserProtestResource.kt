@@ -5,7 +5,6 @@ import kotlinx.serialization.json.JsonObject
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
-@OptIn(ExperimentalTime::class)
 data class UserProtestResource internal constructor(
     val id: Long,
     val date: LocalDate,
