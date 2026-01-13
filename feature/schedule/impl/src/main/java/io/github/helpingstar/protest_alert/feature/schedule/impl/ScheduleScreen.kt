@@ -97,7 +97,8 @@ internal fun ScheduleScreen(
             .fillMaxSize(),
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            verticalArrangement = Arrangement.spacedBy(24.dp, Alignment.Top),
+            modifier = Modifier.padding(horizontal = 16.dp)
         ) {
             Onboarding(
                 onboardingUiState = onboardingUiState,
@@ -147,42 +148,44 @@ private fun Onboarding(
             -> Unit
 
         is OnboardingUiState.Shown -> {
-            RegionsTabContent(
-                title = "관심 지역 선택 후 완료 버튼을 눌러주세요",
-                regions = onboardingUiState.regions,
-                onFollowButtonClick = onRegionCheckedChanged,
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Button(
-                    onClick = saveFollowedRegions,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = PaColor.accentPrimary,
-                        contentColor = PaColor.textOnAccent,
-                        disabledContainerColor = PaColor.backgroundDisabled,
-                        disabledContentColor = PaColor.textDisabled
-                    ),
-                    shape = RoundedCornerShape(16.dp),
-                    enabled = onboardingUiState.isDismissable,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(48.dp),
-                    contentPadding = ButtonDefaults.ContentPadding,
+            Column {
+                RegionsTabContent(
+                    title = "관심 지역 선택 후 완료 버튼을 눌러주세요",
+                    regions = onboardingUiState.regions,
+                    onFollowButtonClick = onRegionCheckedChanged,
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(
-                        text = "완료",
-                        fontFamily = fontFamily,
-                        fontWeight = FontWeight.Bold,
-                        lineHeight = 22.sp,
-                    )
+                    Button(
+                        onClick = saveFollowedRegions,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = PaColor.accentPrimary,
+                            contentColor = PaColor.textOnAccent,
+                            disabledContainerColor = PaColor.backgroundDisabled,
+                            disabledContentColor = PaColor.textDisabled
+                        ),
+                        shape = RoundedCornerShape(16.dp),
+                        enabled = onboardingUiState.isDismissable,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(48.dp),
+                        contentPadding = ButtonDefaults.ContentPadding,
+                    ) {
+                        Text(
+                            text = "완료",
+                            fontFamily = fontFamily,
+                            fontWeight = FontWeight.Bold,
+                            lineHeight = 22.sp,
+                        )
+                    }
                 }
             }
+
         }
     }
-
 }
 
 
@@ -408,15 +411,22 @@ private fun groupProtestsByDate(
         }
 }
 
+fun expToLinear(value: Int, max: Int = 100_000, minOut: Double = 0.2): Double {
+    require(minOut in 0.0..1.0) { "minOut must be within [0.0, 1.0]" }
 
-@Preview(
-    name = "Small width (320dp)",
-    widthDp = 320,
-    heightDp = 640,
-    showBackground = true
-)
+    val clamped = value.coerceIn(0, max)
+
+    // 0은 로그 계산 불가 -> 하한으로 매핑
+    if (clamped == 0) return minOut.coerceIn(0.0, 1.0)
+
+    val t = log10(clamped.toDouble()) / log10(max.toDouble())
+    val out = minOut + t * (1.0 - minOut)
+    return out.coerceIn(minOut, 1.0)
+}
+
+@Preview(showBackground = true)
 @Composable
-private fun ScheduleScreenOnboardingPreview() {
+private fun ScheduleScreenWithOnboardingPreview() {
     val sampleRegions = listOf(
         FollowableRegion(
             region = Region(id = "seoul", name = "서울", createdAt = Instant.DISTANT_PAST),
@@ -428,35 +438,17 @@ private fun ScheduleScreenOnboardingPreview() {
         ),
         FollowableRegion(
             region = Region(id = "daegu", name = "대구", createdAt = Instant.DISTANT_PAST),
-            isFollowed = false
+            isFollowed = true
         ),
     )
 
-    ScheduleScreen(
-        isSyncing = false,
-        onboardingUiState = OnboardingUiState.Shown(regions = sampleRegions),
-        onRegionCheckedChanged = { _, _ -> },
-        feedState = ProtestFeedUiState.Loading,
-        saveFollowedRegions = {},
-    )
-}
-
-
-@Preview(
-    name = "Small width (320dp)",
-    widthDp = 320,
-    heightDp = 640,
-    showBackground = true
-)
-@Composable
-private fun ScheduleScreenWithFeedPreview() {
-    val userData = UserData(followedRegions = emptySet(), shouldHideOnboarding = true)
+    val userData = UserData(followedRegions = setOf("seoul"), shouldHideOnboarding = false)
     val sampleProtests = listOf(
         ProtestResource(
             id = 1L,
             date = LocalDate(2025, 1, 15),
-            startAt = Instant.parse("2025-01-15T10:00:00Z"),
-            endAt = Instant.parse("2025-01-15T12:00:00Z"),
+            startAt = Instant.parse("2025-01-15T01:00:00Z"),
+            endAt = Instant.parse("2025-01-15T03:00:00Z"),
             location = "서울시청 앞 광장",
             participants = 1500,
             additionalInfo = null,
@@ -467,13 +459,65 @@ private fun ScheduleScreenWithFeedPreview() {
         ProtestResource(
             id = 2L,
             date = LocalDate(2025, 1, 15),
-            startAt = Instant.parse("2025-01-15T14:00:00Z"),
-            endAt = Instant.parse("2025-01-15T16:00:00Z"),
+            startAt = Instant.parse("2025-01-15T05:00:00Z"),
+            endAt = Instant.parse("2025-01-15T07:00:00Z"),
             location = "광화문 광장",
             participants = 3000,
             additionalInfo = null,
             createdAt = Instant.DISTANT_PAST,
             region = "서울",
+            updatedAt = Instant.DISTANT_PAST
+        ),
+    ).map { UserProtestResource(it, userData) }
+
+    ScheduleScreen(
+        isSyncing = false,
+        onboardingUiState = OnboardingUiState.Shown(regions = sampleRegions),
+        onRegionCheckedChanged = { _, _ -> },
+        feedState = ProtestFeedUiState.Success(feed = sampleProtests),
+        saveFollowedRegions = {},
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ScheduleScreenOnlyContentPreview() {
+    val userData = UserData(followedRegions = setOf("seoul", "busan"), shouldHideOnboarding = true)
+    val sampleProtests = listOf(
+        ProtestResource(
+            id = 1L,
+            date = LocalDate(2025, 1, 15),
+            startAt = Instant.parse("2025-01-15T01:00:00Z"),
+            endAt = Instant.parse("2025-01-15T03:00:00Z"),
+            location = "서울시청 앞 광장",
+            participants = 1500,
+            additionalInfo = null,
+            createdAt = Instant.DISTANT_PAST,
+            region = "서울",
+            updatedAt = Instant.DISTANT_PAST
+        ),
+        ProtestResource(
+            id = 2L,
+            date = LocalDate(2025, 1, 15),
+            startAt = Instant.parse("2025-01-15T05:00:00Z"),
+            endAt = Instant.parse("2025-01-15T07:00:00Z"),
+            location = "광화문 광장",
+            participants = 3000,
+            additionalInfo = null,
+            createdAt = Instant.DISTANT_PAST,
+            region = "서울",
+            updatedAt = Instant.DISTANT_PAST
+        ),
+        ProtestResource(
+            id = 3L,
+            date = LocalDate(2025, 1, 14),
+            startAt = Instant.parse("2025-01-14T04:00:00Z"),
+            endAt = Instant.parse("2025-01-14T06:00:00Z"),
+            location = "부산역 광장",
+            participants = 800,
+            additionalInfo = null,
+            createdAt = Instant.DISTANT_PAST,
+            region = "부산",
             updatedAt = Instant.DISTANT_PAST
         ),
     ).map { UserProtestResource(it, userData) }
@@ -487,15 +531,3 @@ private fun ScheduleScreenWithFeedPreview() {
     )
 }
 
-fun expToLinear(value: Int, max: Int = 100_000, minOut: Double = 0.2): Double {
-    require(minOut in 0.0..1.0) { "minOut must be within [0.0, 1.0]" }
-
-    val clamped = value.coerceIn(0, max)
-
-    // 0은 로그 계산 불가 -> 하한으로 매핑
-    if (clamped == 0) return minOut.coerceIn(0.0, 1.0)
-
-    val t = log10(clamped.toDouble()) / log10(max.toDouble())
-    val out = minOut + t * (1.0 - minOut)
-    return out.coerceIn(minOut, 1.0)
-}
