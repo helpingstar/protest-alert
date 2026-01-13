@@ -260,7 +260,7 @@ private fun FeedbackModalContent(
                     Box {
                         if (feedbackText.isEmpty()) {
                             Text(
-                                text = "피드백을 입력해주세요...",
+                                text = "불편한 점이나 건의사항을 적어주세요",
                                 style = TextStyle(
                                     fontFamily = fontFamily,
                                     fontWeight = FontWeight.Normal,
