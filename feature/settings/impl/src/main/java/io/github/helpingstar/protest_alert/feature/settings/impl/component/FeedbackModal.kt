@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,14 +32,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.github.helpingstar.protest_alert.core.designsystem.icon.PaIcons
 import io.github.helpingstar.protest_alert.core.designsystem.theme.PaColor
-import io.github.helpingstar.protest_alert.core.designsystem.theme.fontFamily
+import io.github.helpingstar.protest_alert.core.designsystem.theme.PaTheme
 
 /**
  * Feedback modal dialog for sending feedback to developers
@@ -149,13 +147,8 @@ private fun FeedbackSuccessContent(
             // Thank you message
             Text(
                 text = "소중한 의견 감사드립니다",
-                style = TextStyle(
-                    fontFamily = fontFamily,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp,
-                    lineHeight = 27.sp,
-                    color = PaColor.textSecondary,
-                ),
+                style = MaterialTheme.typography.titleMedium,
+                color = PaColor.textSecondary,
             )
         }
     }
@@ -185,13 +178,8 @@ private fun FeedbackModalHeader(
     ) {
         Text(
             text = "개발자에게 바란다",
-            style = TextStyle(
-                fontFamily = fontFamily,
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp,
-                lineHeight = 27.sp,
-                color = PaColor.textPrimary,
-            ),
+            style = MaterialTheme.typography.titleMedium,
+            color = PaColor.textPrimary,
         )
         IconButton(
             onClick = onDismiss,
@@ -223,13 +211,8 @@ private fun FeedbackModalContent(
         // Description
         Text(
             text = "개선이 필요한 부분이나 추가했으면 하는 기능을 알려주세요.",
-            style = TextStyle(
-                fontFamily = fontFamily,
-                fontWeight = FontWeight.Medium,
-                fontSize = 14.sp,
-                lineHeight = 21.sp,
-                color = PaColor.textSecondary,
-            ),
+            style = MaterialTheme.typography.bodyMedium,
+            color = PaColor.textSecondary,
             modifier = Modifier.fillMaxWidth(),
         )
 
@@ -248,11 +231,7 @@ private fun FeedbackModalContent(
             BasicTextField(
                 value = feedbackText,
                 onValueChange = onFeedbackTextChange,
-                textStyle = TextStyle(
-                    fontFamily = fontFamily,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 14.sp,
-                    lineHeight = 21.sp,
+                textStyle = MaterialTheme.typography.bodyMedium.copy(
                     color = PaColor.textPrimary,
                 ),
                 modifier = Modifier.fillMaxWidth(),
@@ -261,13 +240,8 @@ private fun FeedbackModalContent(
                         if (feedbackText.isEmpty()) {
                             Text(
                                 text = "불편한 점이나 건의사항을 적어주세요",
-                                style = TextStyle(
-                                    fontFamily = fontFamily,
-                                    fontWeight = FontWeight.Normal,
-                                    fontSize = 14.sp,
-                                    lineHeight = 21.sp,
-                                    color = PaColor.textPlaceholder,
-                                ),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = PaColor.textPlaceholder,
                             )
                         }
                         innerTextField()
@@ -323,13 +297,8 @@ private fun RowScope.CancelButton(
         ) {
             Text(
                 text = "취소",
-                style = TextStyle(
-                    fontFamily = fontFamily,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 14.sp,
-                    lineHeight = 21.sp,
-                    color = PaColor.textPrimary,
-                ),
+                style = MaterialTheme.typography.labelLarge,
+                color = PaColor.textPrimary,
             )
         }
     }
@@ -355,13 +324,8 @@ private fun RowScope.SendButton(
         ) {
             Text(
                 text = "전송",
-                style = TextStyle(
-                    fontFamily = fontFamily,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 14.sp,
-                    lineHeight = 21.sp,
-                    color = if (isEditing) PaColor.textOnAccent else PaColor.textDisabled,
-                ),
+                style = MaterialTheme.typography.labelLarge,
+                color = if (isEditing) PaColor.textOnAccent else PaColor.textDisabled,
             )
         }
     }
@@ -371,34 +335,46 @@ private fun RowScope.SendButton(
 @Composable
 private fun FeedbackModalDefaultPreview() {
     var feedbackText by remember { mutableStateOf("") }
-    FeedbackModal(
-        feedbackText = feedbackText,
-        onFeedbackTextChange = { feedbackText = it },
-        onDismiss = {},
-        onSend = {},
-    )
+
+    PaTheme {
+        FeedbackModal(
+            feedbackText = feedbackText,
+            onFeedbackTextChange = { feedbackText = it },
+            onDismiss = {},
+            onSend = {},
+        )
+    }
+
+
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFF0F0F0)
 @Composable
 private fun FeedbackModalEditingPreview() {
     var feedbackText by remember { mutableStateOf("앱이 정말 유용해요! 다만 알림 설정 기능이 추가되면 좋겠습니다.") }
-    FeedbackModal(
-        feedbackText = feedbackText,
-        onFeedbackTextChange = { feedbackText = it },
-        onDismiss = {},
-        onSend = {},
-    )
+
+    PaTheme {
+        FeedbackModal(
+            feedbackText = feedbackText,
+            onFeedbackTextChange = { feedbackText = it },
+            onDismiss = {},
+            onSend = {},
+        )
+    }
+
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFF0F0F0)
 @Composable
 private fun FeedbackModalSuccessPreview() {
-    FeedbackModal(
-        feedbackText = "",
-        onFeedbackTextChange = {},
-        onDismiss = {},
-        onSend = {},
-        isSuccess = true,
-    )
+    PaTheme {
+        FeedbackModal(
+            feedbackText = "",
+            onFeedbackTextChange = {},
+            onDismiss = {},
+            onSend = {},
+            isSuccess = true,
+        )
+    }
+
 }
