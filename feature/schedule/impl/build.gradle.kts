@@ -13,5 +13,6 @@ dependencies {
     implementation(projects.core.data)
     implementation(projects.core.model)
     implementation(projects.core.domain)
+    implementation(projects.core.common)
     implementation(projects.feature.schedule.api)
 }

@@ -5,7 +5,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,33 +14,26 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Group
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.helpingstar.protest_alert.core.designsystem.theme.PaColor
+import io.github.helpingstar.protest_alert.core.designsystem.theme.PaTheme
 import io.github.helpingstar.protest_alert.core.designsystem.theme.fontFamily
 import io.github.helpingstar.protest_alert.core.model.data.FollowableRegion
 import io.github.helpingstar.protest_alert.core.model.data.ProtestResource
@@ -50,16 +42,13 @@ import io.github.helpingstar.protest_alert.core.model.data.UserData
 import io.github.helpingstar.protest_alert.core.model.data.UserProtestResource
 import io.github.helpingstar.protest_alert.core.ui.ProtestFeedUiState
 import io.github.helpingstar.protest_alert.core.ui.RegionsTabContent
+import io.github.helpingstar.protest_alert.core.util.getKoreanDayOfWeek
+import io.github.helpingstar.protest_alert.feature.schedule.impl.component.ScheduleItem
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
-import kotlinx.datetime.toLocalDateTime
 import java.util.Locale
 import kotlin.math.log10
 import kotlin.time.Instant
-
-private val TagBackground = Color(0x1A3899FA) // rgba(56,153,250,0.1)
-
 
 @Composable
 fun ScheduleScreen(
@@ -238,162 +227,18 @@ private fun DateHeader(
             Locale.ROOT, "%02d",
             date.day
         )
-    }일"
+    }일 (${date.getKoreanDayOfWeek()})"
 
     Text(
         text = formattedDate,
-        fontSize = 18.sp,
-        fontWeight = FontWeight.Bold,
-        fontFamily = fontFamily,
+        style = MaterialTheme.typography.titleMedium,
         color = PaColor.textPrimary,
-        lineHeight = 28.sp,
         modifier = modifier
             .fillMaxWidth()
             .padding(bottom = 11.dp)
     )
 }
 
-
-@Composable
-private fun ScheduleItem(
-    protest: UserProtestResource,
-    modifier: Modifier = Modifier
-) {
-    val (startTime, endTime) = formatTimeRangePair(protest)
-    val calculatedAlpha = expToLinear(protest.participants ?: 0)
-
-    Card(
-        modifier = modifier
-            .fillMaxWidth(),
-        shape = RoundedCornerShape(10.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = PaColor.surfaceCard.copy(alpha = calculatedAlpha.toFloat())
-        ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 0.dp
-        )
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(12.dp)
-        ) {
-            // Time text - vertically centered, 3 lines (start, ~, end)
-            Column(
-                modifier = Modifier,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = "$startTime\n~\n$endTime",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = fontFamily,
-                    color = PaColor.textPrimary,
-                    lineHeight = 18.sp,
-                    textAlign = TextAlign.Center
-                )
-            }
-
-            Column(
-                modifier = Modifier
-                    .padding(start = 25.dp)
-                    .weight(1f)
-            ) {
-                // Location text - top
-                Text(
-                    text = protest.location ?: "-",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = PaColor.textPrimary,
-                    fontFamily = fontFamily,
-                    lineHeight = 21.sp,
-                    modifier = Modifier
-                )
-
-                // Bottom row: participants info
-                Row(
-                    modifier = Modifier.padding(top = 5.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Group,
-                        contentDescription = null,
-                        modifier = Modifier.size(16.dp),
-                        tint = PaColor.textSecondary
-                    )
-
-                    Spacer(modifier = Modifier.width(8.dp))
-
-                    Text(
-                        text = "참여자 ${formatParticipantsWithComma(protest.participants)}명",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = fontFamily,
-                        color = PaColor.textSecondary,
-                        lineHeight = 20.sp
-                    )
-                }
-            }
-
-
-            // Region tag - vertically centered, right side
-            RegionTag(
-                region = protest.region,
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-            )
-        }
-    }
-}
-
-@Composable
-private fun RegionTag(
-    region: String,
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier
-            .height(28.dp)
-            .background(
-                color = TagBackground,
-                shape = RoundedCornerShape(14.dp)
-            )
-            .padding(horizontal = 12.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = region,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Bold,
-            fontFamily = fontFamily,
-            color = PaColor.accentPrimary,
-            lineHeight = 20.sp
-        )
-    }
-}
-
-
-private fun formatTimeRangePair(protest: UserProtestResource): Pair<String, String> {
-    val timeZone = TimeZone.of("Asia/Seoul")
-
-    val startTime = protest.startAt?.let {
-        val localDateTime = it.toLocalDateTime(timeZone)
-        String.format(Locale.ROOT, "%02d:%02d", localDateTime.hour, localDateTime.minute)
-    } ?: "--:--"
-
-    val endTime = protest.endAt?.let {
-        val localDateTime = it.toLocalDateTime(timeZone)
-        String.format(Locale.ROOT, "%02d:%02d", localDateTime.hour, localDateTime.minute)
-    } ?: "--:--"
-
-    return Pair(startTime, endTime)
-}
-
-private fun formatParticipantsWithComma(count: Int?): String {
-    return count?.let {
-        String.format(Locale.ROOT, "%,d", it)
-    } ?: "0"
-}
 
 /**
  * Groups protests by date, sorted in descending order (most recent first).
@@ -470,13 +315,15 @@ private fun ScheduleScreenWithOnboardingPreview() {
         ),
     ).map { UserProtestResource(it, userData) }
 
-    ScheduleScreen(
-        isSyncing = false,
-        onboardingUiState = OnboardingUiState.Shown(regions = sampleRegions),
-        onRegionCheckedChanged = { _, _ -> },
-        feedState = ProtestFeedUiState.Success(feed = sampleProtests),
-        saveFollowedRegions = {},
-    )
+    PaTheme {
+        ScheduleScreen(
+            isSyncing = false,
+            onboardingUiState = OnboardingUiState.Shown(regions = sampleRegions),
+            onRegionCheckedChanged = { _, _ -> },
+            feedState = ProtestFeedUiState.Success(feed = sampleProtests),
+            saveFollowedRegions = {},
+        )
+    }
 }
 
 @Preview(showBackground = true)
@@ -522,12 +369,14 @@ private fun ScheduleScreenOnlyContentPreview() {
         ),
     ).map { UserProtestResource(it, userData) }
 
-    ScheduleScreen(
-        isSyncing = false,
-        onboardingUiState = OnboardingUiState.NotShown,
-        onRegionCheckedChanged = { _, _ -> },
-        feedState = ProtestFeedUiState.Success(feed = sampleProtests),
-        saveFollowedRegions = {},
-    )
+    PaTheme {
+        ScheduleScreen(
+            isSyncing = false,
+            onboardingUiState = OnboardingUiState.NotShown,
+            onRegionCheckedChanged = { _, _ -> },
+            feedState = ProtestFeedUiState.Success(feed = sampleProtests),
+            saveFollowedRegions = {},
+        )
+    }
 }
 
