@@ -22,6 +22,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.helpingstar.protest_alert.core.designsystem.component.NavigationListItem
 import io.github.helpingstar.protest_alert.core.designsystem.icon.PaIcons
+import io.github.helpingstar.protest_alert.core.designsystem.theme.PaTheme
 import io.github.helpingstar.protest_alert.core.model.data.FollowableRegion
 import io.github.helpingstar.protest_alert.core.model.data.Region
 import io.github.helpingstar.protest_alert.core.ui.LocalSnackbarHostState
@@ -158,14 +159,15 @@ private fun SettingsScreenPreview() {
         FollowableRegion(Region("대구", "대구", Instant.DISTANT_PAST), isFollowed = false),
         FollowableRegion(Region("대전", "대전", Instant.DISTANT_PAST), isFollowed = false),
     )
-
-    SettingsScreen(
-        uiState = SettingsUiState.Settings(regions = sampleRegions),
-        feedbackState = FeedbackState.Idle,
-        followRegion = { _, _ -> },
-        onSubmitFeedback = { },
-        onResetFeedbackState = { },
-    )
+    PaTheme {
+        SettingsScreen(
+            uiState = SettingsUiState.Settings(regions = sampleRegions),
+            feedbackState = FeedbackState.Idle,
+            followRegion = { _, _ -> },
+            onSubmitFeedback = { },
+            onResetFeedbackState = { },
+        )
+    }
 }
 
 private const val PRIVACY_POLICY_URL = "https://helpingstar.github.io/app/protestalert/privacy/"

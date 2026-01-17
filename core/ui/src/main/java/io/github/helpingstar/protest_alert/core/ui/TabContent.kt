@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.github.helpingstar.protest_alert.core.designsystem.theme.PaTheme
 import io.github.helpingstar.protest_alert.core.designsystem.theme.fontFamily
 import io.github.helpingstar.protest_alert.core.model.data.FollowableRegion
 import io.github.helpingstar.protest_alert.core.model.data.Region
@@ -55,11 +57,8 @@ fun RegionsTabContent(
     ) {
         Text(
             text = title,
-            fontSize = 18.sp,
-            fontFamily = fontFamily,
-            fontWeight = FontWeight.SemiBold,
+            style = MaterialTheme.typography.titleSmall,
             color = TitleTextColor,
-            lineHeight = 24.sp,
         )
 
         LazyVerticalGrid(
@@ -127,23 +126,15 @@ private fun SelectableRegionChip(
             }
             Text(
                 text = regionName,
-                fontSize = 14.sp,
-                fontFamily = fontFamily,
-                fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
+                style = MaterialTheme.typography.bodyMedium,
                 color = contentColor,
-                lineHeight = 20.sp,
             )
         }
     }
 }
 
 
-@Preview(
-    name = "Small width (320dp)",
-    widthDp = 390,
-    heightDp = 640,
-    showBackground = true
-)
+@Preview
 @Composable
 private fun RegionsTabContentPreview() {
     val sampleRegions = listOf(
@@ -166,9 +157,11 @@ private fun RegionsTabContentPreview() {
         FollowableRegion(Region("제주", "제주", Instant.DISTANT_PAST), isFollowed = false),
     )
 
-    RegionsTabContent(
-        title = "관심 지역 선택",
-        regions = sampleRegions,
-        onFollowButtonClick = { _, _ -> },
-    )
+    PaTheme {
+        RegionsTabContent(
+            title = "관심 지역 선택",
+            regions = sampleRegions,
+            onFollowButtonClick = { _, _ -> },
+        )
+    }
 }
