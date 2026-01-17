@@ -8,10 +8,11 @@ import androidx.room.PrimaryKey
 import io.github.helpingstar.protest_alert.core.model.data.ProtestResource
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.json.JsonObject
-import kotlin.time.ExperimentalTime
+import kotlinx.serialization.json.JsonPrimitive
+
 import kotlin.time.Instant
 
-@OptIn(ExperimentalTime::class)
+
 @Entity(
     tableName = "protest_resources",
     foreignKeys = [
@@ -42,7 +43,7 @@ data class ProtestResourceEntity(
     val updatedAt: Instant
 )
 
-@OptIn(ExperimentalTime::class)
+
 fun ProtestResourceEntity.asExternalModel() = ProtestResource(
     id = id,
     date = date,
@@ -50,8 +51,13 @@ fun ProtestResourceEntity.asExternalModel() = ProtestResource(
     endAt = endAt,
     location = location,
     participants = participants,
-    additionalInfo = additionalInfo,
+    additionalInfo = additionalInfo?.toStringMap(),
     createdAt = createdAt,
     region = region,
     updatedAt = updatedAt
 )
+
+private fun JsonObject.toStringMap(): Map<String, String> =
+    mapValues { (_, value) ->
+        (value as? JsonPrimitive)?.content ?: value.toString()
+    }

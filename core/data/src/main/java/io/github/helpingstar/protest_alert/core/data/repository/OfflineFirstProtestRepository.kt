@@ -17,11 +17,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.LocalDate
 import javax.inject.Inject
-import kotlin.time.ExperimentalTime
+
 
 private const val SYNC_BATCH_SIZE = 10
 
-@OptIn(ExperimentalTime::class)
+
 internal class OfflineFirstProtestRepository @Inject constructor(
     private val paPreferencesDataSource: PaPreferencesDataSource,
     private val protestResourceDao: ProtestResourceDao,
