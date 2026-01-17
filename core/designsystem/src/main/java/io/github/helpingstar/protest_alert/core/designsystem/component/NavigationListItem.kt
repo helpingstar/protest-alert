@@ -10,20 +10,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.github.helpingstar.protest_alert.core.designsystem.icon.PaIcons
 import io.github.helpingstar.protest_alert.core.designsystem.theme.PaColor
-import io.github.helpingstar.protest_alert.core.designsystem.theme.fontFamily
+import io.github.helpingstar.protest_alert.core.designsystem.theme.PaTheme
 
 /**
  * NavigationListItem component that displays a clickable list item with an icon,
@@ -77,13 +75,7 @@ fun NavigationListItem(
 
                 Text(
                     text = text,
-                    style = TextStyle(
-                        fontFamily = fontFamily,
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 16.sp,
-                        lineHeight = 24.sp,
-                        color = PaColor.textPrimary,
-                    ),
+                    style = MaterialTheme.typography.bodyLarge,
                 )
             }
 
@@ -101,9 +93,11 @@ fun NavigationListItem(
 @Preview(showBackground = true)
 @Composable
 private fun NavigationListItemPreview() {
-    NavigationListItem(
-        text = "개발자에게 바란다",
-        leadingIcon = PaIcons.Info,
-        onClick = {},
-    )
+    PaTheme {
+        NavigationListItem(
+            text = "개발자에게 바란다",
+            leadingIcon = PaIcons.Info,
+            onClick = {},
+        )
+    }
 }
