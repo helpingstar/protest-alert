@@ -197,18 +197,22 @@ private fun ScheduleContent(
                         DateHeader(date = date)
                     }
 
+                    item {
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
+
                     itemsIndexed(
                         items = protestsForDate,
                         key = { _, protest -> protest.id }
                     ) { index, protest ->
                         ScheduleItem(protest = protest)
                         if (index < protestsForDate.size - 1) {
-                            Spacer(modifier = Modifier.height(12.dp))
+                            Spacer(modifier = Modifier.height(16.dp))
                         }
                     }
 
                     item {
-                        Spacer(modifier = Modifier.height(17.dp))
+                        Spacer(modifier = Modifier.height(32.dp))
                     }
                 }
             }
@@ -235,7 +239,6 @@ private fun DateHeader(
         color = PaColor.textPrimary,
         modifier = modifier
             .fillMaxWidth()
-            .padding(bottom = 11.dp)
     )
 }
 
