@@ -11,41 +11,33 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import io.github.helpingstar.protest_alert.core.designsystem.theme.PaColor
 import io.github.helpingstar.protest_alert.core.designsystem.theme.PaTheme
+import io.github.helpingstar.protest_alert.core.designsystem.theme.fontFamily
 
-/**
- * Region chip component
- *
- * Figma element name: 지역 칩
- * Figma element type: Frame
- * Figma node-id: 141-702 (part of ScheduleItem)
- *
- * Displays the region name with accent primary background (10% opacity).
- *
- * Dependencies: None (leaf component)
- *
- * @param region Region name to display
- * @param modifier Optional modifier for the component
- */
 @Composable
 internal fun RegionChip(
     region: String,
     modifier: Modifier = Modifier
 ) {
+    val mainColor = MaterialTheme.colorScheme.primary
     Box(
         modifier = modifier
             .background(
-                color = PaColor.accentPrimary.copy(alpha = 0.1f),
-                shape = RoundedCornerShape(11.dp)
+                color = mainColor.copy(alpha = 0.1f),
+                shape = RoundedCornerShape(8.dp)
             )
-            .padding(horizontal = 12.dp, vertical = 2.dp),
+            .padding(horizontal = 10.dp, vertical = 4.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = region,
+            fontFamily = fontFamily,
+            fontSize = 14.sp,
+            lineHeight = 20.sp,
             style = MaterialTheme.typography.bodyMedium,
-            color = PaColor.accentPrimary
+            color = mainColor.copy()
         )
     }
 }
