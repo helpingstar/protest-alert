@@ -81,12 +81,12 @@ internal fun ScheduleItem(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             // Section 1: Top row with TimeChip and RegionChip, plus Location heading
             Column(
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 // Row with TimeChip (left) and RegionChip (right)
                 Row(
@@ -119,7 +119,7 @@ internal fun ScheduleItem(
 
             // Section 2: Participants and Jurisdiction
             Column(
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 ParticipantsRow(
                     participantCount = formatParticipantsWithComma(protest.participants)
