@@ -26,7 +26,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -44,10 +48,14 @@ import io.github.helpingstar.protest_alert.core.ui.ProtestFeedUiState
 import io.github.helpingstar.protest_alert.core.ui.RegionsTabContent
 import io.github.helpingstar.protest_alert.core.util.getKoreanDayOfWeek
 import io.github.helpingstar.protest_alert.feature.schedule.impl.component.ScheduleItem
+import io.github.helpingstar.protest_alert.feature.schedule.impl.component.TodayChip
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
+import kotlinx.datetime.toLocalDateTime
 import java.util.Locale
 import kotlin.math.log10
+import kotlin.time.Clock
 import kotlin.time.Instant
 
 @Composable
@@ -224,22 +232,52 @@ private fun ScheduleContent(
 @Composable
 private fun DateHeader(
     date: LocalDate,
+    today: LocalDate = Clock.System.now()
+        .toLocalDateTime(TimeZone.currentSystemDefault())
+        .date,
     modifier: Modifier = Modifier
 ) {
-    val formattedDate = "${date.year}년 ${String.format(Locale.ROOT, "%02d", date.month.number)}월 ${
+    val datePart = "${date.year}년 ${String.format(Locale.ROOT, "%02d", date.month.number)}월 ${
         String.format(
             Locale.ROOT, "%02d",
             date.day
         )
-    }일 (${date.getKoreanDayOfWeek()})"
+    }일 ("
+    val dayOfWeek = date.getKoreanDayOfWeek()
 
-    Text(
-        text = formattedDate,
-        style = MaterialTheme.typography.titleMedium,
-        color = PaColor.textPrimary,
-        modifier = modifier
-            .fillMaxWidth()
-    )
+    val isToday = date == today
+    val isSaturday = date.dayOfWeek.ordinal == 5
+    val isSunday = date.dayOfWeek.ordinal == 6
+
+    val dayOfWeekColor = when {
+        isSunday -> Color(0xFFE11D48)  // Red (same as TodayChip background)
+        isSaturday -> Color(0xFF2B7FFF) // Blue (same as primary color)
+        else -> MaterialTheme.colorScheme.onBackground
+    }
+
+    val annotatedString = buildAnnotatedString {
+        append(datePart)
+        withStyle(style = SpanStyle(color = dayOfWeekColor)) {
+            append(dayOfWeek)
+        }
+        append(")")
+    }
+
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = annotatedString,
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+
+        if (isToday) {
+            TodayChip()
+        }
+    }
 }
 
 
@@ -259,18 +297,6 @@ private fun groupProtestsByDate(
         }
 }
 
-fun expToLinear(value: Int, max: Int = 100_000, minOut: Double = 0.2): Double {
-    require(minOut in 0.0..1.0) { "minOut must be within [0.0, 1.0]" }
-
-    val clamped = value.coerceIn(0, max)
-
-    // 0은 로그 계산 불가 -> 하한으로 매핑
-    if (clamped == 0) return minOut.coerceIn(0.0, 1.0)
-
-    val t = log10(clamped.toDouble()) / log10(max.toDouble())
-    val out = minOut + t * (1.0 - minOut)
-    return out.coerceIn(minOut, 1.0)
-}
 
 @Preview(showBackground = true)
 @Composable
@@ -379,6 +405,54 @@ private fun ScheduleScreenOnlyContentPreview() {
             onRegionCheckedChanged = { _, _ -> },
             feedState = ProtestFeedUiState.Success(feed = sampleProtests),
             saveFollowedRegions = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun DateHeaderTodayPreview() {
+    val testDate = LocalDate(2025, 2, 2)  // Sunday
+    PaTheme {
+        DateHeader(
+            date = testDate,
+            today = testDate  // Make it "today"
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun DateHeaderSaturdayPreview() {
+    val testDate = LocalDate(2025, 2, 1)  // Saturday
+    PaTheme {
+        DateHeader(
+            date = testDate,
+            today = LocalDate(2025, 2, 2)  // Not today
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun DateHeaderSundayPreview() {
+    val testDate = LocalDate(2025, 2, 2)  // Sunday
+    PaTheme {
+        DateHeader(
+            date = testDate,
+            today = LocalDate(2025, 2, 3)  // Not today
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun DateHeaderWeekdayPreview() {
+    val testDate = LocalDate(2025, 2, 3)  // Monday
+    PaTheme {
+        DateHeader(
+            date = testDate,
+            today = LocalDate(2025, 2, 4)  // Not today
         )
     }
 }
