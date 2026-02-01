@@ -5,12 +5,16 @@ import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
 import androidx.compose.material.icons.filled.ChatBubble
 import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.Group
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Shield
 import androidx.compose.material.icons.rounded.CalendarMonth
 import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.Schedule
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.rounded.Shield
 
 
 object PaIcons {
@@ -24,4 +28,12 @@ object PaIcons {
     val Close = Icons.Outlined.Close
     val ChatBubble = Icons.Default.ChatBubble
     val Check = Icons.Rounded.Check
+
+    val ScheduleRounded = Icons.Rounded.Schedule
+
+    val GroupBorder = Icons.Outlined.Group
+
+    val ShieldBorder = Icons.Outlined.Shield
+
+
 }
