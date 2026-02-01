@@ -1,33 +1,30 @@
 package io.github.helpingstar.protest_alert.feature.schedule.impl.component
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Group
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.helpingstar.protest_alert.core.designsystem.theme.PaColor
+import androidx.compose.ui.unit.sp
 import io.github.helpingstar.protest_alert.core.designsystem.theme.PaTheme
+import io.github.helpingstar.protest_alert.core.designsystem.theme.fontFamily
 import io.github.helpingstar.protest_alert.core.model.data.ProtestResource
 import io.github.helpingstar.protest_alert.core.model.data.UserData
 import io.github.helpingstar.protest_alert.core.model.data.UserProtestResource
-import io.github.helpingstar.protest_alert.feature.schedule.impl.expToLinear
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -37,25 +34,27 @@ import kotlin.time.Instant
 /**
  * Schedule item card component
  *
- * Figma element name: 집회 일정 아이템
+ * Figma element name: RallyCard
  * Figma element type: Frame
- * Figma node-id: 141-702
+ * Figma node-id: 192:756
  *
- * Displays a single protest schedule item with time, region, location,
- * participants count, and jurisdiction chips.
+ * Displays a single protest schedule item with time chip, region chip,
+ * location heading, participants row, and jurisdiction row.
  *
  * Dependencies:
+ * - [TimeChip]
  * - [RegionChip]
- * - [JurisdictionChip]
- * - [JurisdictionChipRow]
+ * - [ParticipantsRow]
+ * - [JurisdictionRow]
  *
  * Layout structure:
  * ```
  * ┌─────────────────────────────────────────────────────────┐
- * │  09:00    서울고용노동청 → 건보공단 강동지사 <장교동 등>  │
- * │    ~      👥 참여자 7,000명                             │
- * │  12:00    [마포] [강남] [홍대] [이태원]                  │
- * │  [서울]   [압구정]                                      │
+ * │  [09:00 ~ 22:00]                              [서울]   │
+ * │  서울광장 및 세종대로 일대                             │
+ * │  ───────────────────────────────────────────────────   │
+ * │  👥 참여자 50,000명                                    │
+ * │  🛡️ [중부] [서대문] [중로] [종로]                     │
  * └─────────────────────────────────────────────────────────┘
  * ```
  *
@@ -67,68 +66,68 @@ internal fun ScheduleItem(
     protest: UserProtestResource,
     modifier: Modifier = Modifier
 ) {
-    val (startTime, endTime) = formatTimeRangePair(protest)
-    val calculatedAlpha = expToLinear(protest.participants ?: 0)
+    val timeRange = formatTimeRange(protest)
     val jurisdictions = parseJurisdictions(protest.additionalInfo)
 
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = PaColor.surfaceCard.copy(alpha = calculatedAlpha.toFloat())
+            containerColor = MaterialTheme.colorScheme.surface
         ),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                .padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Left column: Time + RegionChip
+            // Section 1: Top row with TimeChip and RegionChip, plus Location heading
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Text(
-                    text = "$startTime\n~\n$endTime",
-                    style = MaterialTheme.typography.titleSmall,
-                    color = PaColor.textPrimary,
-                    textAlign = TextAlign.Center
-                )
-                RegionChip(region = protest.region)
-            }
-
-            // Right column: Location + Participants + Jurisdiction chips
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                // Location text
-                Text(
-                    text = protest.location ?: "-",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = PaColor.textPrimary
-                )
-
-                // Participants row
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = Icons.Default.Group,
-                        contentDescription = null,
-                        modifier = Modifier.size(16.dp),
-                        tint = PaColor.textSecondary
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "참여자 ${formatParticipantsWithComma(protest.participants)}명",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = PaColor.textSecondary
-                    )
+                // Row with TimeChip (left) and RegionChip (right)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    TimeChip(time = timeRange)
+                    RegionChip(region = protest.region)
                 }
 
-                // Jurisdiction chips
-                JurisdictionChipRow(jurisdictions = jurisdictions)
+                // Location heading
+                Text(
+                    text = protest.location ?: "-",
+                    style = TextStyle(
+                        fontFamily = fontFamily,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                        lineHeight = 23.sp
+                    ),
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+
+            // Divider
+            HorizontalDivider(
+                color = MaterialTheme.colorScheme.outline,
+                thickness = 1.dp
+            )
+
+            // Section 2: Participants and Jurisdiction
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                ParticipantsRow(
+                    participantCount = formatParticipantsWithComma(protest.participants)
+                )
+
+                if (jurisdictions.isNotEmpty()) {
+                    JurisdictionRow(jurisdictions = jurisdictions)
+                }
             }
         }
     }
@@ -146,7 +145,11 @@ private fun parseJurisdictions(additionalInfo: Map<String, String>?): List<Strin
         ?: emptyList()
 }
 
-private fun formatTimeRangePair(protest: UserProtestResource): Pair<String, String> {
+/**
+ * Formats the time range for display in TimeChip.
+ * Returns format: "HH:MM ~ HH:MM" (e.g., "09:00 ~ 22:00")
+ */
+private fun formatTimeRange(protest: UserProtestResource): String {
     val timeZone = TimeZone.of("Asia/Seoul")
 
     val startTime = protest.startAt?.let {
@@ -159,13 +162,17 @@ private fun formatTimeRangePair(protest: UserProtestResource): Pair<String, Stri
         String.format(Locale.ROOT, "%02d:%02d", localDateTime.hour, localDateTime.minute)
     } ?: "--:--"
 
-    return Pair(startTime, endTime)
+    return "$startTime ~ $endTime"
 }
 
+/**
+ * Formats participant count with thousand separators and "명" suffix.
+ * Returns format: "N,NNN명" (e.g., "50,000명")
+ */
 private fun formatParticipantsWithComma(count: Int?): String {
     return count?.let {
-        String.format(Locale.ROOT, "%,d", it)
-    } ?: "0"
+        String.format(Locale.ROOT, "%,d명", it)
+    } ?: "0명"
 }
 
 @Preview(showBackground = true)
@@ -175,11 +182,11 @@ private fun ScheduleItemPreview() {
     val protest = ProtestResource(
         id = 1L,
         date = LocalDate(2025, 1, 15),
-        startAt = Instant.parse("2025-01-15T00:00:00Z"),
-        endAt = Instant.parse("2025-01-15T03:00:00Z"),
-        location = "서울고용노동청 → 건보공단 강동지사 <장교동 등>",
-        participants = 7000,
-        additionalInfo = mapOf("jurisdiction" to "중 부\n남대문\n성 동\n광 진\n강 동"),
+        startAt = Instant.parse("2025-01-15T00:00:00Z"),  // 09:00 KST
+        endAt = Instant.parse("2025-01-15T13:00:00Z"),    // 22:00 KST
+        location = "서울광장 및 세종대로 일대",
+        participants = 50000,
+        additionalInfo = mapOf("jurisdiction" to "중부\n서대문\n중로\n종로"),
         createdAt = Instant.DISTANT_PAST,
         region = "서울",
         updatedAt = Instant.DISTANT_PAST
