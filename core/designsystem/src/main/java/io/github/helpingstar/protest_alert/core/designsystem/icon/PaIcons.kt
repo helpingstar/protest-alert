@@ -1,5 +1,6 @@
 package io.github.helpingstar.protest_alert.core.designsystem.icon
 
+import androidx.annotation.DrawableRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
 import androidx.compose.material.icons.filled.ChatBubble
@@ -14,7 +15,7 @@ import androidx.compose.material.icons.rounded.CalendarMonth
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Schedule
 import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.material.icons.rounded.Shield
+import io.github.helpingstar.protest_alert.core.designsystem.R
 
 
 object PaIcons {
@@ -35,5 +36,10 @@ object PaIcons {
 
     val ShieldBorder = Icons.Outlined.Shield
 
+    @DrawableRes
+    val NotificationsBorder = R.drawable.ic_notifications_border
+
+    @DrawableRes
+    val NotificationsUnreadBorder = R.drawable.ic_notifications_unread_border
 
 }
