@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.github.helpingstar.protest_alert.database.PaDatabase
+import io.github.helpingstar.protest_alert.database.dao.AnnouncementDao
 import io.github.helpingstar.protest_alert.database.dao.ProtestResourceDao
 import io.github.helpingstar.protest_alert.database.dao.RegionDao
 
@@ -20,4 +21,9 @@ internal object DaosModule {
     fun providesProtestResourceDao(
         database: PaDatabase
     ): ProtestResourceDao = database.protestResourceDao()
+
+    @Provides
+    fun providesAnnouncementDao(
+        database: PaDatabase
+    ): AnnouncementDao = database.announcementDao()
 }
