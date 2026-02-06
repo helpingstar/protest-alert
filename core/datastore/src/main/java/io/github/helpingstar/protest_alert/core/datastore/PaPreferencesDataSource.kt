@@ -48,6 +48,9 @@ class PaPreferencesDataSource @Inject constructor(
                 ),
                 protestResourceLastUpdatedAt = Instant.parse(
                     it.protestResourceLastUpdatedAt.ifEmpty { "1970-01-01T00:00:00Z" }
+                ),
+                announcementLastUpdatedAt = Instant.parse(
+                    it.announcementLastUpdatedAt.ifEmpty { "1970-01-01T00:00:00Z" }
                 )
             )
         }
@@ -60,6 +63,7 @@ class PaPreferencesDataSource @Inject constructor(
                     LastUpdatedAt(
                         regionLastUpdatedAt = Instant.parse(currentPreferences.regionLastUpdatedAt.ifEmpty { "1970-01-01T00:00:00Z" }),
                         protestResourceLastUpdatedAt = Instant.parse(currentPreferences.protestResourceLastUpdatedAt.ifEmpty { "1970-01-01T00:00:00Z" }),
+                        announcementLastUpdatedAt = Instant.parse(currentPreferences.announcementLastUpdatedAt.ifEmpty { "1970-01-01T00:00:00Z" }),
                     )
                 )
 
@@ -67,6 +71,8 @@ class PaPreferencesDataSource @Inject constructor(
                     regionLastUpdatedAt = updatedLastUpdatedAt.regionLastUpdatedAt.toString()
                     protestResourceLastUpdatedAt =
                         updatedLastUpdatedAt.protestResourceLastUpdatedAt.toString()
+                    announcementLastUpdatedAt =
+                        updatedLastUpdatedAt.announcementLastUpdatedAt.toString()
                 }
             }
         } catch (ioException: IOException) {

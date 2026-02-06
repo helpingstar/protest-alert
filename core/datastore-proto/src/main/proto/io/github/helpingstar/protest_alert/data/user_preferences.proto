@@ -8,4 +8,5 @@ message UserPreferences {
   string protestResourceLastUpdatedAt = 2;
   map<string, bool> followed_region_ids = 3;
   bool should_hide_onboarding = 4;
+  string announcementLastUpdatedAt = 5;
 }

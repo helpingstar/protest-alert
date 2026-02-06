@@ -4,8 +4,10 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.github.helpingstar.protest_alert.core.data.repository.AnnouncementRepository
 import io.github.helpingstar.protest_alert.core.data.repository.DefaultFeedbackRepository
 import io.github.helpingstar.protest_alert.core.data.repository.FeedbackRepository
+import io.github.helpingstar.protest_alert.core.data.repository.OfflineFirstAnnouncementRepository
 import io.github.helpingstar.protest_alert.core.data.repository.OfflineFirstProtestRepository
 import io.github.helpingstar.protest_alert.core.data.repository.OfflineFirstRegionsRepository
 import io.github.helpingstar.protest_alert.core.data.repository.OfflineFirstUserDataRepository
@@ -42,4 +44,9 @@ abstract class DataModule {
     internal abstract fun bindsFeedbackRepository(
         feedbackRepository: DefaultFeedbackRepository,
     ): FeedbackRepository
+
+    @Binds
+    internal abstract fun bindsAnnouncementRepository(
+        announcementRepository: OfflineFirstAnnouncementRepository,
+    ): AnnouncementRepository
 }
