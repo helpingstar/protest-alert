@@ -10,6 +10,7 @@ import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import io.github.helpingstar.protest_alert.core.data.Synchronizer
+import io.github.helpingstar.protest_alert.core.data.repository.AnnouncementRepository
 import io.github.helpingstar.protest_alert.core.data.repository.ProtestRepository
 import io.github.helpingstar.protest_alert.core.data.repository.RegionsRepository
 import io.github.helpingstar.protest_alert.core.datastore.LastUpdatedAt
@@ -31,6 +32,7 @@ internal class SyncWorker @AssistedInject constructor(
     private val paPreferences: PaPreferencesDataSource,
     private val regionRepository: RegionsRepository,
     private val protestRepository: ProtestRepository,
+    private val announcementRepository: AnnouncementRepository,
     @Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher,
     private val syncSubscriber: SyncSubscriber,
 ) : CoroutineWorker(appContext, workerParams), Synchronizer {
@@ -43,7 +45,8 @@ internal class SyncWorker @AssistedInject constructor(
 
         val syncedSuccessfully = awaitAll(
             async { regionRepository.sync() },
-            async { protestRepository.sync() }
+            async { protestRepository.sync() },
+            async { announcementRepository.sync() }
         ).all { it }
 
         if (syncedSuccessfully) {
