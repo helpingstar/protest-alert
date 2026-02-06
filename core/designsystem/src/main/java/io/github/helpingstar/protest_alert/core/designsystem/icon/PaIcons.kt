@@ -42,4 +42,7 @@ object PaIcons {
     @DrawableRes
     val NotificationsUnreadBorder = R.drawable.ic_notifications_unread_border
 
+    @DrawableRes
+    val EventBusyBorder = R.drawable.ic_event_busy_border
+
 }
