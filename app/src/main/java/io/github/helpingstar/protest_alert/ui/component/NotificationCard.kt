@@ -65,8 +65,6 @@ fun NotificationCard(
         colors = CardDefaults.cardColors(
             containerColor = colors.backgroundColor
         ),
-        border = BorderStroke(1.dp, colors.borderColor),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
             modifier = Modifier

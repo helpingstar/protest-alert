@@ -32,20 +32,24 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import io.github.helpingstar.protest_alert.MainActivityViewModel
 import io.github.helpingstar.protest_alert.R
 import io.github.helpingstar.protest_alert.core.designsystem.component.PaBackground
 import io.github.helpingstar.protest_alert.core.designsystem.component.PaNavigationSuiteScaffold
 import io.github.helpingstar.protest_alert.core.designsystem.component.PaTopAppbar
+import io.github.helpingstar.protest_alert.core.designsystem.icon.PaIcons
 import io.github.helpingstar.protest_alert.core.navigation.Navigator
 import io.github.helpingstar.protest_alert.core.ui.LocalSnackbarHostState
 import io.github.helpingstar.protest_alert.feature.schedule.impl.navigation.scheduleEntry
 import io.github.helpingstar.protest_alert.feature.settings.impl.navigation.settingsEntry
 import io.github.helpingstar.protest_alert.navigation.TOP_LEVEL_NAV_ITEMS
+import io.github.helpingstar.protest_alert.ui.component.AnnouncementBottomSheet
 
 private const val TAG = "PaApp"
 
@@ -85,10 +89,16 @@ internal fun PaAppContent(
     appState: PaAppState,
     modifier: Modifier = Modifier,
     windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
+    viewModel: MainActivityViewModel = hiltViewModel(),
 ) {
     val snackbarHostState = LocalSnackbarHostState.current
 
     val navigator = remember { Navigator(appState.navigationState) }
+
+    // Announcement state
+    val showAnnouncementSheet by viewModel.showAnnouncementSheet.collectAsStateWithLifecycle()
+    val announcements by viewModel.announcements.collectAsStateWithLifecycle()
+    val hasUnreadAnnouncements by viewModel.hasUnreadAnnouncements.collectAsStateWithLifecycle()
 
     PaNavigationSuiteScaffold(
         navigationSuiteItems = {
@@ -156,7 +166,13 @@ internal fun PaAppContent(
                         titleRes = destination.titleTextId,
                         colors = TopAppBarDefaults.topAppBarColors(
                             containerColor = Color.Transparent
-                        )
+                        ),
+                        actionIconRes = if (hasUnreadAnnouncements) {
+                            PaIcons.NotificationsUnreadBorder
+                        } else {
+                            PaIcons.NotificationsBorder
+                        },
+                        onActionClick = { viewModel.openAnnouncementSheet() }
                     )
                 }
 
@@ -186,6 +202,16 @@ internal fun PaAppContent(
                     )
                 }
             }
+        }
+
+        // Announcement BottomSheet
+        if (showAnnouncementSheet) {
+            AnnouncementBottomSheet(
+                announcements = announcements,
+                onDismiss = { viewModel.closeAnnouncementSheet() },
+                onMarkAllRead = { viewModel.markAllAsRead() },
+                onAnnouncementClick = { id -> viewModel.markAsRead(id) }
+            )
         }
     }
 }

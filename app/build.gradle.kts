@@ -49,6 +49,7 @@ android {
 dependencies {
     implementation(projects.core.data)
     implementation(projects.core.designsystem)
+    implementation(projects.core.model)
     implementation(projects.core.navigation)
     implementation(projects.core.ui)
     implementation(projects.feature.schedule.api)
@@ -56,6 +57,9 @@ dependencies {
     implementation(projects.feature.settings.api)
     implementation(projects.feature.settings.impl)
     implementation(projects.sync.work)
+
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.kotlinx.datetime)
 
     ksp(libs.kotlin.metadata.jvm)
 
