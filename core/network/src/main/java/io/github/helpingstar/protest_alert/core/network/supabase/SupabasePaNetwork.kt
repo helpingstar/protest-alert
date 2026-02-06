@@ -1,6 +1,7 @@
 package io.github.helpingstar.protest_alert.core.network.supabase
 
 import io.github.helpingstar.protest_alert.core.network.PaNetworkDataSource
+import io.github.helpingstar.protest_alert.core.network.model.NetworkAnnouncement
 import io.github.helpingstar.protest_alert.core.network.model.NetworkChangeList
 import io.github.helpingstar.protest_alert.core.network.model.NetworkProtestResource
 import io.github.helpingstar.protest_alert.core.network.model.NetworkRegion
@@ -72,6 +73,48 @@ class SupabasePaNetwork @Inject constructor(
                     id = protestResource.id.toString(),
                     lastUpdatedAt = protestResource.updatedAt,
                     isDelete = false
+                )
+            }
+
+    override suspend fun getAnnouncements(ids: List<String>?): List<NetworkAnnouncement> =
+        supabaseClient.from("announcements")
+            .select {
+                filter {
+                    eq("status", "published")
+                    lte(
+                        "start_at",
+                        Instant.fromEpochMilliseconds(System.currentTimeMillis()).toString()
+                    )
+                    or {
+                        exact("end_at", null)
+                        gte(
+                            "end_at",
+                            Instant.fromEpochMilliseconds(System.currentTimeMillis()).toString()
+                        )
+                    }
+                    if (ids != null) {
+                        isIn("id", ids)
+                    }
+                }
+            }
+            .decodeList<NetworkAnnouncement>()
+
+    override suspend fun getAnnouncementChangeList(after: Instant?): List<NetworkChangeList> =
+        supabaseClient.from("announcements")
+            .select {
+                filter {
+                    isIn("status", listOf("published", "archived"))
+                    if (after != null) {
+                        gt("updated_at", after.toString())
+                    }
+                }
+            }
+            .decodeList<NetworkAnnouncement>()
+            .map { announcement ->
+                NetworkChangeList(
+                    id = announcement.id,
+                    lastUpdatedAt = announcement.updatedAt,
+                    isDelete = announcement.status == "archived"
                 )
             }
 
