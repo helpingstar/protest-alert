@@ -73,6 +73,17 @@ class ScheduleViewModel @Inject constructor(
                 initialValue = OnboardingUiState.Loading
             )
 
+    val followedRegionNames: StateFlow<List<String>> =
+        getFollowableRegions(RegionSortField.NAME)
+            .map { regions ->
+                regions.filter { it.isFollowed }.map { it.region.name }
+            }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = emptyList()
+            )
+
     fun updateRegionSelection(regionId: String, isChecked: Boolean) {
         viewModelScope.launch {
             userDataRepository.setRegionIdFollowed(regionId, isChecked)

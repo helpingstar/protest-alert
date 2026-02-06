@@ -47,6 +47,7 @@ import io.github.helpingstar.protest_alert.core.model.data.UserProtestResource
 import io.github.helpingstar.protest_alert.core.ui.ProtestFeedUiState
 import io.github.helpingstar.protest_alert.core.ui.RegionsTabContent
 import io.github.helpingstar.protest_alert.core.util.getKoreanDayOfWeek
+import io.github.helpingstar.protest_alert.feature.schedule.impl.component.EmptyStateContainer
 import io.github.helpingstar.protest_alert.feature.schedule.impl.component.ScheduleItem
 import io.github.helpingstar.protest_alert.feature.schedule.impl.component.TodayChip
 import kotlinx.datetime.LocalDate
@@ -66,11 +67,13 @@ fun ScheduleScreen(
     val onboardingUiState by viewModel.onboardingUiState.collectAsStateWithLifecycle()
     val feedState by viewModel.feedState.collectAsStateWithLifecycle()
     val isSyncing by viewModel.isSyncing.collectAsStateWithLifecycle()
+    val followedRegionNames by viewModel.followedRegionNames.collectAsStateWithLifecycle()
 
     ScheduleScreen(
         isSyncing = isSyncing,
         onboardingUiState = onboardingUiState,
         feedState = feedState,
+        followedRegionNames = followedRegionNames,
         onRegionCheckedChanged = viewModel::updateRegionSelection,
         saveFollowedRegions = viewModel::dismissOnboarding,
         modifier = modifier
@@ -81,8 +84,9 @@ fun ScheduleScreen(
 internal fun ScheduleScreen(
     isSyncing: Boolean,
     onboardingUiState: OnboardingUiState,
-    onRegionCheckedChanged: (String, Boolean) -> Unit,
     feedState: ProtestFeedUiState,
+    followedRegionNames: List<String>,
+    onRegionCheckedChanged: (String, Boolean) -> Unit,
     saveFollowedRegions: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -105,6 +109,7 @@ internal fun ScheduleScreen(
 
             ScheduleContent(
                 feedState = feedState,
+                followedRegionNames = followedRegionNames,
                 modifier = modifier
             )
         }
@@ -189,44 +194,50 @@ private fun Onboarding(
 @Composable
 private fun ScheduleContent(
     feedState: ProtestFeedUiState,
+    followedRegionNames: List<String>,
     modifier: Modifier = Modifier
 ) {
-
     when (feedState) {
         ProtestFeedUiState.Loading -> Unit
         is ProtestFeedUiState.Success -> {
-            val groupedProtests = groupProtestsByDate(feedState.feed)
+            if (feedState.feed.isEmpty()) {
+                EmptyStateContainer(
+                    followedRegionNames = followedRegionNames,
+                    modifier = modifier.fillMaxWidth()
+                )
+            } else {
+                val groupedProtests = groupProtestsByDate(feedState.feed)
 
-            LazyColumn(
-                modifier = modifier.fillMaxSize(),
-            ) {
-                groupedProtests.forEach { (date, protestsForDate) ->
-                    item(key = "header_$date") {
-                        DateHeader(date = date)
-                    }
+                LazyColumn(
+                    modifier = modifier.fillMaxSize(),
+                ) {
+                    groupedProtests.forEach { (date, protestsForDate) ->
+                        item(key = "header_$date") {
+                            DateHeader(date = date)
+                        }
 
-                    item {
-                        Spacer(modifier = Modifier.height(16.dp))
-                    }
-
-                    itemsIndexed(
-                        items = protestsForDate,
-                        key = { _, protest -> protest.id }
-                    ) { index, protest ->
-                        ScheduleItem(protest = protest)
-                        if (index < protestsForDate.size - 1) {
+                        item {
                             Spacer(modifier = Modifier.height(16.dp))
                         }
-                    }
 
-                    item {
-                        Spacer(modifier = Modifier.height(32.dp))
+                        itemsIndexed(
+                            items = protestsForDate,
+                            key = { _, protest -> protest.id }
+                        ) { index, protest ->
+                            ScheduleItem(protest = protest)
+                            if (index < protestsForDate.size - 1) {
+                                Spacer(modifier = Modifier.height(16.dp))
+                            }
+                        }
+
+                        item {
+                            Spacer(modifier = Modifier.height(32.dp))
+                        }
                     }
                 }
             }
         }
     }
-
 }
 
 @Composable
@@ -348,8 +359,9 @@ private fun ScheduleScreenWithOnboardingPreview() {
         ScheduleScreen(
             isSyncing = false,
             onboardingUiState = OnboardingUiState.Shown(regions = sampleRegions),
-            onRegionCheckedChanged = { _, _ -> },
             feedState = ProtestFeedUiState.Success(feed = sampleProtests),
+            followedRegionNames = listOf("서울", "대구"),
+            onRegionCheckedChanged = { _, _ -> },
             saveFollowedRegions = {},
         )
     }
@@ -402,8 +414,9 @@ private fun ScheduleScreenOnlyContentPreview() {
         ScheduleScreen(
             isSyncing = false,
             onboardingUiState = OnboardingUiState.NotShown,
-            onRegionCheckedChanged = { _, _ -> },
             feedState = ProtestFeedUiState.Success(feed = sampleProtests),
+            followedRegionNames = listOf("서울", "부산"),
+            onRegionCheckedChanged = { _, _ -> },
             saveFollowedRegions = {},
         )
     }
