@@ -76,7 +76,7 @@ internal fun SettingsScreen(
     }
 
     Column(
-        modifier = modifier.padding(16.dp),
+        modifier = modifier.padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
