@@ -8,12 +8,16 @@ import io.github.helpingstar.protest_alert.core.network.model.NetworkRegion
 import io.github.helpingstar.protest_alert.core.network.model.NetworkUserFeedback
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.from
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.minus
+import kotlinx.datetime.toLocalDateTime
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.time.Clock
 import kotlin.time.Instant
 
 @Singleton
-
 class SupabasePaNetwork @Inject constructor(
     private val supabaseClient: SupabaseClient,
 ) : PaNetworkDataSource {
@@ -29,16 +33,20 @@ class SupabasePaNetwork @Inject constructor(
             }
             .decodeList<NetworkRegion>()
 
-    override suspend fun getProtestResources(ids: List<String>?): List<NetworkProtestResource> =
-        supabaseClient.from("protests")
+    override suspend fun getProtestResources(ids: List<String>?): List<NetworkProtestResource> {
+        val sinceDate = recentWeekSinceDate()
+
+        return supabaseClient.from("protests")
             .select {
-                if (ids != null) {
-                    filter {
+                filter {
+                    gte("date", sinceDate)
+                    if (ids != null) {
                         isIn("id", ids)
                     }
                 }
             }
             .decodeList<NetworkProtestResource>()
+    }
 
     override suspend fun getRegionChangeList(after: Instant?): List<NetworkChangeList> =
         supabaseClient.from("regions")
@@ -58,11 +66,14 @@ class SupabasePaNetwork @Inject constructor(
                 )
             }
 
-    override suspend fun getProtestResourceChangeList(after: Instant?): List<NetworkChangeList> =
-        supabaseClient.from("protests")
+    override suspend fun getProtestResourceChangeList(after: Instant?): List<NetworkChangeList> {
+        val sinceDate = recentWeekSinceDate()
+
+        return supabaseClient.from("protests")
             .select {
-                if (after != null) {
-                    filter {
+                filter {
+                    gte("date", sinceDate)
+                    if (after != null) {
                         gt("updated_at", after.toString())
                     }
                 }
@@ -75,6 +86,7 @@ class SupabasePaNetwork @Inject constructor(
                     isDelete = false
                 )
             }
+    }
 
     override suspend fun getAnnouncements(ids: List<String>?): List<NetworkAnnouncement> =
         supabaseClient.from("announcements")
@@ -122,5 +134,12 @@ class SupabasePaNetwork @Inject constructor(
         supabaseClient.from("user_feedbacks")
             .insert(NetworkUserFeedback(content = content))
     }
+
+    private fun recentWeekSinceDate(): String =
+        Clock.System.now()
+            .toLocalDateTime(TimeZone.currentSystemDefault())
+            .date
+            .minus(7, DateTimeUnit.DAY)
+            .toString()
 
 }

@@ -54,16 +54,7 @@ internal class OfflineFirstProtestRepository @Inject constructor(
                 // TODO(hs) 온보딩, 알림기능 추가
 
                 changedIds.chunked(SYNC_BATCH_SIZE).forEach { chunkedIds ->
-                    // TODO(hs) 임시로직으로 백엔드 수정후 다시 변경되어야 함
-                    val tempNetworkProtestResources = network.getProtestResources(ids = chunkedIds)
-
-                    val networkProtestResources = tempNetworkProtestResources.map { item ->
-                        if (item.region == "SEOUL") {
-                            item.copy(region = "서울")
-                        } else {
-                            item
-                        }
-                    }
+                    val networkProtestResources = network.getProtestResources(ids = chunkedIds)
 
                     regionDao.insertOrIgnoreRegions(
                         regionEntities = networkProtestResources
