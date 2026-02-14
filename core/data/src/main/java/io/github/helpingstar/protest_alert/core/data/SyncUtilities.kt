@@ -56,7 +56,7 @@ suspend fun Synchronizer.changeListSync(
     modelUpdater(updated.map(NetworkChangeList::id))
 
     // Update the last synced version (akin to updating local git HEAD)
-    val latestVersion = changeList.last().lastUpdatedAt
+    val latestVersion = changeList.maxOf(NetworkChangeList::lastUpdatedAt)
     updateChangeListVersions {
         versionUpdater(latestVersion)
     }
