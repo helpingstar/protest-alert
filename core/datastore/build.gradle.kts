@@ -8,8 +8,8 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.dataStore)
-    implementation(projects.core.datastoreProto)
-    implementation(projects.core.model)
+    api(libs.androidx.dataStore)
+    api(projects.core.datastoreProto)
+    api(projects.core.model)
     implementation(projects.core.common)
 }

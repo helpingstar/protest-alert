@@ -9,11 +9,11 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.common)
-    implementation(projects.core.datastore)
-    implementation(projects.core.database)
+    api(projects.core.common)
+    api(projects.core.datastore)
+    api(projects.core.database)
+    api(projects.core.network)
     implementation(projects.core.model)
-    implementation(projects.core.network)
     implementation(projects.core.notifications)
     implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.serialization.json)

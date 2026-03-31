@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.protestalert.android.library)
-    alias(libs.plugins.protestalert.hilt)
 }
 
 android {
@@ -9,6 +8,12 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.data)
-    implementation(projects.core.model)
+    api(projects.core.data)
+    api(projects.core.model)
+
+
+    implementation(libs.javax.inject)
+
+    testImplementation(projects.core.testing)
+
 }
