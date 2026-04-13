@@ -17,47 +17,77 @@ import io.github.helpingstar.protest_alert.core.designsystem.theme.PaTheme
 import io.github.helpingstar.protest_alert.core.designsystem.theme.fontFamily
 
 /**
- * Today chip component
+ * Date chip variation.
+ */
+enum class DateChipVariant {
+    TODAY,
+    TOMORROW
+}
+
+/**
+ * Date chip component
  *
  * Figma element name: Container
  * Figma element type: Frame
- * Figma node-id: 194:1047
  *
- * Displays a red pill-shaped chip with "오늘" (Today) text.
- * Used to indicate today's date in the schedule list.
+ * Displays a pill-shaped chip indicating relative dates in the schedule list.
  *
  * Dependencies: None (leaf component)
  *
+ * @param variant The date chip variation to display
  * @param modifier Optional modifier for the component
  */
 @Composable
-fun TodayChip(
+fun DateChip(
+    variant: DateChipVariant,
     modifier: Modifier = Modifier
 ) {
+    val (backgroundColor, textColor, text) = when (variant) {
+        DateChipVariant.TODAY -> Triple(
+            Color(0xFFE11D48),
+            Color.White,
+            "오늘"
+        )
+
+        DateChipVariant.TOMORROW -> Triple(
+            Color(0xFFEBF5FF),
+            Color(0xFF2B7FFF),
+            "내일"
+        )
+    }
+
     Box(
         modifier = modifier
             .background(
-                color = Color(0xFFE11D48), // Figma: #e11d48 (rose-600)
+                color = backgroundColor,
                 shape = RoundedCornerShape(999.dp)
             )
             .padding(horizontal = 10.dp, vertical = 4.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "오늘",
+            text = text,
             fontFamily = fontFamily,
             fontWeight = FontWeight.Bold,
             fontSize = 16.sp,
             lineHeight = 20.sp,
-            color = Color.White
+            color = textColor
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun TodayChipPreview() {
+private fun DateChipTodayPreview() {
     PaTheme {
-        TodayChip()
+        DateChip(variant = DateChipVariant.TODAY)
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun DateChipTomorrowPreview() {
+    PaTheme {
+        DateChip(variant = DateChipVariant.TOMORROW)
     }
 }

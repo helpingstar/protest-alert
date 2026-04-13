@@ -47,12 +47,15 @@ import io.github.helpingstar.protest_alert.core.model.data.UserProtestResource
 import io.github.helpingstar.protest_alert.core.ui.ProtestFeedUiState
 import io.github.helpingstar.protest_alert.core.ui.RegionsTabContent
 import io.github.helpingstar.protest_alert.core.util.getKoreanDayOfWeek
+import io.github.helpingstar.protest_alert.feature.schedule.impl.component.DateChip
+import io.github.helpingstar.protest_alert.feature.schedule.impl.component.DateChipVariant
 import io.github.helpingstar.protest_alert.feature.schedule.impl.component.EmptyStateContainer
 import io.github.helpingstar.protest_alert.feature.schedule.impl.component.ScheduleItem
-import io.github.helpingstar.protest_alert.feature.schedule.impl.component.TodayChip
+import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
+import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
 import java.util.Locale
 import kotlin.math.log10
@@ -257,11 +260,17 @@ private fun DateHeader(
     val dayOfWeek = date.getKoreanDayOfWeek()
 
     val isToday = date == today
+    val isTomorrow = date == today.plus(1, DateTimeUnit.DAY)
     val isSaturday = date.dayOfWeek.ordinal == 5
     val isSunday = date.dayOfWeek.ordinal == 6
+    val dateChipVariant = when {
+        isToday -> DateChipVariant.TODAY
+        isTomorrow -> DateChipVariant.TOMORROW
+        else -> null
+    }
 
     val dayOfWeekColor = when {
-        isSunday -> Color(0xFFE11D48)  // Red (same as TodayChip background)
+        isSunday -> Color(0xFFE11D48)  // Red (same as DateChip today background)
         isSaturday -> Color(0xFF2B7FFF) // Blue (same as primary color)
         else -> MaterialTheme.colorScheme.onBackground
     }
@@ -285,8 +294,8 @@ private fun DateHeader(
             color = MaterialTheme.colorScheme.onBackground
         )
 
-        if (isToday) {
-            TodayChip()
+        dateChipVariant?.let { variant ->
+            DateChip(variant = variant)
         }
     }
 }
@@ -470,3 +479,14 @@ private fun DateHeaderWeekdayPreview() {
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+private fun DateHeaderTomorrowPreview() {
+    val testDate = LocalDate(2025, 2, 4)  // Tuesday
+    PaTheme {
+        DateHeader(
+            date = testDate,
+            today = LocalDate(2025, 2, 3)  // Make it "tomorrow"
+        )
+    }
+}
