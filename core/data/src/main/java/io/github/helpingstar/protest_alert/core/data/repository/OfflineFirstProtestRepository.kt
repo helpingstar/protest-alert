@@ -61,9 +61,10 @@ internal class OfflineFirstProtestRepository @Inject constructor(
                 val userData = paPreferencesDataSource.userData.first()
                 val hasOnboarded = userData.shouldHideOnboarding
                 val followedRegionIds = userData.followedRegions
+                val shouldPostNotifications = userData.updateNotificationEnabled && hasOnboarded
 
                 val existingProtestResourceIdsThatHaveChanged = when {
-                    hasOnboarded -> protestResourceDao.getProtestResourceIds(
+                    shouldPostNotifications -> protestResourceDao.getProtestResourceIds(
                         useFilterRegionIds = true,
                         filterRegionIds = followedRegionIds,
                         useFilterProtestResourceIds = true,
@@ -90,7 +91,7 @@ internal class OfflineFirstProtestRepository @Inject constructor(
                     )
                 }
 
-                if (hasOnboarded && !isFirstSync) {
+                if (shouldPostNotifications && !isFirstSync) {
                     val addedProtestResourceIds =
                         changedProtestResourceIds - existingProtestResourceIdsThatHaveChanged
 
