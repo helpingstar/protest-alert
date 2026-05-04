@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,8 +25,15 @@ class SettingsViewModel @Inject constructor(
     private val feedbackRepository: FeedbackRepository,
     getFollowableRegions: GetFollowableRegionsUseCase,
 ) : ViewModel() {
-    val uiState: StateFlow<SettingsUiState> = getFollowableRegions(RegionSortField.NAME)
-        .map { regions -> SettingsUiState.Settings(regions) }
+    val uiState: StateFlow<SettingsUiState> = combine(
+        getFollowableRegions(RegionSortField.NAME),
+        userDataRepository.userData,
+    ) { regions, userData ->
+        SettingsUiState.Settings(
+            regions = regions,
+            updateNotificationEnabled = userData.updateNotificationEnabled,
+        )
+    }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
@@ -56,6 +63,12 @@ class SettingsViewModel @Inject constructor(
     fun resetFeedbackState() {
         _feedbackState.value = FeedbackState.Idle
     }
+
+    fun setUpdateNotificationEnabled(updateNotificationEnabled: Boolean) {
+        viewModelScope.launch {
+            userDataRepository.setUpdateNotificationEnabled(updateNotificationEnabled)
+        }
+    }
 }
 
 sealed interface SettingsUiState {
@@ -63,6 +76,7 @@ sealed interface SettingsUiState {
 
     data class Settings(
         val regions: List<FollowableRegion>,
+        val updateNotificationEnabled: Boolean,
     ) : SettingsUiState
 
     data object Empty : SettingsUiState
