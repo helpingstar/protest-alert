@@ -11,6 +11,7 @@ import androidx.work.ForegroundInfo
 import androidx.work.NetworkType
 import io.github.helpingstar.protest_alert.sync.R
 
+const val SYNC_TOPIC = "sync"
 private const val SYNC_NOTIFICATION_ID = 0
 private const val SYNC_NOTIFICATION_CHANNEL_ID = "SyncNotificationChannel"
 

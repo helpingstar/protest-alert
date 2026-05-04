@@ -47,6 +47,10 @@ dependencies {
     implementation(projects.core.datastore)
     implementation(projects.core.common)
 
+    implementation(libs.firebase.cloud.messaging)
+    implementation(platform(libs.firebase.bom))
+
+
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
