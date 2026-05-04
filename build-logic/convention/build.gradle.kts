@@ -55,5 +55,9 @@ gradlePlugin {
             id = libs.plugins.protestalert.jvm.library.get().pluginId
             implementationClass = "JvmLibraryConventionPlugin"
         }
+        register("androidFirebase") {
+            id = libs.plugins.protestalert.android.application.firebase.get().pluginId
+            implementationClass = "AndroidApplicationFirebaseConventionPlugin"
+        }
     }
 }

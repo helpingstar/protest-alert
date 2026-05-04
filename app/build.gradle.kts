@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.protestalert.hilt)
+    alias(libs.plugins.protestalert.android.application.firebase)
 }
 
 kotlin {
