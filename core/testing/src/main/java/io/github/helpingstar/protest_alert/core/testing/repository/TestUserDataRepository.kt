@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.filterNotNull
 val emptyUserData = UserData(
     followedRegions = emptySet(),
     shouldHideOnboarding = false,
+    updateNotificationEnabled = false,
 )
 
 class TestUserDataRepository : UserDataRepository {
@@ -38,6 +39,12 @@ class TestUserDataRepository : UserDataRepository {
     override suspend fun setShouldHideOnboarding(shouldHideOnboarding: Boolean) {
         currentUserData.let { current ->
             _userData.tryEmit(current.copy(shouldHideOnboarding = shouldHideOnboarding))
+        }
+    }
+
+    override suspend fun setUpdateNotificationEnabled(updateNotificationEnabled: Boolean) {
+        currentUserData.let { current ->
+            _userData.tryEmit(current.copy(updateNotificationEnabled = updateNotificationEnabled))
         }
     }
 

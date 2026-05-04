@@ -178,7 +178,11 @@ private fun formatParticipantsWithComma(count: Int?): String {
 @Preview(showBackground = true)
 @Composable
 private fun ScheduleItemPreview() {
-    val userData = UserData(followedRegions = setOf("서울"), shouldHideOnboarding = true)
+    val userData = UserData(
+        followedRegions = setOf("서울"),
+        shouldHideOnboarding = true,
+        updateNotificationEnabled = false,
+    )
     val protest = ProtestResource(
         id = 1L,
         date = LocalDate(2025, 1, 15),
@@ -200,7 +204,11 @@ private fun ScheduleItemPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun ScheduleItemWithoutJurisdictionPreview() {
-    val userData = UserData(followedRegions = setOf("서울"), shouldHideOnboarding = true)
+    val userData = UserData(
+        followedRegions = setOf("서울"),
+        shouldHideOnboarding = true,
+        updateNotificationEnabled = false,
+    )
     val protest = ProtestResource(
         id = 2L,
         date = LocalDate(2025, 1, 15),

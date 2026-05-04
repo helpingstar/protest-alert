@@ -336,7 +336,11 @@ private fun ScheduleScreenWithOnboardingPreview() {
         ),
     )
 
-    val userData = UserData(followedRegions = setOf("seoul"), shouldHideOnboarding = false)
+    val userData = UserData(
+        followedRegions = setOf("seoul"),
+        shouldHideOnboarding = false,
+        updateNotificationEnabled = false,
+    )
     val sampleProtests = listOf(
         ProtestResource(
             id = 1L,
@@ -379,7 +383,11 @@ private fun ScheduleScreenWithOnboardingPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun ScheduleScreenOnlyContentPreview() {
-    val userData = UserData(followedRegions = setOf("seoul", "busan"), shouldHideOnboarding = true)
+    val userData = UserData(
+        followedRegions = setOf("seoul", "busan"),
+        shouldHideOnboarding = true,
+        updateNotificationEnabled = false,
+    )
     val sampleProtests = listOf(
         ProtestResource(
             id = 1L,
