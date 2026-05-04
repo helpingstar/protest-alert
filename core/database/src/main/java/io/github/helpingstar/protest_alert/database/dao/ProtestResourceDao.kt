@@ -21,13 +21,19 @@ interface ProtestResourceDao {
                     THEN date >= :sinceDate
                     ELSE 1
                 END
+                AND CASE WHEN :useFilterProtestResourceIds
+                    THEN id IN (:filterProtestResourceIds)
+                    ELSE 1
+                END
     """,
     )
     fun getProtestResources(
         useFilterRegionIds: Boolean = false,
         filterRegionIds: Set<String> = emptySet(),
         useFilterSinceDate: Boolean = false,
-        sinceDate: LocalDate = LocalDate.fromEpochDays(0)
+        sinceDate: LocalDate = LocalDate.fromEpochDays(0),
+        useFilterProtestResourceIds: Boolean = false,
+        filterProtestResourceIds: Set<Long> = emptySet(),
     ): Flow<List<ProtestResourceEntity>>
 
     @Query(
@@ -38,11 +44,17 @@ interface ProtestResourceDao {
                     THEN region IN (:filterRegionIds)
                     ELSE 1
                 END
+                AND CASE WHEN :useFilterProtestResourceIds
+                    THEN id IN (:filterProtestResourceIds)
+                    ELSE 1
+                END
     """,
     )
     fun getProtestResourceIds(
         useFilterRegionIds: Boolean = false,
         filterRegionIds: Set<String> = emptySet(),
+        useFilterProtestResourceIds: Boolean = false,
+        filterProtestResourceIds: Set<Long> = emptySet(),
     ): Flow<List<Long>>
 
     @Upsert
