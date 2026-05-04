@@ -9,4 +9,5 @@ message UserPreferences {
   map<string, bool> followed_region_ids = 3;
   bool should_hide_onboarding = 4;
   string announcementLastUpdatedAt = 5;
+  bool update_notification_enabled = 6;
 }

@@ -20,6 +20,7 @@ class PaPreferencesDataSource @Inject constructor(
             UserData(
                 followedRegions = it.followedRegionIdsMap.keys,
                 shouldHideOnboarding = it.shouldHideOnboarding,
+                updateNotificationEnabled = it.updateNotificationEnabled,
             )
         }
 
@@ -83,6 +84,12 @@ class PaPreferencesDataSource @Inject constructor(
     suspend fun setShouldHideOnboarding(shouldHideOnboarding: Boolean) {
         userPreferences.updateData {
             it.copy { this.shouldHideOnboarding = shouldHideOnboarding }
+        }
+    }
+
+    suspend fun setUpdateNotificationEnabled(updateNotificationEnabled: Boolean) {
+        userPreferences.updateData {
+            it.copy { this.updateNotificationEnabled = updateNotificationEnabled }
         }
     }
 }

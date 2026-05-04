@@ -18,4 +18,8 @@ internal class OfflineFirstUserDataRepository @Inject constructor(
     override suspend fun setShouldHideOnboarding(shouldHideOnboarding: Boolean) {
         paPreferencesDataSource.setShouldHideOnboarding(shouldHideOnboarding)
     }
+
+    override suspend fun setUpdateNotificationEnabled(updateNotificationEnabled: Boolean) {
+        paPreferencesDataSource.setUpdateNotificationEnabled(updateNotificationEnabled)
+    }
 }
