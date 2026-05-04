@@ -8,6 +8,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.accompanist.permissions)
     implementation(projects.core.designsystem)
     implementation(projects.core.data)
     implementation(projects.core.model)
