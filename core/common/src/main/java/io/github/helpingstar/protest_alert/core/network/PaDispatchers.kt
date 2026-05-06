@@ -5,9 +5,9 @@ import kotlin.annotation.AnnotationRetention.RUNTIME
 
 @Qualifier
 @Retention(RUNTIME)
-annotation class Dispatcher(val niaDispatcher: NiaDispatchers)
+annotation class Dispatcher(val paDispatcher: PaDispatchers)
 
-enum class NiaDispatchers {
+enum class PaDispatchers {
     Default,
     IO,
 }

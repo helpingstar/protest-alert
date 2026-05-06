@@ -5,8 +5,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.github.helpingstar.protest_alert.core.network.Dispatcher
-import io.github.helpingstar.protest_alert.core.network.NiaDispatchers.IO
-import io.github.helpingstar.protest_alert.core.network.NiaDispatchers.Default
+import io.github.helpingstar.protest_alert.core.network.PaDispatchers.Default
+import io.github.helpingstar.protest_alert.core.network.PaDispatchers.IO
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 

@@ -16,7 +16,7 @@ import io.github.helpingstar.protest_alert.core.data.repository.RegionsRepositor
 import io.github.helpingstar.protest_alert.core.datastore.LastUpdatedAt
 import io.github.helpingstar.protest_alert.core.datastore.PaPreferencesDataSource
 import io.github.helpingstar.protest_alert.core.network.Dispatcher
-import io.github.helpingstar.protest_alert.core.network.NiaDispatchers.IO
+import io.github.helpingstar.protest_alert.core.network.PaDispatchers.IO
 import io.github.helpingstar.protest_alert.sync.initializers.SyncConstraints
 import io.github.helpingstar.protest_alert.sync.initializers.syncForegroundInfo
 import io.github.helpingstar.protest_alert.sync.status.SyncSubscriber

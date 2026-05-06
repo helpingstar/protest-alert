@@ -12,7 +12,7 @@ import dagger.hilt.components.SingletonComponent
 import io.github.helpingstar.protest_alert.core.datastore.UserPreferences
 import io.github.helpingstar.protest_alert.core.datastore.UserPreferencesSerializer
 import io.github.helpingstar.protest_alert.core.network.Dispatcher
-import io.github.helpingstar.protest_alert.core.network.NiaDispatchers.IO
+import io.github.helpingstar.protest_alert.core.network.PaDispatchers.IO
 import io.github.helpingstar.protest_alert.core.network.di.ApplicationScope
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
