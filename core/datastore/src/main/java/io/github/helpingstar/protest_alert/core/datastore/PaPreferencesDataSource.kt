@@ -9,11 +9,10 @@ import java.io.IOException
 import javax.inject.Inject
 import kotlin.time.Instant
 
-private const val TAG = "NiaPreferences"
-
+private const val TAG = "PaPreferences"
 
 class PaPreferencesDataSource @Inject constructor(
-    private val userPreferences: DataStore<UserPreferences>
+    private val userPreferences: DataStore<UserPreferences>,
 ) {
     val userData = userPreferences.data
         .map {
@@ -23,6 +22,20 @@ class PaPreferencesDataSource @Inject constructor(
                 updateNotificationEnabled = it.updateNotificationEnabled,
             )
         }
+
+    suspend fun setFollowedRegionIds(regionIds: Set<String>) {
+        try {
+            userPreferences.updateData {
+                it.copy {
+                    followedRegionIds.clear()
+                    followedRegionIds.putAll(regionIds.associateWith { true })
+                    updateShouldHideOnboardingIfNecessary()
+                }
+            }
+        } catch (ioException: IOException) {
+            Log.e(TAG, "Failed to update user preferences", ioException)
+        }
+    }
 
     suspend fun setRegionIdFollowed(regionId: String, followed: Boolean) {
         try {

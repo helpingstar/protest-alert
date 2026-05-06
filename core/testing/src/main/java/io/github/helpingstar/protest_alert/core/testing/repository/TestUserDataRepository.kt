@@ -20,7 +20,7 @@ class TestUserDataRepository : UserDataRepository {
 
     override val userData: Flow<UserData> = _userData.filterNotNull()
 
-    fun setFollowedRegionIds(followedRegionIds: Set<String>) {
+    override suspend fun setFollowedRegionIds(followedRegionIds: Set<String>) {
         _userData.tryEmit(currentUserData.copy(followedRegions = followedRegionIds))
     }
 

@@ -10,6 +10,7 @@ android {
 dependencies {
     api(projects.core.data)
     api(projects.core.model)
+    api(projects.core.notifications)
     api(libs.kotlinx.coroutines.test)
 
     implementation(libs.androidx.test.rules)
