@@ -2,5 +2,7 @@
 <resources>
     <string name="core_notifications_protest_notification_channel_name">시위 정보 업데이트</string>
     <string name="core_notifications_protest_notification_channel_description">팔로우한 지역의 새 시위 일정 업데이트</string>
-    <string name="core_notifications_protest_region_update">%1$s 지역에 %2$d개의 시위 정보가 업데이트되었습니다.</string>
+    <string name="core_notifications_protest_region_update_title">%1$s 신규 집회 일정 %2$d건</string>
+    <string name="core_notifications_protest_region_update_text">관심 지역에 새 일정이 추가됐어요. 장소와 시간을 확인해 보세요.</string>
+
 </resources>
