@@ -42,9 +42,11 @@ internal class SystemTrayNotifier @Inject constructor(
             val title = getString(
                 R.string.core_notifications_protest_region_update_title,
                 region,
+            )
+            val contentText = getString(
+                R.string.core_notifications_protest_region_update_text,
                 regionProtestResources.size,
             )
-            val contentText = getString(R.string.core_notifications_protest_region_update_text)
 
             val notification = createProtestNotification {
                 setSmallIcon(R.drawable.core_notifications_ic_pa_notification)
