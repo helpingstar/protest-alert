@@ -14,7 +14,12 @@ val localProperties = Properties().apply {
 }
 
 android {
+    buildFeatures {
+        buildConfig = true
+    }
     namespace = "io.github.helpingstar.protest_alert.core.network"
+    testOptions.unitTests.isIncludeAndroidResources = true
+
     compileSdk {
         version = release(36)
     }
@@ -23,19 +28,12 @@ android {
         buildConfigField("String", "SUPABASE_URL", "\"${localProperties["SUPABASE_URL"]}\"")
         buildConfigField("String", "SUPABASE_KEY", "\"${localProperties["SUPABASE_KEY"]}\"")
     }
-
-    buildFeatures {
-        buildConfig = true
-    }
-    namespace = "io.github.helpingstar.protest_alert.core.network"
 }
 
 dependencies {
-    ksp(libs.hilt.compiler)
-    implementation(libs.hilt.android)
-    implementation(libs.androidx.hilt.navigation.compose)
+    api(projects.core.common)
+    api(projects.core.model)
     implementation(libs.kotlinx.serialization.json)
-    implementation(projects.core.model)
 
     implementation(platform(libs.supabase.bom))
     implementation(libs.supabase.postgrest)
