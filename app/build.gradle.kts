@@ -1,7 +1,8 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.protestalert.android.application)
+    alias(libs.plugins.protestalert.android.application.flavors)
     alias(libs.plugins.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.protestalert.hilt)
@@ -14,12 +15,9 @@ kotlin {
 
 android {
     namespace = "io.github.helpingstar.protest_alert"
-    compileSdk = 36
 
     defaultConfig {
         applicationId = "io.github.helpingstar.protest_alert"
-        minSdk = 23
-        targetSdk = 36
         versionCode = 10
         versionName = "1.0.10"
 
@@ -34,13 +32,6 @@ android {
                 "proguard-rules.pro"
             )
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    buildFeatures {
-        compose = true
     }
 }
 

@@ -16,8 +16,6 @@ androidxLifecycleViewModelNavigation3 = "2.10.0"
 androidxNavigation3 = "1.1.1"
 kotlinxCoroutines = "1.10.2"
 firebaseBom = "33.7.0"
-firebaseCrashlyticsPlugin = "3.0.6"
-firebasePerfPlugin = "2.0.2"
 gmsPlugin = "4.4.4"
 appcompat = "1.7.1"
 material = "1.13.0"
@@ -80,11 +78,8 @@ androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscree
 android-gradleApiPlugin = { group = "com.android.tools.build", name = "gradle-api", version.ref = "androidGradlePlugin" }
 android-tools-common = { group = "com.android.tools", name = "common", version.ref = "androidTools" }
 compose-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
-firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-cloud-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
-firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
-firebase-performance = { group = "com.google.firebase", name = "firebase-perf" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 room-gradlePlugin = { group = "androidx.room", name = "room-gradle-plugin", version.ref = "room" }
@@ -111,8 +106,6 @@ androidx-work-ktx = { group = "androidx.work", name = "work-runtime-ktx", versio
 hilt-ext-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hiltExt" }
 androidx-navigation3-ui = { group = "androidx.navigation3", name = "navigation3-ui", version.ref = "androidxNavigation3" }
 androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
-firebase-crashlytics-gradlePlugin = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "firebaseCrashlyticsPlugin" }
-firebase-performance-gradlePlugin = { group = "com.google.firebase", name = "perf-plugin", version.ref = "firebasePerfPlugin" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -124,15 +117,15 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 room = { id = "androidx.room", version.ref = "room" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsPlugin" }
-firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebasePerfPlugin" }
 gms = { id = "com.google.gms.google-services", version.ref = "gmsPlugin" }
 
 
 # Plugins defined by this project
 protestalert-android-library = { id = "protestalert.android.library" }
 protestalert-android-library-compose = { id = "protestalert.android.library.compose" }
+protestalert-android-application = { id = "protestalert.android.application" }
 protestalert-android-application-firebase = { id = "protestalert.android.application.firebase" }
+protestalert-android-application-flavors = { id = "protestalert.android.application.flavors" }
 protestalert-android-feature-impl = { id = "protestalert.android.feature.impl" }
 protestalert-android-feature-api = { id = "protestalert.android.feature.api" }
 protestalert-hilt = { id = "protestalert.hilt" }
