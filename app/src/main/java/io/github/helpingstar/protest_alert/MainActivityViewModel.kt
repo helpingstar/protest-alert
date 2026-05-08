@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.helpingstar.protest_alert.core.data.repository.AnnouncementRepository
 import io.github.helpingstar.protest_alert.core.model.data.Announcement
+import io.github.helpingstar.protest_alert.core.model.data.AnnouncementType
 import io.github.helpingstar.protest_alert.ui.component.AnnouncementUiModel
 import io.github.helpingstar.protest_alert.ui.component.NotificationStatus
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
 import javax.inject.Inject
 
@@ -66,14 +68,16 @@ class MainActivityViewModel @Inject constructor(
 
 private fun Announcement.toUiModel(): AnnouncementUiModel {
     val date = startAt.toLocalDateTime(TimeZone.currentSystemDefault()).date
-    val dateString = "${date.year}.${date.monthNumber.toString().padStart(2, '0')}.${date.dayOfMonth.toString().padStart(2, '0')}"
+    val dateString = "${date.year}.${date.month.number.toString().padStart(2, '0')}.${
+        date.day.toString().padStart(2, '0')
+    }"
 
     return AnnouncementUiModel(
         id = id,
         status = when (type) {
-            io.github.helpingstar.protest_alert.core.model.data.AnnouncementType.EMERGENCY -> NotificationStatus.EMERGENCY
-            io.github.helpingstar.protest_alert.core.model.data.AnnouncementType.PINNED -> NotificationStatus.PINNED
-            io.github.helpingstar.protest_alert.core.model.data.AnnouncementType.NORMAL -> NotificationStatus.NORMAL
+            AnnouncementType.EMERGENCY -> NotificationStatus.EMERGENCY
+            AnnouncementType.PINNED -> NotificationStatus.PINNED
+            AnnouncementType.NORMAL -> NotificationStatus.NORMAL
         },
         title = title,
         body = body,

@@ -1,4 +1,5 @@
 import com.android.build.api.dsl.LibraryExtension
+import io.github.helpingstar.protest_alert.convention.configureFlavors
 import io.github.helpingstar.protest_alert.convention.configureKotlinAndroid
 import io.github.helpingstar.protest_alert.convention.libs
 import org.gradle.api.Plugin
@@ -17,6 +18,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 testOptions.targetSdk = 36
                 lint.targetSdk = 36
                 defaultConfig.testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+                configureFlavors(this)
             }
             dependencies {
                 "androidTestImplementation"(libs.findLibrary("kotlin.test").get())

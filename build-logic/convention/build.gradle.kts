@@ -27,6 +27,10 @@ dependencies {
 
 gradlePlugin {
     plugins {
+        register("androidApplication") {
+            id = libs.plugins.protestalert.android.application.asProvider().get().pluginId
+            implementationClass = "AndroidApplicationConventionPlugin"
+        }
         register("androidLibraryCompose") {
             id = libs.plugins.protestalert.android.library.compose.get().pluginId
             implementationClass = "AndroidLibraryComposeConventionPlugin"
@@ -58,6 +62,10 @@ gradlePlugin {
         register("androidFirebase") {
             id = libs.plugins.protestalert.android.application.firebase.get().pluginId
             implementationClass = "AndroidApplicationFirebaseConventionPlugin"
+        }
+        register("androidApplicationFlavors") {
+            id = libs.plugins.protestalert.android.application.flavors.get().pluginId
+            implementationClass = "AndroidApplicationFlavorsConventionPlugin"
         }
     }
 }

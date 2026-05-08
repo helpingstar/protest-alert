@@ -40,15 +40,18 @@ internal class SystemTrayNotifier @Inject constructor(
 
         protestResourcesByRegion.forEach { (region, regionProtestResources) ->
             val title = getString(
-                R.string.core_notifications_protest_region_update,
+                R.string.core_notifications_protest_region_update_title,
                 region,
-                regionProtestResources.size
+            )
+            val contentText = getString(
+                R.string.core_notifications_protest_region_update_text,
+                regionProtestResources.size,
             )
 
             val notification = createProtestNotification {
                 setSmallIcon(R.drawable.core_notifications_ic_pa_notification)
                     .setContentTitle(title)
-                    .setContentText(title)
+                    .setContentText(contentText)
                     .setContentIntent(schedulePendingIntent())
                     .setAutoCancel(true)
             }

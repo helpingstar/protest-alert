@@ -1,10 +1,6 @@
 plugins {
-    alias(libs.plugins.protestalert.android.library)
+    alias(libs.plugins.protestalert.jvm.library)
     alias(libs.plugins.protobuf)
-}
-
-android {
-    namespace = "io.github.helpingstar.protest_alert.core.datastore.proto"
 }
 
 protobuf {
@@ -12,9 +8,9 @@ protobuf {
         artifact = libs.protobuf.protoc.get().toString()
     }
     generateProtoTasks {
-        all().forEach { task ->
-            task.builtins {
-                register("java") {
+        all().configureEach {
+            builtins {
+                named("java") {
                     option("lite")
                 }
                 register("kotlin") {
@@ -22,15 +18,6 @@ protobuf {
                 }
             }
         }
-    }
-}
-
-androidComponents.beforeVariants {
-//    android.sourceSets.register(it.name) {
-    android.sourceSets.getByName(it.name) { // TODO(hs) register
-        val buildDir = layout.buildDirectory.get().asFile
-        java.srcDir(buildDir.resolve("generated/source/proto/${it.name}/java"))
-        kotlin.srcDir(buildDir.resolve("generated/source/proto/${it.name}/kotlin"))
     }
 }
 

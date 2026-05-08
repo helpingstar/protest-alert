@@ -33,7 +33,6 @@ private suspend fun <T> suspendRunCatching(block: suspend () -> T): Result<T> = 
     Result.failure(exception)
 }
 
-
 suspend fun Synchronizer.changeListSync(
     versionReader: (LastUpdatedAt) -> Instant,
     changeListFetcher: suspend (Instant) -> List<NetworkChangeList>,
@@ -44,7 +43,6 @@ suspend fun Synchronizer.changeListSync(
     // Fetch the change list since last sync (akin to a git fetch)
     val currentVersion = versionReader(getLastUpdatedAt())
     val changeList = changeListFetcher(currentVersion)
-    Log.d(TAG, changeList.toString())
     if (changeList.isEmpty()) return@suspendRunCatching true
 
     val (deleted, updated) = changeList.partition(NetworkChangeList::isDelete)

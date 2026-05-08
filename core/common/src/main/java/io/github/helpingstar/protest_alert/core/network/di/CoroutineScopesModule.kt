@@ -5,7 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.github.helpingstar.protest_alert.core.network.Dispatcher
-import io.github.helpingstar.protest_alert.core.network.NiaDispatchers
+import io.github.helpingstar.protest_alert.core.network.PaDispatchers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -23,6 +23,6 @@ internal object CoroutineScopesModule {
     @Singleton
     @ApplicationScope
     fun providesCoroutineScope(
-        @Dispatcher(NiaDispatchers.Default) dispatcher: CoroutineDispatcher,
+        @Dispatcher(PaDispatchers.Default) dispatcher: CoroutineDispatcher,
     ): CoroutineScope = CoroutineScope(SupervisorJob() + dispatcher)
 }

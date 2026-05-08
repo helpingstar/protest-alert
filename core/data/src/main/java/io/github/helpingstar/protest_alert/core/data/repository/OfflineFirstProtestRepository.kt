@@ -91,7 +91,7 @@ internal class OfflineFirstProtestRepository @Inject constructor(
                     )
                 }
 
-                if (shouldPostNotifications && !isFirstSync) {
+                if (shouldPostNotifications) {
                     val addedProtestResourceIds =
                         changedProtestResourceIds - existingProtestResourceIdsThatHaveChanged
 
