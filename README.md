@@ -5,7 +5,8 @@
 사용자는 관심 지역을 설정하고, 해당 지역의 집회 일정을 날짜별로 확인할 수 있습니다. 출퇴근, 운전, 외출 계획을 세울 때 집회로 인한 혼잡 가능성을 미리 파악하는 것을 목표로
 하며, 수익을 추구하지 않는 비영리 프로젝트입니다.
 
-<a href='https://play.google.com/store/apps/details?id=io.github.helpingstar.protest_alert&pcampaignid=web_share'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height='80px'/></a>
+<a href='https://play.google.com/store/apps/details?id=io.github.helpingstar.protest_alert
+'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height='80px'/></a>
 
 
 ## Features
